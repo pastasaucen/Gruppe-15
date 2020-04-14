@@ -11,9 +11,12 @@ public class CastCatalog {
 	private List<Cast> cast = new ArrayList<>();
 
 	private CastCatalog() {
+		// Some cast members to try on
+		/*
 		cast.add(new Cast(-1, "Bob", "Bobsen"));
 		cast.add(new Cast(-1, "Karen", "Bobsen"));
 		cast.add(new Cast(-1, "Bob", "Sørensen"));
+		 */
 	}
 
 	public static CastCatalog getInstance() {

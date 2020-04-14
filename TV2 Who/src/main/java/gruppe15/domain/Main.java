@@ -6,6 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // Test "opret produktion"
+        /*
         Producer producer = new Producer("Jan","blah@blah.dk");
 
         producer.createProduction("Badehotellet", new Date(System.currentTimeMillis()));
@@ -13,6 +15,6 @@ public class Main {
         producer.addCastMember("Inger Bobsen");
         producer.addRole("Batman", new Cast(-1, "Bob", "Bobsen"));
         producer.submitProduction();
-
+        */
     }
 }

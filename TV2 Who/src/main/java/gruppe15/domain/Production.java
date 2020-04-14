@@ -32,12 +32,13 @@ public class Production {
 
 	public void addCastMember(Cast castMember) {
 		cast.add(castMember);
-	}
+}
 
 	public void addRole(String roleName, Cast castMember) {
 		for (int castNum = 0; castNum < cast.size(); castNum++) {
 			if (castMember.equals(cast.get(castNum))) {
 				cast.get(castNum).addRole(roleName, this);
+				return;
 			}
 		}
 	}
@@ -58,7 +59,7 @@ public class Production {
 				'}';
 	}
 
-	public void setAssociatedProducerUsername(String associatedProducerUsername) {
-		this.associatedProducerEmail = associatedProducerUsername;
+	public void setAssociatedProducerEmail(String associatedProducerEmail) {
+		this.associatedProducerEmail = associatedProducerEmail;
 	}
 }

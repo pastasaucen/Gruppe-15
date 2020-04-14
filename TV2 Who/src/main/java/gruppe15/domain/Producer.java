@@ -72,8 +72,9 @@ public class Producer extends User implements IProducer {
 	}
 
 	public void submitProduction() {
-		production.setAssociatedProducerUsername(email);
+		production.setAssociatedProducerEmail(email);
 		ProductionCatalog.getInstance().addProduction(production);
+		production = null;
 	}
 
 	public void createCastMember(String firstName, String lastName, boolean force) {

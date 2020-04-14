@@ -34,7 +34,7 @@ public class Cast {
 
 	public boolean equals(Cast cast) {
 		if (id == -1 || cast.id == -1){ // If any of them have -1 as ID, they haven't got an ID yet and therefore we check on name.
-			if (firstName.equals(cast.firstName)) {
+			if (firstName.equals(cast.firstName) && lastName.equals(cast.lastName)) {
 				return true;
 			} else {
 				return false;

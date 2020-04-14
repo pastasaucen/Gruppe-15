@@ -7,9 +7,7 @@ public class CastCatalog {
 
 	private static CastCatalog instance;
 
-	//private Cast[] cast; // Ved ikke helt hvorfor dette er et array, så vi hare ikke brugt det
-
-	private ArrayList<Cast> castArrayList = new ArrayList<>();
+	private List<Cast> cast	 = new ArrayList<>();
 
 	int numberOfCastMembers = 0; // makes sure that no one has the same id.
 
@@ -29,9 +27,7 @@ public class CastCatalog {
 	 * @return
 	 */
 	public List<Cast> searchForCast(String firstName, String lastName, String email) {
-// vi har lavet ArrayList for nu, indtil det bliver implementeret.
-		ArrayList<Cast> castList = new ArrayList<>();
-		return castList;
+		return null;
 	}
 
 	/**
@@ -42,7 +38,7 @@ public class CastCatalog {
 	 */
 	public void createCastMember(String firstName, String lastName, String email) {
 		numberOfCastMembers ++;
-		castArrayList.add(new Cast(numberOfCastMembers, firstName, lastName, email));
+		cast.add(new Cast(numberOfCastMembers, firstName, lastName, email));
 	}
 
 }

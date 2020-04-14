@@ -45,7 +45,7 @@ public class Producer extends User implements ProducerInterface {
 
 
 		if ( castList == null){
-			createCastAndPrompt(firstName, lastName, email);
+			createCastAndConfirms(firstName, lastName, email);
 		} else{
 			System.out.println("The cast you want to create might already exist");
 
@@ -59,7 +59,7 @@ public class Producer extends User implements ProducerInterface {
 
 			Scanner scanner = new Scanner(System.in);
 			if(scanner.next().equalsIgnoreCase("yes")){
-				createCastAndPrompt(firstName, lastName, email);
+				createCastAndConfirms(firstName, lastName, email);
 			} else {
 				System.out.println("You have chosen not to create the cast");
 
@@ -75,7 +75,7 @@ public class Producer extends User implements ProducerInterface {
 	 * @param lastName
 	 * @param email
 	 */
-	private void createCastAndPrompt(String firstName, String lastName, String email){
+	private void createCastAndConfirms(String firstName, String lastName, String email){
 		castCatalog.createCastMember(firstName, lastName, email);
 		System.out.println("The cast member:" + firstName + " " + lastName + " : " + email +
 				" \n Has been created");

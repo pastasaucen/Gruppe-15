@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ProductionCatalog {
 
-	private ProductionCatalog instance;
+	private static ProductionCatalog instance;
 
 	private Production[] production;
 
@@ -12,7 +12,7 @@ public class ProductionCatalog {
 
 	}
 
-	public ProductionCatalog getInstance() {
+	public static ProductionCatalog getInstance() {
 		if (instance == null) {
 			instance = new ProductionCatalog();
 		}

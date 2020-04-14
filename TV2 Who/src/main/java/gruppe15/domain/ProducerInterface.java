@@ -12,6 +12,6 @@ public interface ProducerInterface {
 
 	void submitProduction();
 
-	void createCastMember(String firstName, String lastName, boolean force);
+	void createCastMember(String firstName, String lastName, String email);
 
 }

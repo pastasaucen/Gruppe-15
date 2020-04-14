@@ -6,7 +6,6 @@ import java.util.List;
 public class CastCatalog {
 
 	private static CastCatalog instance;
-
 	// Temporary until the persistence layer is implemented. We always want the newest data from the persistence layer.
 	private List<Cast> cast = new ArrayList<>();
 
@@ -19,11 +18,13 @@ public class CastCatalog {
 		 */
 	}
 
+	int numberOfCastMembers = 0; // makes sure that no one has the same id.
+
+
 	public static CastCatalog getInstance() {
-		if (instance == null) {
+		if ( instance == null){
 			instance = new CastCatalog();
 		}
-
 		return instance;
 	}
 
@@ -50,8 +51,15 @@ public class CastCatalog {
 		return relevantCastMembers;
 	}
 
-	public void createCastMember(String firstName, String lastName, boolean force) {
-
+	/**
+	 * creates a cast member and adds it to the database (for now arraylist)
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 */
+	public void createCastMember(String firstName, String lastName, String email) {
+		numberOfCastMembers ++;
+		cast.add(new Cast(numberOfCastMembers, firstName, lastName, email));
 	}
 
 }

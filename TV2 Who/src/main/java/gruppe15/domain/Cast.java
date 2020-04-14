@@ -14,10 +14,13 @@ public class Cast {
 
 	private List<Role> roles = new ArrayList<>();
 
-	public Cast(int id, String firstName, String lastName) {
+	private String email;
+
+	public Cast(int id, String firstName, String lastName, String email) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.email = email;
 	}
 
 	public void addRole(String roleName, Production production) {
@@ -32,6 +35,23 @@ public class Cast {
 		return lastName;
 	}
 
+
+	public int getId() {
+		return id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+	
 	public boolean equals(Cast cast) {
 		if (id == -1 || cast.id == -1){ // If any of them have -1 as ID, they haven't got an ID yet and therefore we check on name.
 			if (firstName.equals(cast.firstName) && lastName.equals(cast.lastName)) {

@@ -46,7 +46,7 @@ public class SystemAdministrator extends User implements IProducer {
 	 * 
 	 *  
 	 */
-	public void createCastMember(String firstName, String lastName, boolean force) {
+	public void createCastMember(String firstName, String lastName, String email) {
 
 	}
 

@@ -1,6 +1,5 @@
-package gruppe15;
+package presentation;
 
-import gruppe15.domain.Producer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -1,4 +1,4 @@
-package gruppe15.domain;
+package domain;
 
 public class TV2Who {
 

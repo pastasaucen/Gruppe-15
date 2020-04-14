@@ -1,4 +1,4 @@
-package gruppe15.domain;
+package domain;
 
 import java.sql.Date;
 import java.util.List;

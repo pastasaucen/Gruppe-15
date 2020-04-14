@@ -3,6 +3,6 @@ module gruppe15 {
     requires javafx.fxml;
     requires java.sql;
 
-    opens gruppe15 to javafx.fxml;
-    exports gruppe15;
+    opens presentation to javafx.fxml;
+    exports presentation;
 }

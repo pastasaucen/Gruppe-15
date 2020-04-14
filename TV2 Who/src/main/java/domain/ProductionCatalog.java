@@ -1,4 +1,4 @@
-package gruppe15.domain;
+package domain;
 
 import java.util.ArrayList;
 import java.util.List;

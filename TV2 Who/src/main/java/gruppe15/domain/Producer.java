@@ -14,8 +14,8 @@ public class Producer extends User implements IProducer {
 	private ProductionCatalog productionCatalog;
 
 	public Producer(String name, String email) {
-		castCatalog = CastCatalog.getInstance();
 		super(name, email);
+		castCatalog = CastCatalog.getInstance();
 	}
 
 	/**
@@ -31,6 +31,7 @@ public class Producer extends User implements IProducer {
 
 	public void addCastMember(String name) {
 		// We assume that the user will search in one string. I.e. want to separate this string into to names.
+		// What about names like "Marie Louise Pedersen"? Or "Robert De Niro"?
 
 		String[] names = name.split(" ");		// Divides the given name into separate names as an array
 		String firstName = "";
@@ -86,8 +87,9 @@ public class Producer extends User implements IProducer {
 	 * @param lastName
 	 * @param email
 	 */
-	public void createCastMember(String firstName, String lastName,String email) {
-		List<Cast> castList = castCatalog.searchForCast(firstName, lastName, email);
+	public void createCastMember(String firstName, String lastName, String email) {
+		// TODO does it need to search for the cast members email?
+		List<Cast> castList = castCatalog.searchForCast(firstName, lastName);
 
 
 		if ( castList == null){

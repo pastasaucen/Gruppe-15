@@ -3,7 +3,7 @@ package gruppe15.domain;
 import java.sql.Date;
 import java.util.List;
 
-public class Producer extends User implements ProducerInterface {
+public class Producer extends User implements IProducer {
 
 	// The temporary production this producer creates before sending it to the ProductionCatalogue
 	private Production production;

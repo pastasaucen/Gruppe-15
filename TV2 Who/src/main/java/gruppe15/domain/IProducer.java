@@ -2,7 +2,7 @@ package gruppe15.domain;
 
 import java.sql.Date;
 
-public interface ProducerInterface {
+public interface IProducer {
 
 	void createProduction(String name, Date date);
 

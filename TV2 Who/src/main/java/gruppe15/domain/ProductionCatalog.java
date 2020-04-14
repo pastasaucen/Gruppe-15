@@ -1,5 +1,7 @@
 package gruppe15.domain;
 
+import java.util.List;
+
 public class ProductionCatalog {
 
 	private ProductionCatalog instance;
@@ -18,7 +20,7 @@ public class ProductionCatalog {
 
 	}
 
-	public List searchForProduction(String nameOrId) {
+	public List<Production> searchForProduction(String nameOrId) {
 		return null;
 	}
 

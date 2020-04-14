@@ -1,6 +1,7 @@
 package gruppe15.domain;
 
-import Designklassediagram.ProducerInterface;
+
+import java.util.Date;
 
 public class Producer extends User implements ProducerInterface {
 
@@ -14,6 +15,7 @@ public class Producer extends User implements ProducerInterface {
 
 	}
 
+	@Override
 	public void createProduction(String name, Date date) {
 
 	}

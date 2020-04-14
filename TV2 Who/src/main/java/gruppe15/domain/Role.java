@@ -6,8 +6,6 @@ public class Role {
 
 	private Production production;
 
-	private Production production;
-
 	public Role() {
 
 	}

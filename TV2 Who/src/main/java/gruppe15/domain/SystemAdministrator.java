@@ -1,8 +1,8 @@
 package gruppe15.domain;
 
-import Designklassediagram.ProducerInterface;
+import java.util.Date;
 
-public class SystemAdministrator extends User, Producer implements ProducerInterface {
+public class SystemAdministrator extends User implements ProducerInterface {
 
 	public SystemAdministrator(String name, String username, String email) {
 
@@ -10,15 +10,12 @@ public class SystemAdministrator extends User, Producer implements ProducerInter
 
 
 	/**
-	 * @see Designklassediagram.ProducerInterface#createProduction(String, Date)
 	 */
 	public void createProduction(String name, Date date) {
 
 	}
 
-
 	/**
-	 * @see Designklassediagram.ProducerInterface#addCastMember(String)
 	 * 
 	 *  
 	 */
@@ -28,7 +25,6 @@ public class SystemAdministrator extends User, Producer implements ProducerInter
 
 
 	/**
-	 * @see Designklassediagram.ProducerInterface#addRole(String, Analyseklassediagram.Cast)
 	 * 
 	 *  
 	 */
@@ -38,7 +34,6 @@ public class SystemAdministrator extends User, Producer implements ProducerInter
 
 
 	/**
-	 * @see Designklassediagram.ProducerInterface#submitProduction()
 	 * 
 	 *  
 	 */
@@ -48,7 +43,6 @@ public class SystemAdministrator extends User, Producer implements ProducerInter
 
 
 	/**
-	 * @see Designklassediagram.ProducerInterface#createCastMember(String, String, boolean)
 	 * 
 	 *  
 	 */

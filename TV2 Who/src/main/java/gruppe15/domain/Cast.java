@@ -13,7 +13,7 @@ public class Cast {
 	private String email;
 
 
-	private Role[] roles;
+	private Role[] roles; // roles skal laves om alt efter Role. Måske til arrayList når vi ikke arbejder med Database endnu
 
 	public Cast( int id, String firstName, String lastName, String email) {
 		this.id = id;
@@ -36,10 +36,6 @@ public class Cast {
 
 	public String getLastName() {
 		return lastName;
-	}
-
-	public Role[] getRoles() {
-		return roles;
 	}
 
 	public String getEmail() {

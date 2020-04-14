@@ -1,11 +1,11 @@
 package gruppe15.domain;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class SystemAdministrator extends User implements ProducerInterface {
+public class SystemAdministrator extends User implements IProducer {
 
-	public SystemAdministrator(String name, String username, String email) {
-
+	public SystemAdministrator(String name, String email) {
+		super(name, email);
 	}
 
 

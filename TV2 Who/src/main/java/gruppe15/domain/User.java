@@ -2,10 +2,10 @@ package gruppe15.domain;
 
 public abstract class User {
 
-	private String name;
+	protected String name, email;
 
-	private String username;
-
-	private String email;
-
+	public User(String name, String email) {
+		this.name = name;
+		this.email = email;
+	}
 }

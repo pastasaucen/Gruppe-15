@@ -1,8 +1,8 @@
 package gruppe15.domain;
 
-import java.util.Date;
+import java.sql.Date;
 
-public interface ProducerInterface {
+public interface IProducer {
 
 	void createProduction(String name, Date date);
 

@@ -14,7 +14,7 @@ public class Production {
 
 	private State state = State.PENDING;
 
-	private String associatedProducerUsername;
+	private String associatedProducerEmail;
 
 	private List<Cast> cast = new ArrayList<>();
 
@@ -34,11 +34,31 @@ public class Production {
 		cast.add(castMember);
 	}
 
-	public void addRole(String roleName, Cast cast) {
-
+	public void addRole(String roleName, Cast castMember) {
+		for (int castNum = 0; castNum < cast.size(); castNum++) {
+			if (castMember.equals(cast.get(castNum))) {
+				cast.get(castNum).addRole(roleName, this);
+			}
+		}
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public String toString() {
+		return "Production{" +
+				"id=" + id +
+				", name ='" + name + '\'' +
+				", releaseDate =" + releaseDate +
+				", state =" + state +
+				", associatedProducerEmail ='" + associatedProducerEmail + '\'' +
+				", cast =" + cast +
+				'}';
+	}
+
+	public void setAssociatedProducerUsername(String associatedProducerUsername) {
+		this.associatedProducerEmail = associatedProducerUsername;
 	}
 }

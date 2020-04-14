@@ -6,11 +6,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Producer producer = new Producer("", "", "");
+        Producer producer = new Producer("Jan","blah@blah.dk");
 
         producer.createProduction("Badehotellet", new Date(System.currentTimeMillis()));
         producer.addCastMember("Bob Bobsen");
         producer.addCastMember("Inger Bobsen");
+        producer.addRole("Batman", new Cast(-1, "Bob", "Bobsen"));
+        producer.submitProduction();
 
     }
 }

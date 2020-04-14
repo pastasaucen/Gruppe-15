@@ -1,12 +1,13 @@
 package gruppe15.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductionCatalog {
 
 	private static ProductionCatalog instance;
 
-	private Production[] production;
+	private List<Production> productions = new ArrayList<>();
 
 	private ProductionCatalog() {
 
@@ -21,6 +22,9 @@ public class ProductionCatalog {
 	}
 
 	public void addProduction(Production newProduction) {
+		// TODO Will be changed when the persistence layer is created.
+		productions.add(newProduction);
+		System.out.println(productions);
 
 	}
 

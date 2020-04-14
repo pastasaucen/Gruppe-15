@@ -3,7 +3,7 @@ package gruppe15.domain;
 import java.sql.Date;
 import java.util.List;
 
-public class Producer extends User implements ProducerInterface {
+public class Producer extends User implements IProducer {
 
 	// The temporary production this producer creates before sending it to the ProductionCatalogue
 	private Production production;
@@ -12,8 +12,8 @@ public class Producer extends User implements ProducerInterface {
 
 	private ProductionCatalog productionCatalog;
 
-	public Producer(String name, String username, String email) {
-		super(name, username, email);
+	public Producer(String name, String email) {
+		super(name, email);
 	}
 
 	/**
@@ -67,11 +67,13 @@ public class Producer extends User implements ProducerInterface {
 	}
 
 	public void addRole(String roleName, Cast castMember) {
-
+		// TODO Is a part of the assign role use case. Will be implemented later
+		production.addRole(roleName, castMember);
 	}
 
 	public void submitProduction() {
-
+		production.setAssociatedProducerUsername(email);
+		ProductionCatalog.getInstance().addProduction(production);
 	}
 
 	public void createCastMember(String firstName, String lastName, boolean force) {

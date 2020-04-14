@@ -13,7 +13,11 @@ public class ProductionCatalog {
 	}
 
 	public ProductionCatalog getInstance() {
-		return null;
+		if (instance == null) {
+			instance = new ProductionCatalog();
+		}
+
+		return instance;
 	}
 
 	public void addProduction(Production newProduction) {

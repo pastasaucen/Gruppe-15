@@ -13,8 +13,8 @@ public class Producer extends User implements IProducer {
 
 	private ProductionCatalog productionCatalog;
 
-	public Producer(String name, String email) {
-		super(name, email);
+	public Producer(String name, String email, UserType userType) {
+		super(name, email, userType);
 		castCatalog = CastCatalog.getInstance();
 	}
 

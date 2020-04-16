@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class Producer extends User implements IProducer {
 
+	private UserType userType = UserType.PRODUCER;
+
 	// The temporary production this producer creates before sending it to the ProductionCatalogue
 	private Production production;
 
@@ -128,6 +130,23 @@ public class Producer extends User implements IProducer {
 		System.out.println("The cast member:" + firstName + " " + lastName + " : " + email +
 				" \n Has been created");
 	}
+
+	/**
+	 * Searches for productions through productionCatalog by name or ID.
+	 * If no productions is found, the producer is offered to create the production with the name of the input.
+	 * @param nameOrID
+	 */
+	private void getProductions(String nameOrID) {
+		if (productionCatalog.getProduction(nameOrID)) {
+
+		}
+		else {
+			// Produceren får muligheden for at oprette productionen. -> Sendes til "opret produktion".
+
+		}
+	}
+
+
 
 }
 

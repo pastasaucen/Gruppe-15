@@ -2,6 +2,7 @@ package domain;
 
 import java.util.List;
 
+	ProductionCatalog productionCatalog;
 public class TV2Who implements ITv2Who {
 
 	private static TV2Who instance = null;
@@ -23,8 +24,17 @@ public class TV2Who implements ITv2Who {
 
 	public void findProduction(String nameOrId) {
 
+	public TV2Who() {
+		this.productionCatalog = ProductionCatalog.getInstance();
 	}
 
+	/**
+	 * Searches for productions through productionCatalog by name or ID.
+	 * @param nameOrId
+	 */
+	public void getProduction(String nameOrId) {
+		productionCatalog.getProduction(nameOrId);
+	}
 	/**
 	 * Prepares a list of cast members for use in the presentation layer
 	 * @param firstName

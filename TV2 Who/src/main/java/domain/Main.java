@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Test "opret produktion"
-        Producer producer = new Producer("Jan","blah@blah.dk");
+        Producer producer = new Producer("Jan","blah@blah.dk", UserType.PRODUCER);
 
         producer.createProduction("Badehotellet", new Date(System.currentTimeMillis()));
         producer.addCastMember("Bob Bobsen");

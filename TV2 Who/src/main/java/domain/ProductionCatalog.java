@@ -57,4 +57,8 @@ public class ProductionCatalog {
 		}
 	}
 
+	public List<Production> searchForProduction(String nameOrId){
+		return null;
+	}
+
 }

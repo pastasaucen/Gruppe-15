@@ -25,15 +25,15 @@ public class UserCatalog {
 
         switch(userType){
             case SYSTEMADMINISTRATOR:
-                persistenceUser.createUser(new SystemAdministrator(name, email,userType), password);
+                persistenceUser.createUser(new SystemAdministrator(name, email), password);
                 break;
             case PRODUCER:
-                persistenceUser.createUser(new Producer(name, email, userType), password);
+                persistenceUser.createUser(new Producer(name, email), password);
                 break;
             case RDUSER:
-                persistenceUser.createUser(new RDUser(name, email, userType), password);
+                persistenceUser.createUser(new RDUser(name, email), password);
             case EDITOR:
-                persistenceUser.createUser(new Editor(name, email, userType), password);
+                persistenceUser.createUser(new Editor(name, email), password);
         }
         password = null; // Deleting password for security
 

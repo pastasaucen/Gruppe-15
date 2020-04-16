@@ -6,8 +6,10 @@ public class SystemAdministrator extends User implements IProducer, ISystemAdmin
 	IPersistenceUser persistenceUser;
 	UserCatalog userCatalog;
 
-	public SystemAdministrator(String name, String email, UserType userType) {
-		super(name, email, userType);
+	private UserType userType = UserType.SYSTEMADMINISTRATOR;
+
+	public SystemAdministrator(String name, String email) {
+		super(name, email);
 		userCatalog = UserCatalog.getInstance();
 	}
 

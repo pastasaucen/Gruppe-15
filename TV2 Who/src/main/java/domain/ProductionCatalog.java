@@ -37,10 +37,9 @@ public class ProductionCatalog {
 	public boolean getProduction(String nameOrId) {
 		// TODO Will be changed when the presentation layer is created.
 
-		productions = persistenceProduction.getProductions(nameOrId);
 
-		// TESTER
-		//productions.add(new Production(0,"ProductionName",new Date(2)));
+		 productions = persistenceProduction.getProductions(nameOrId);
+
 
 		if(productions == null) {
 			// Skriv at produktionen ikke eksistere, når gui virker
@@ -55,11 +54,7 @@ public class ProductionCatalog {
 			return true;
 		}
 	}
-/*  TESTER
-	public static void main(String[] args) {
-		ProductionCatalog productionCatalog = ProductionCatalog.getInstance();
-		productionCatalog.getProduction("lalal");
-	}
 
- */
+
+
 }

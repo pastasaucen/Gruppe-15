@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class Producer extends User implements IProducer {
 
+	private UserType userType = UserType.PRODUCER;
+
 	// The temporary production this producer creates before sending it to the ProductionCatalogue
 	private Production production;
 
@@ -13,8 +15,8 @@ public class Producer extends User implements IProducer {
 
 	private ProductionCatalog productionCatalog;
 
-	public Producer(String name, String email, UserType userType) {
-		super(name, email, userType);
+	public Producer(String name, String email) {
+		super(name, email);
 		castCatalog = CastCatalog.getInstance();
 	}
 

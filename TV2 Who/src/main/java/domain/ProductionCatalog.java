@@ -1,11 +1,14 @@
 package domain;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ProductionCatalog {
 
 	private static ProductionCatalog instance;
+	private static IPersistenceProduction persistenceProduction;
 
 	private List<Production> productions = new ArrayList<>();
 
@@ -17,7 +20,6 @@ public class ProductionCatalog {
 		if (instance == null) {
 			instance = new ProductionCatalog();
 		}
-
 		return instance;
 	}
 
@@ -25,11 +27,39 @@ public class ProductionCatalog {
 		// TODO Will be changed when the persistence layer is created.
 		productions.add(newProduction);
 		System.out.println(productions);
-
 	}
 
-	public List<Production> searchForProduction(String nameOrId) {
-		return null;
+	/**
+	 * Saves temporarily found productions and sets text in the search field.
+	 * @param //Searches for the input. Can either be id or name
+	 * @return
+	 */
+	public boolean getProduction(String nameOrId) {
+		// TODO Will be changed when the presentation layer is created.
+
+		productions = persistenceProduction.getProductions(nameOrId);
+
+		// TESTER
+		//productions.add(new Production(0,"ProductionName",new Date(2)));
+
+		if(productions == null) {
+			// Skriv at produktionen ikke eksistere, når gui virker
+			return false;
+		}
+
+		else {
+			//Print alle produktioner
+			for(Production p : productions) {
+				System.out.println(p.toString());
+			}
+			return true;
+		}
+	}
+/*  TESTER
+	public static void main(String[] args) {
+		ProductionCatalog productionCatalog = ProductionCatalog.getInstance();
+		productionCatalog.getProduction("lalal");
 	}
 
+ */
 }

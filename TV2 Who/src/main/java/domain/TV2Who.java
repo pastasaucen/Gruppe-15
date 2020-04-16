@@ -31,8 +31,10 @@ public class TV2Who implements ITv2Who {
      *
      * @param nameOrId
      */
-    public void getProduction(String nameOrId) {
-        productionCatalog.getProduction(nameOrId);
+
+    @Override
+    public List<Production> prepareProductionSearchList(String nameOrId) {
+        return productionCatalog.getProduction(nameOrId);
     }
 
     /**
@@ -46,17 +48,5 @@ public class TV2Who implements ITv2Who {
     public List<Cast> prepareCastSearchList(String firstName, String lastName) {
         return CastCatalog.getInstance().searchForCast(firstName, lastName);
     }
-
-    /**
-     * Prepares a list of cast members for use in the presentation layer
-     *
-     * @param nameOrId
-     * @return
-     */
-    @Override
-    public List<Production> prepareProductionSearchList(String nameOrId) {
-        return ProductionCatalog.getInstance().searchForProduction(nameOrId);
-    }
-
 
 }

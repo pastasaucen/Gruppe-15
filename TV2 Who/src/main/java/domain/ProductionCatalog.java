@@ -36,7 +36,7 @@ public class ProductionCatalog {
 	 * @param //Searches for the input. Can either be id or name
 	 * @return
 	 */
-	public boolean getProduction(String nameOrId) {
+	public List<Production> getProduction(String nameOrId) {
 		// TODO Will be changed when the presentation layer is created.
 
 
@@ -45,7 +45,7 @@ public class ProductionCatalog {
 
 		if(productions == null) {
 			// Skriv at produktionen ikke eksistere, når gui virker
-			return false;
+			return null;
 		}
 
 		else {
@@ -53,7 +53,7 @@ public class ProductionCatalog {
 			for(Production p : productions) {
 				System.out.println(p.toString());
 			}
-			return true;
+			return productions;
 		}
 	}
 

@@ -2,12 +2,14 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
 
 public class ProductionCatalog {
 
 	private static ProductionCatalog instance;
 
 	private List<Production> productions = new ArrayList<>();
+
 
 	private ProductionCatalog() {
 
@@ -31,5 +33,6 @@ public class ProductionCatalog {
 	public List<Production> searchForProduction(String nameOrId) {
 		return null;
 	}
+
 
 }

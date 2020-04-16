@@ -12,10 +12,10 @@ public class CastCatalog {
 	private CastCatalog() {
 		// Some cast members to try on
 		/*
-		cast.add(new Cast(-1, "Bob", "Bobsen"));
-		cast.add(new Cast(-1, "Karen", "Bobsen"));
-		cast.add(new Cast(-1, "Bob", "Sørensen"));
-		 */
+			cast.add(new Cast(-1, "Bob", "Bobsen","bobsen@mail.com"));
+			cast.add(new Cast(-1, "Karen", "Bobsen","bobsen@mail.com"));
+			cast.add(new Cast(-1, "Bob", "Sørensen","bobsen@mail.com"));
+		*/
 	}
 
 	int numberOfCastMembers = 0; // makes sure that no one has the same id.

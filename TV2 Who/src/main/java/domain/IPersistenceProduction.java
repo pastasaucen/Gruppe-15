@@ -12,7 +12,7 @@ public interface IPersistenceProduction {
     List<Production> getProductions(String searchString);
 
     /**
-     * Saves the given list of productions in the database.
+     * Saves the production in the persistence layer.
      * @param production
      */
     void saveProduction(Production production);

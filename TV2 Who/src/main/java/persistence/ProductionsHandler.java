@@ -107,7 +107,7 @@ public class ProductionsHandler implements IPersistenceProduction {
 
                         // Converts every string id value to an integer value.
                         for (int i = 0; i < roleIdsAsStrings.length; i++) {
-                            roleIds[i] = Integer.parseInt(roleIdsAsStrings[i]);   // Converts to the id string to an int
+                            roleIds[i] = Integer.parseInt(roleIdsAsStrings[i].replaceAll("[^\\p{Print}]", ""));  // Converts to the id string to an int
                         }
 
                         // Adds all the roles to this cast member from the given ids.

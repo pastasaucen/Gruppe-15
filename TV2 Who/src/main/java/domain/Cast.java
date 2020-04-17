@@ -61,11 +61,7 @@ public class Cast {
 
 	@Override
 	public String toString() {
-		return "Cast{" +
-				"id=" + id +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", roles=" + roles +
-				'}';
+		return "name=" + firstName + ' ' + lastName + '\n' +
+				"\troles=" + roles;
 	}
 }

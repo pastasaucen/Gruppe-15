@@ -66,6 +66,9 @@ public class ProductionsHandler implements IPersistenceProduction {
                     productions.add(newProduction);
                 }
             }
+
+            productionScanner.close();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -84,11 +87,12 @@ public class ProductionsHandler implements IPersistenceProduction {
 
         try {
             Scanner castScanner = new Scanner(castMembersFile);
-            castScanner.useDelimiter(";");
 
             // Iterates through every line in the cast member file
             while (castScanner.hasNextLine()) {
-                int curCastMemberId = castScanner.nextInt();    // The id of the cast member on the current line
+                String line = castScanner.nextLine();
+                String[] elements = line.split(";");
+                int curCastMemberId = Integer.parseInt(elements[0]);    // The id of the cast member on the current line
 
                 // Checks the id to find out if its one of the given ids in the method signature.
                 for (int idNum = 0; idNum < ids.length; idNum++) {
@@ -96,18 +100,18 @@ public class ProductionsHandler implements IPersistenceProduction {
                     if (curCastMemberId == ids[idNum]) {
                         Cast newCastMember = new Cast(  // Creates the cast member:
                                 curCastMemberId,        // id
-                                castScanner.next(),     // first name
-                                castScanner.next(),     // last name
-                                castScanner.next());    // email
+                                elements[1],     // first name
+                                elements[2],     // last name
+                                elements[3]);    // email
 
                         // Finds the cast member's roles
-                        String[] roleIdsAsStrings = castScanner.next().split(",");   // Gets the role ids
+                        String[] roleIdsAsStrings = elements[4].split(",");   // Gets the role ids
                         int[] roleIds = new int[roleIdsAsStrings.length];      // Creates an int array where the
                                                                                // converted values are stored.
 
                         // Converts every string id value to an integer value.
                         for (int i = 0; i < roleIdsAsStrings.length; i++) {
-                            roleIds[i] = Integer.parseInt(roleIdsAsStrings[i]);   // Converts to the id string to an int
+                            roleIds[i] = Integer.parseInt(roleIdsAsStrings[i].replaceAll("[^\\p{Print}]", ""));   // Converts to the id string to an int
                         }
 
                         // Adds all the roles to this cast member from the given ids.
@@ -118,6 +122,9 @@ public class ProductionsHandler implements IPersistenceProduction {
                     }
                 }
             }
+
+            castScanner.close();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -171,6 +178,9 @@ public class ProductionsHandler implements IPersistenceProduction {
                     }
                 }
             }
+
+            rolesScanner.close();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -186,18 +196,27 @@ public class ProductionsHandler implements IPersistenceProduction {
                 String[] elements = scanner.nextLine().split(";");
                 productionIds.add(Integer.parseInt(elements[0]));
             }
-            int highestId = Collections.max(productionIds);
+            scanner.close();
+
+            int highestId = 0;
+            if (productionIds.size() > 0) {
+                highestId = Collections.max(productionIds);
+            }
+
+            int newId = highestId + 1;
+            production.setId(newId);
 
             String castMemberIds = "";
             for (int i = 0; i < production.getCast().size(); i++) {
                 if (i == 0) {
-                    castMemberIds += String.valueOf(saveCastMember(production.getCast().get(i), production.getId()));
+                    castMemberIds += String.valueOf(saveCastMember(production.getCast().get(i), newId));
+                } else {
+                    castMemberIds += "," + saveCastMember(production.getCast().get(i), newId);
                 }
-                castMemberIds += "," + saveCastMember(production.getCast().get(i), production.getId());
             }
 
             PrintWriter printWriter = new PrintWriter(new FileOutputStream(productionsFile, true));
-            printWriter.println(highestId+1 + ";" +
+            printWriter.println(newId + ";" +
                     production.getName() + ";" +
                     production.getReleaseDate() + ";" +
                     production.getState() + ";" +
@@ -213,81 +232,118 @@ public class ProductionsHandler implements IPersistenceProduction {
     }
 
     private int saveCastMember(Cast castMember, int productionId){
-        List<Integer> roleIds = new ArrayList<>();
-        int highestId = 0;
-        List<Integer> newRoleIds = new ArrayList<>();
-        List<Integer> castMemberIds = new ArrayList<>();
+
+        /* Saving the roles for the cast member */
+        List<Integer> newRoleIds = new ArrayList<>();       // All the new role ids written to the document
 
         try {
+            List<Integer> roleIds = new ArrayList<>();      // All the role ids
+            int highestRoleId = 0;                          // The highest role id
+
             Scanner roleScanner = new Scanner(rolesFile);
+
+            // Goes through every line. The should not exist in the list because the production is entirely new.
             while (roleScanner.hasNextLine()){
                 String[] elements = roleScanner.nextLine().split(";");
-                roleIds.add(Integer.parseInt(elements[0]));
+                roleIds.add(Integer.parseInt(elements[0]));     // The current lines role id is saved
             }
-            highestId = Collections.max(roleIds);
+            roleScanner.close();
+
+            if (roleIds.size() > 0) {
+                highestRoleId = Collections.max(roleIds);   // Determines the highest id on the list
+            }
 
             PrintWriter rolePrintWriter = new PrintWriter(new FileOutputStream(rolesFile, true));
+            // For every role the cast member has. The person can have several roles in one production.
             for (int i = 0; i < castMember.getRoles().size(); i++) {
-                Role role = castMember.getRoles().get(i);
+                Role role = castMember.getRoles().get(i);   // The current role
+
+                // If the current role is from the same production as the production
                 if (role.getProduction().getId() == productionId){
-                    rolePrintWriter.println(
-                            highestId+1 + ";" + castMember.getRoles().get(i).getRoleName() + ";" + productionId);
-                    newRoleIds.add(highestId+1);
+                    // Add the role to the list
+                    rolePrintWriter.println(++highestRoleId + ";" + role.getRoleName() + ";" + productionId);
+                    newRoleIds.add(highestRoleId);    // Saves the new role id to add to the cast member
                 }
             }
+            rolePrintWriter.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-            String castMembersFileText = "";
-        int castMemberID = -1;
+
+        /* Saving the cast member */
+        List<Integer> castMemberIds = new ArrayList<>();    // All the cast members ids
+
+        String castMembersFileText = "";        // The text to overwrite the text file with
+        int castMemberID = -1;                  // The new cast members assigned id
+
         try {
             Scanner castMemberScanner = new Scanner(castMembersFile);
-            boolean foundCastMember = false;
-            while (castMemberScanner.hasNextLine()) {
-                String lineText = castMemberScanner.nextLine();
-                String[] elements = lineText.split(";");
-                castMemberID = Integer.parseInt(elements[0]);
-                castMemberIds.add(castMemberID);
 
+            boolean foundCastMember = false;    // Determines whether the cast member in the production already exists
+                                                //  from a separate production.
+
+            // Iterates through every line
+            while (castMemberScanner.hasNextLine()) {
+                String lineText = castMemberScanner.nextLine();       // The text on the current line
+                String[] elements = lineText.split(";");        // The line split into separate strings
+                castMemberID = Integer.parseInt(elements[0]);   // The current lines cast member id
+                castMemberIds.add(castMemberID);                // The id is added to the list of ids
+
+                // If the current lines cast id is the same as the cast member to save, then it exists in the file
                 if (castMemberID == castMember.getId()) {
-                    foundCastMember = true;
+                    foundCastMember = true;         // Remembers that we found the cast member
+
+                    // The new role ids to add to the existing cast member in the file.
                     String newRoleIdString = "";
                     for (int i = 0; i < newRoleIds.size(); i++) {
-                        newRoleIdString.concat("," + newRoleIds.get(i));
+                        newRoleIdString += ("," + newRoleIds.get(i));
                     }
+
+                    // Saves a string that needs to replace the cast member line.
                     String newLine = castMemberID + ";" +
                             castMember.getFirstName() + ";" +
                             castMember.getLastName() + ";" +
                             castMember.getEmail() + ";" +
-                            elements[4] + newRoleIdString;
-                    castMembersFileText.concat(newLine);
+                            elements[4] + newRoleIdString + "\n";
+                    castMembersFileText += newLine;
 
                 } else {
-                    castMembersFileText += lineText;
+                    // If the current line's cast member isn't the one to save, then just saves it as it is.
+                    castMembersFileText += lineText + "\n";
                 }
-
             }
+
+            castMemberScanner.close();
+
+            // If we didn't find the cast member in the already saved cast members, then add it
             if (!foundCastMember) {
+                // A string containing the role ids of the cast member to add
                 String newRoleIdString = "";
                 for (int i = 0; i < newRoleIds.size(); i++) {
                     if (i == 0) {
-                        newRoleIdString.concat(String.valueOf(newRoleIds.get(i)));
+                        newRoleIdString += (String.valueOf(newRoleIds.get(i)));
                     } else {
-                        newRoleIdString.concat("," + newRoleIds.get(i));
+                        newRoleIdString += ("," + newRoleIds.get(i));
                     }
                 }
-                int newId = Collections.max(castMemberIds)+1;
-                castMembersFileText.concat( newId + ";" +
+
+                // Adds the new cast member to the line
+                int newId = 1;
+                if (castMemberIds.size() > 0) {
+                    newId = Collections.max(castMemberIds)+1;
+                }
+                castMemberID = newId;
+
+                castMembersFileText += (newId + ";" +
                         castMember.getFirstName() + ";" +
                         castMember.getLastName() + ";" +
-                        castMember.getEmail() + ";" + newRoleIdString);
+                        castMember.getEmail() + ";" + newRoleIdString + "\n");
             }
+
             PrintWriter printToCastMembersFile = new PrintWriter(castMembersFile);
-            printToCastMembersFile.println(castMembersFileText);
+            printToCastMembersFile.print(castMembersFileText);
             printToCastMembersFile.close();
-
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

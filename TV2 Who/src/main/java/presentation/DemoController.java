@@ -5,6 +5,7 @@ import java.util.List;
 
 import domain.Cast;
 import domain.ITv2Who;
+import domain.Production;
 import domain.TV2Who;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,18 +61,22 @@ public class DemoController {
                     firstName = firstName + tokens[i];
                 }
                 List<Cast> castList = tv2.prepareCastSearchList(firstName,tokens[tokens.length-1]);
-                //Dummyvariabel til test!
-                Cast dummy = new Cast(69,"Dummy","Nielsen","sackboy@gmail.com");
-                Cast mrsDummy = new Cast(69,"Dummylina","Nielsen","sackboy@gmail.com");
-                castList.add(dummy);
-                castList.add(mrsDummy);
-                //
                 ObservableList<Cast> oCastList = FXCollections.observableList(castList);
                 System.out.println(castList);
                 resultView.setItems(oCastList);
             }else{
-                //TODO implementer efter aftale
-                System.out.println("Function not implemented");
+                List<Production> productionList = tv2.prepareProductionSearchList(searchField.getText());
+                //Note: Temporary solution. Will implement later.
+                //if(productionList.size() > 1) {
+                if(productionList.size() >= 1){
+                    ObservableList<Production> oProductionList = FXCollections.observableList(productionList);
+                    System.out.println(productionList);
+                    resultView.setItems(oProductionList);
+                }else if (productionList.size() == 1){
+                    //TODO implement this feature later: If precisely one result, go directly to production page
+                }else{
+                    System.out.println("No search results found");
+                }
             }
         }
     }

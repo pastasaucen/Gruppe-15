@@ -47,6 +47,10 @@ public class Production {
 		return name;
 	}
 
+	public int getId(){
+		return id;
+	}
+
 	@Override
 	public String toString() {
 		return "Production{" +

@@ -11,11 +11,11 @@ public class CastCatalog {
 
 	private CastCatalog() {
 		// Some cast members to try on
-		/*
+
 			cast.add(new Cast(-1, "Bob", "Bobsen","bobsen@mail.com"));
 			cast.add(new Cast(-1, "Karen", "Bobsen","bobsen@mail.com"));
 			cast.add(new Cast(-1, "Bob", "Sørensen","bobsen@mail.com"));
-		*/
+
 	}
 
 	int numberOfCastMembers = 0; // makes sure that no one has the same id.
@@ -43,8 +43,9 @@ public class CastCatalog {
 			Cast curCast = cast.get(castNum);
 
 			// Do the current cast member have the same first and last name as the search words?
-			if (curCast.getFirstName().equals(firstName) && curCast.getLastName().equals(lastName)) {
-				relevantCastMembers.add(curCast);		// Adds this member to the return list
+			if (curCast.getFirstName().contains(firstName) ||
+					curCast.getLastName().contains(lastName)) {
+				relevantCastMembers.add(curCast);        // Adds this member to the return list
 			}
 		}
 

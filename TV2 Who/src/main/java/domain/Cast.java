@@ -43,7 +43,11 @@ public class Cast {
 	public String getEmail() {
 		return email;
 	}
-	
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
 	public boolean equals(Cast cast) {
 		if (id == -1 || cast.id == -1){ // If any of them have -1 as ID, they haven't got an ID yet and therefore we check on name.
 			if (firstName.equals(cast.firstName) && lastName.equals(cast.lastName)) {

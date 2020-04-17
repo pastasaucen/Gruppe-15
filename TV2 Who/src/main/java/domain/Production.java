@@ -65,6 +65,10 @@ public class Production {
 		return id;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Date getReleaseDate() {
 		return releaseDate;
 	}
@@ -83,14 +87,19 @@ public class Production {
 
 	@Override
 	public String toString() {
-		return "Production{" +
-				"id=" + id +
-				", name ='" + name + '\'' +
-				", releaseDate =" + releaseDate +
-				", state =" + state +
-				", associatedProducerEmail ='" + associatedProducerEmail + '\'' +
-				", cast =" + cast +
-				'}';
+		String castString = "";
+
+		for (int i = 0; i < cast.size(); i++) {
+			castString += '\t' + (cast.get(i).toString() + '\n');
+		}
+
+		return "Production:\n" +
+				"id=" + id + '\n' +
+				"name ='" + name + '\'' + '\n' +
+				"releaseDate =" + releaseDate + '\n' +
+				"state =" + state + '\n' +
+				"associatedProducerEmail ='" + associatedProducerEmail + '\'' + '\n' +
+				"cast =" + "\n" + castString;
 	}
 
 	public void setAssociatedProducerEmail(String associatedProducerEmail) {

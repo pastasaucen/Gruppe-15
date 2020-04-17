@@ -18,18 +18,16 @@ public class Main {
         producer.addRole("Batman", new Cast(-1, "Bob", "Bobsen", "bob@bobsen.dk"));
 
         producer.submitProduction();
-
          */
 
 
-        Production production = new Production("Olsen Banden", new Date(System.currentTimeMillis()));
-        Cast castMember1 = new Cast(2,"Inger", "Bobsen", "ing@bob.dk");
-        production.addCastMember(castMember1);
-        production.addRole("WonderWoman", castMember1);
-        production.addRole("Peter Plys", castMember1);
+        Production production = new Production("Fast and Furious 7", new Date(System.currentTimeMillis()));
+        Cast castMember2 = new Cast(3,"Lone", "Borgersen", "lobo@mmmi.sdu.dk");
+        production.addCastMember(castMember2);
+        production.addRole("Bil 2", castMember2);
+        production.setAssociatedProducerEmail("hej@farvel.dk");
         ProductionsHandler productionsHandler = new ProductionsHandler();
         //productionsHandler.saveProduction(production);
-        //System.out.println(productionsHandler.getProductions("Bade"));
-
+        //System.out.println(productionsHandler.getProductions("a"));
     }
 }

@@ -11,6 +11,14 @@ public class Role {
 		this.production = production;
 	}
 
+	public Production getProduction() {
+		return production;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
 	@Override
 	public String toString() {
 		return "Role{" +

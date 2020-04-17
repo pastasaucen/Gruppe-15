@@ -21,9 +21,15 @@ public class Main {
 
          */
 
-        Production production = new Production(1, "Batman", new Date(System.currentTimeMillis()));
+
+        Production production = new Production("Olsen Banden", new Date(System.currentTimeMillis()));
+        Cast castMember1 = new Cast(2,"Inger", "Bobsen", "ing@bob.dk");
+        production.addCastMember(castMember1);
+        production.addRole("WonderWoman", castMember1);
+        production.addRole("Peter Plys", castMember1);
         ProductionsHandler productionsHandler = new ProductionsHandler();
-        System.out.println(productionsHandler.getProductions("2"));
+        productionsHandler.saveProduction(production);
+        //System.out.println(productionsHandler.getProductions("Bade"));
 
     }
 }

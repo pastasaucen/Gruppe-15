@@ -3,11 +3,11 @@ package persistence;
 import domain.*;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.io.File;
-import java.util.Scanner;
 
 public class ProductionsHandler implements IPersistenceProduction {
 
@@ -45,11 +45,11 @@ public class ProductionsHandler implements IPersistenceProduction {
                             elements[4]);                   // associated producer email
 
                     // Finds the cast members in this production
-                    String[] idAsStrings = elements[5].split(",");    // Gets the ids as strings
-                    int[] castMemberIds = new int[idAsStrings.length];      // Makes it as long as the string array
+                    String[] castMemberIdsAsString = elements[5].split(",");    // Gets the ids as strings
+                    int[] castMemberIds = new int[castMemberIdsAsString.length];      // Makes it as long as the string array
 
-                    for (int i = 0; i < idAsStrings.length; i++) {
-                        castMemberIds[i] = Integer.parseInt(idAsStrings[i]);    // Converts to the id string to an int
+                    for (int i = 0; i < castMemberIdsAsString.length; i++) {
+                        castMemberIds[i] = Integer.parseInt(castMemberIdsAsString[i]);    // Converts to the id string to an int
                     }
 
                     // Adds the loaded production to the loaded production list
@@ -177,7 +177,121 @@ public class ProductionsHandler implements IPersistenceProduction {
     }
 
     @Override
-    public void saveProduction(Production production) {
+    public void saveProduction(Production production) { // This saves a new production
+        List<Integer> productionIds = new ArrayList<>();
 
+        try {
+            Scanner scanner = new Scanner(productionsFile);
+            while (scanner.hasNextLine()){
+                String[] elements = scanner.nextLine().split(";");
+                productionIds.add(Integer.parseInt(elements[0]));
+            }
+            int highestId = Collections.max(productionIds);
+
+            String castMemberIds = "";
+            for (int i = 0; i < production.getCast().size(); i++) {
+                if (i == 0) {
+                    castMemberIds += String.valueOf(saveCastMember(production.getCast().get(i), production.getId()));
+                }
+                castMemberIds += "," + saveCastMember(production.getCast().get(i), production.getId());
+            }
+
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream(productionsFile, true));
+            printWriter.println(highestId+1 + ";" +
+                    production.getName() + ";" +
+                    production.getReleaseDate() + ";" +
+                    production.getState() + ";" +
+                    production.getAssociatedProducerEmail() + ";" + castMemberIds
+                    );
+            printWriter.close();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private int saveCastMember(Cast castMember, int productionId){
+        List<Integer> roleIds = new ArrayList<>();
+        int highestId = 0;
+        List<Integer> newRoleIds = new ArrayList<>();
+        List<Integer> castMemberIds = new ArrayList<>();
+
+        try {
+            Scanner roleScanner = new Scanner(rolesFile);
+            while (roleScanner.hasNextLine()){
+                String[] elements = roleScanner.nextLine().split(";");
+                roleIds.add(Integer.parseInt(elements[0]));
+            }
+            highestId = Collections.max(roleIds);
+
+            PrintWriter rolePrintWriter = new PrintWriter(new FileOutputStream(rolesFile, true));
+            for (int i = 0; i < castMember.getRoles().size(); i++) {
+                Role role = castMember.getRoles().get(i);
+                if (role.getProduction().getId() == productionId){
+                    rolePrintWriter.println(
+                            highestId+1 + ";" + castMember.getRoles().get(i).getRoleName() + ";" + productionId);
+                    newRoleIds.add(highestId+1);
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+            String castMembersFileText = "";
+        int castMemberID = -1;
+        try {
+            Scanner castMemberScanner = new Scanner(castMembersFile);
+            boolean foundCastMember = false;
+            while (castMemberScanner.hasNextLine()) {
+                String lineText = castMemberScanner.nextLine();
+                String[] elements = lineText.split(";");
+                castMemberID = Integer.parseInt(elements[0]);
+                castMemberIds.add(castMemberID);
+
+                if (castMemberID == castMember.getId()) {
+                    foundCastMember = true;
+                    String newRoleIdString = "";
+                    for (int i = 0; i < newRoleIds.size(); i++) {
+                        newRoleIdString.concat("," + newRoleIds.get(i));
+                    }
+                    String newLine = castMemberID + ";" +
+                            castMember.getFirstName() + ";" +
+                            castMember.getLastName() + ";" +
+                            castMember.getEmail() + ";" +
+                            elements[4] + newRoleIdString;
+                    castMembersFileText.concat(newLine);
+
+                } else {
+                    castMembersFileText += lineText;
+                }
+
+            }
+            if (!foundCastMember) {
+                String newRoleIdString = "";
+                for (int i = 0; i < newRoleIds.size(); i++) {
+                    if (i == 0) {
+                        newRoleIdString.concat(String.valueOf(newRoleIds.get(i)));
+                    } else {
+                        newRoleIdString.concat("," + newRoleIds.get(i));
+                    }
+                }
+                int newId = Collections.max(castMemberIds)+1;
+                castMembersFileText.concat( newId + ";" +
+                        castMember.getFirstName() + ";" +
+                        castMember.getLastName() + ";" +
+                        castMember.getEmail() + ";" + newRoleIdString);
+            }
+            PrintWriter printToCastMembersFile = new PrintWriter(castMembersFile);
+            printToCastMembersFile.println(castMembersFileText);
+            printToCastMembersFile.close();
+
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return castMemberID;
     }
 }

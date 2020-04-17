@@ -30,6 +30,11 @@ public class Production {
 		this.releaseDate = releaseDate;
 	}
 
+	public Production(String name, Date releaseDate) {
+		this.name = name;
+		this.releaseDate = releaseDate;
+	}
+
 	public Production(int id, String name, Date releaseDate, State state, String associatedProducerEmail) {
 		this.id = id;
 		this.name = name;
@@ -51,12 +56,29 @@ public class Production {
 		}
 	}
 
+
 	public String getName() {
 		return name;
 	}
 
 	public int getId() {
 		return id;
+	}
+
+	public Date getReleaseDate() {
+		return releaseDate;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public String getAssociatedProducerEmail() {
+		return associatedProducerEmail;
+	}
+
+	public List<Cast> getCast() {
+		return cast;
 	}
 
 	@Override

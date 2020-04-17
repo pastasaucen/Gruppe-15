@@ -1,5 +1,7 @@
 package domain;
 
+import persistence.ProductionsHandler;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.sql.Date;
 public class ProductionCatalog {
 
     private static ProductionCatalog instance;
-    private static IPersistenceProduction persistenceProduction;
+    private static IPersistenceProduction persistenceProduction = new ProductionsHandler();
 
     private List<Production> productions = new ArrayList<>();
 
@@ -41,8 +43,8 @@ public class ProductionCatalog {
     public List<Production> getProduction(String nameOrId) {
         // TODO Will be changed when the presentation layer is created.
 
-
         productions = persistenceProduction.getProductions(nameOrId);
+        //productions.add(new Production(1, "Badehotellet", new Date, ))
 
 
         if (productions == null) {
@@ -63,14 +65,15 @@ public class ProductionCatalog {
      * @return
      */
     public List<Production> searchForProduction(String nameOrId) {
-        List<Production> relevantProductions = new ArrayList<>();
+       getProduction(nameOrId);
+        /* List<Production> relevantProductions = new ArrayList<>();
         for (Production production: productions) {
             if(nameOrId.matches("[0-9]+")){
                 productions.add(production);
             }else if (production.getName().contains(nameOrId)){
                 productions.add(production);
             }
-        }
+        }*/
         return productions;
     }
 

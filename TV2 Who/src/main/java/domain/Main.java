@@ -28,7 +28,7 @@ public class Main {
         production.addRole("WonderWoman", castMember1);
         production.addRole("Peter Plys", castMember1);
         ProductionsHandler productionsHandler = new ProductionsHandler();
-        productionsHandler.saveProduction(production);
+        //productionsHandler.saveProduction(production);
         //System.out.println(productionsHandler.getProductions("Bade"));
 
     }

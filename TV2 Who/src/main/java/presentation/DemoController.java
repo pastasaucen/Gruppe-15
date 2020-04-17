@@ -52,17 +52,20 @@ public class DemoController {
         if(!searchField.getText().equals("")){
             if(searchCategory == 1){
                 String[] tokens = searchField.getText().split(" ");
-                System.out.println(tokens[0]);
                 String firstName = "";
-                for(int i = 0; i < tokens.length-2;i++){
-                    if(i>0){
-                        firstName = firstName + tokens[i] + " ";
+                if(tokens.length > 1) {
+                    for (int i = 0; i < tokens.length - 2; i++) {
+                        if (i > 0) {
+                            firstName = firstName + tokens[i] + " ";
+                        }
+                        firstName = firstName + tokens[i];
                     }
-                    firstName = firstName + tokens[i];
+                }else {
+                    firstName = tokens[0];
                 }
+
                 List<Cast> castList = tv2.prepareCastSearchList(firstName,tokens[tokens.length-1]);
                 ObservableList<Cast> oCastList = FXCollections.observableList(castList);
-                System.out.println(castList);
                 resultView.setItems(oCastList);
             }else{
                 List<Production> productionList = tv2.prepareProductionSearchList(searchField.getText());

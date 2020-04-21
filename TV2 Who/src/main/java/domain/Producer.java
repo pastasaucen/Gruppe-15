@@ -6,18 +6,18 @@ import java.util.Scanner;
 
 public class Producer extends User implements IProducer {
 
-	private UserType userType = UserType.PRODUCER;
-
 	// The temporary production this producer creates before sending it to the ProductionCatalogue
 	private Production production;
 
-	private CastCatalog castCatalog; //so we dont need to create a CastCatalog more than once, value in contructor.
+	private CastCatalog castCatalog; // Stores the instance reference that is retrieved in the constructor.
 
-	private ProductionCatalog productionCatalog;
+	// This is not used, but can be used later to only get productions this producer has made
+	private ProductionCatalog productionCatalog; // Stores the instance reference that is retrieved in the constructor.
 
 	public Producer(String name, String email) {
-		super(name, email);
+		super(name, email, UserType.PRODUCER);
 		castCatalog = CastCatalog.getInstance();
+		productionCatalog = ProductionCatalog.getInstance();
 	}
 
 	/**
@@ -30,10 +30,9 @@ public class Producer extends User implements IProducer {
 		production = new Production(-1, name, date);
 	}
 
-
 	public void addCastMember(String name) {
 		// We assume that the user will search in one string. I.e. want to separate this string into to names.
-		// What about names like "Marie Louise Pedersen"? Or "Robert De Niro"?
+		// TODO: What about names like "Marie Louise Pedersen"? Or "Robert De Niro"?
 
 		String[] names = name.split(" ");		// Divides the given name into separate names as an array
 		String firstName = "";
@@ -56,7 +55,7 @@ public class Producer extends User implements IProducer {
 
 		if (relevantCastMembers.size() > 1) {
 			// TODO We have not decided what to do here!!!
-			System.out.println("There are more than one cast member with that name! We haven't decided what to do here!");
+			//  There are more cast members than one.
 			return;
 		} else if (relevantCastMembers.size() == 0) {
 			// If no one was found with the given name
@@ -72,7 +71,6 @@ public class Producer extends User implements IProducer {
 	}
 
 	public void addRole(String roleName, Cast castMember) {
-		// TODO Is a part of the assign role use case. Will be implemented later
 		production.addRole(roleName, castMember);
 	}
 
@@ -84,7 +82,7 @@ public class Producer extends User implements IProducer {
 
 
 	/**
-	 * creates cast if not exist. if exist asks if still wants to create.
+	 * Creates cast if not exist. if exist asks if still wants to create.
 	 * @param firstName
 	 * @param lastName
 	 * @param email
@@ -93,55 +91,41 @@ public class Producer extends User implements IProducer {
 		// TODO does it need to search for the cast members email?
 		List<Cast> castList = castCatalog.searchForCast(firstName, lastName);
 
-
-		if ( castList == null){
-			createCastAndConfirms(firstName, lastName, email);
-		} else{
+		// Checks whether the retrieved cast list is null (empty). If so then no duplicates were found.
+		if (castList == null) {
+			createCastAndConfirms(firstName, lastName, email);	// Creates the new cast member
+		} else {
 			System.out.println("The cast you want to create might already exist");
 
-			for(Cast cast : castList){
-				System.out.println( cast.getFirstName() + " " + cast.getLastName() + " \n email: " + cast.getEmail());
-				/*+ "\n roles:" + cast.getRoles().toString());
-				 roles bliver ikke printet lige nu da vi ikke har arbjdet med Role klassen endnu */
+			// TODO The functionality with multiple cast members is not addressed using the presentation layer.
+			//  This needs further development where the decision making from the actors point of view is not implemented.
+			for (Cast cast : castList) {
+				System.out.println( cast.getFirstName() + " " + cast.getLastName() + " \n email: " + cast.getEmail()
+				+ "\n roles:" + cast.getRoles().toString());
 			}
 
 			System.out.println("Do you still want to create a new cast, type 'yes' or 'no' : ");
 
 			Scanner scanner = new Scanner(System.in);
-			if(scanner.next().equalsIgnoreCase("yes")){
+			if (scanner.next().equalsIgnoreCase("yes")) {
 				createCastAndConfirms(firstName, lastName, email);
 			} else {
 				System.out.println("You have chosen not to create the cast");
-
 			}
-
 		}
 
 	}
 
 	/**
-	 * creates cast.
+	 * Creates cast member after the user has confirmed the creation of a duplicate.
 	 * @param firstName
 	 * @param lastName
 	 * @param email
 	 */
 	private void createCastAndConfirms(String firstName, String lastName, String email){
 		castCatalog.createCastMember(firstName, lastName, email);
-		System.out.println("The cast member:" + firstName + " " + lastName + " : " + email +
-				" \n Has been created");
+		System.out.println("The cast member:\"" + firstName + " " + lastName + " : " + email + "\" has been created");
 	}
-
-	/**
-	 * Searches for productions through productionCatalog by name or ID.
-	 * If no productions is found, the producer is offered to create the production with the name of the input.
-	 * @param nameOrID
-	 */
-	private List<Production> getProductions(String nameOrID) {
-		return productionCatalog.getProduction(nameOrID);
-		//TODO Produceren får muligheden for at oprette productionen. -> Sendes til "opret produktion", hvis
-	}
-
-
 
 }
 

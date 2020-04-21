@@ -48,14 +48,15 @@ public class Production {
 }
 
 	public void addRole(String roleName, Cast castMember) {
+		// Iterates through every cast member in this production
 		for (int castNum = 0; castNum < cast.size(); castNum++) {
+			// If the cast member is the same as the given cast member, then add the role to that one.
 			if (castMember.equals(cast.get(castNum))) {
 				cast.get(castNum).addRole(roleName, this);
 				return;
 			}
 		}
 	}
-
 
 	public String getName() {
 		return name;

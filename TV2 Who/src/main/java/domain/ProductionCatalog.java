@@ -1,24 +1,21 @@
 package domain;
 
-import persistence.ProductionsHandler;
+import persistence.fileHandlers.ProductionsFileHandler;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.sql.Date;
 
 public class ProductionCatalog {
 
     private static ProductionCatalog instance;
-    private static IPersistenceProduction persistenceProduction = new ProductionsHandler();
+    private IPersistenceProduction persistenceProduction = new ProductionsFileHandler();
 
-    private List<Production> productions = new ArrayList<>();
+    //  Gets overridden every time to search in the persistence layer
+    private List<Production> productions;
 
 
     private ProductionCatalog() {
-        //Testværdier
-        productions.add(new Production(69,"Gudfaderen",new Date(System.currentTimeMillis())));
+        productions = new ArrayList<>();
     }
 
     public static ProductionCatalog getInstance() {
@@ -28,53 +25,31 @@ public class ProductionCatalog {
         return instance;
     }
 
+    /**
+     * Adds a production to the catalogue
+     * @param newProduction
+     */
     public void addProduction(Production newProduction) {
-        // TODO Will be changed when the persistence layer is created.
-        productions.add(newProduction);
-        System.out.println(productions);
+        // Saves the production using the persistence layer
+        persistenceProduction.saveProduction(newProduction);
     }
 
     /**
      * Saves temporarily found productions and sets text in the search field.
      *
-     * @param //Searches for the input. Can either be id or name
+     * @param searchString Searches for the input. Can either be id or name
      * @return
      */
-    public List<Production> getProduction(String nameOrId) {
-        // TODO Will be changed when the presentation layer is created.
+    public List<Production> getProduction(String searchString) {
+        // Searches for the productions in the persistence layer
+        productions = persistenceProduction.getProductions(searchString);
 
-        productions = persistenceProduction.getProductions(nameOrId);
-        //productions.add(new Production(1, "Badehotellet", new Date, ))
-
-
+        // Checks whether no result were found
         if (productions == null) {
-            // Skriv at produktionen ikke eksistere, når gui virker
+            // TODO Send a message to the presentation layer that no results were found
             return null;
         } else {
-            //Print alle produktioner
-            for (Production p : productions) {
-                System.out.println(p.toString());
-            }
-            return productions;
+            return productions;     // Returns the found productions
         }
     }
-
-    /**
-     * Fetches a list of Productions who's ID or Name matches a production in the persistence layer
-     * @param nameOrId
-     * @return
-     */
-    public List<Production> searchForProduction(String nameOrId) {
-       getProduction(nameOrId);
-        /* List<Production> relevantProductions = new ArrayList<>();
-        for (Production production: productions) {
-            if(nameOrId.matches("[0-9]+")){
-                productions.add(production);
-            }else if (production.getName().contains(nameOrId)){
-                productions.add(production);
-            }
-        }*/
-        return productions;
-    }
-
 }

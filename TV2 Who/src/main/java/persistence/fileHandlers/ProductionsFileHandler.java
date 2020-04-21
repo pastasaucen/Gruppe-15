@@ -1,4 +1,4 @@
-package persistence;
+package persistence.fileHandlers;
 
 import domain.*;
 
@@ -9,7 +9,7 @@ import java.sql.Date;
 import java.util.*;
 import java.io.File;
 
-public class ProductionsHandler implements IPersistenceProduction {
+public class ProductionsFileHandler implements IPersistenceProduction {
 
     File productionsFile = new File("data\\productions.csv");
     File castMembersFile = new File("data\\castMembers.csv");
@@ -18,6 +18,12 @@ public class ProductionsHandler implements IPersistenceProduction {
     // This list contains all of the productions already loaded. This stops an endless loop from happening.
     List<Production> loadedProductions = new ArrayList<>();
 
+    /**
+     * Saves temporarily found productions and sets text in the search field.
+     *
+     * @param searchString Searches for the input. Can either be id or name
+     * @return
+     */
     @Override
     public List<Production> getProductions(String searchString) {
         List<Production> productions = new ArrayList<Production>();
@@ -186,6 +192,10 @@ public class ProductionsHandler implements IPersistenceProduction {
         }
     }
 
+    /**
+     * Saves the production in the persistence layer.
+     * @param production
+     */
     @Override
     public void saveProduction(Production production) { // This saves a new production
         List<Integer> productionIds = new ArrayList<>();
@@ -231,6 +241,12 @@ public class ProductionsHandler implements IPersistenceProduction {
 
     }
 
+    /**
+     * Used to save a cast member
+     * @param castMember
+     * @param productionId
+     * @return
+     */
     private int saveCastMember(Cast castMember, int productionId){
 
         /* Saving the roles for the cast member */

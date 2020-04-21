@@ -21,7 +21,6 @@ public class SystemAdministrator extends User implements IProducer, ISystemAdmin
 	 */
 	public void createUser(String name, String email, UserType userType, String password){
 		userCatalog.createUser(name, email, userType, password);
-		password = null;
 	}
 
 	/**

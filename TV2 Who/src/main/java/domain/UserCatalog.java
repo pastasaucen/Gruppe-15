@@ -35,7 +35,5 @@ public class UserCatalog {
             case EDITOR:
                 persistenceUser.createUser(new Editor(name, email), password);
         }
-        password = null; // Deleting password for security
-
     }
 }

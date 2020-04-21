@@ -33,7 +33,7 @@ public class CastCatalog {
 
         for (Cast currentCast : cast) {
             // Do the current cast member have the same first and last name as the search words?
-            if (currentCast.getFirstName().indexOf(firstName) != -1) {
+            if (currentCast.getFirstName().indexOf(firstName)!=-1 || currentCast.getLastName().indexOf(firstName)!=-1) {
                 relevantCastMembers.add(currentCast); // Adds this member to the return list
             }
         }

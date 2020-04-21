@@ -34,12 +34,12 @@ public class DemoController {
     @FXML
     public void setCastCategory(){
         this.searchCategory = 1;
-    }
+    } //Toggles Cast as current search category
 
     @FXML
     public void setProductionCategory(){
         this.searchCategory = 2;
-    }
+    } //Toggles Production as current search category
 
     /**
      * If search category is set to 1: Takes text from search field and devides it into first / last name, then calls
@@ -82,6 +82,6 @@ public class DemoController {
                 }
             }
         }
-    }
+    } //Requests search based on currently toggled category
 
 }

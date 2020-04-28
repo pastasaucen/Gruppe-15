@@ -1,4 +1,6 @@
-package domain;
+package domain.persistenceInterfaces;
+
+import domain.User;
 
 public interface IPersistenceLogIn {
 

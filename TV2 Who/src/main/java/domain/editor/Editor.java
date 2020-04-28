@@ -1,4 +1,7 @@
-package domain;
+package domain.editor;
+
+import domain.User;
+import domain.UserType;
 
 public class Editor extends User implements  IEditor{
 

@@ -1,4 +1,6 @@
-package domain;
+package domain.producer;
+
+import domain.Cast;
 
 import java.sql.Date;
 

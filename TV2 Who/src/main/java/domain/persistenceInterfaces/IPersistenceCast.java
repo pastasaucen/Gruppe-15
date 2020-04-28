@@ -1,4 +1,6 @@
-package domain;
+package domain.persistenceInterfaces;
+
+import domain.Cast;
 
 import java.util.List;
 

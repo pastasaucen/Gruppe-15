@@ -1,8 +1,17 @@
 package domain;
 
+import domain.Cast;
+import domain.User;
+import domain.UserCatalog;
+import domain.UserType;
+import domain.editor.IEditor;
+import domain.persistenceInterfaces.IPersistenceUser;
+import domain.producer.IProducer;
+import domain.rDUser.IRDUser;
+
 import java.sql.Date;
 
-public class SystemAdministrator extends User implements IProducer, ISystemAdministrator, IEditor, IRDUser {
+public class SystemAdministrator extends User implements IProducer, IEditor, IRDUser {
 	IPersistenceUser persistenceUser;
 	UserCatalog userCatalog;
 
@@ -17,7 +26,7 @@ public class SystemAdministrator extends User implements IProducer, ISystemAdmin
 	 * @param name
 	 * @param email
 	 * @param userType Enum
-	 * @param password pasword is deleted after sending to Database
+	 * @param password password is deleted after sending to Database
 	 */
 	public void createUser(String name, String email, UserType userType, String password){
 		userCatalog.createUser(name, email, userType, password);
@@ -25,7 +34,7 @@ public class SystemAdministrator extends User implements IProducer, ISystemAdmin
 
 	/**
 	 */
-	public void createProduction(String name, Date date) {
+	public void createProduction(String name, Date date)  {
 
 	}
 

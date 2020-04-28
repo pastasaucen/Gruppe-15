@@ -1,6 +1,6 @@
 package persistence;
 
-import domain.IPersistenceLogIn;
+import domain.persistenceInterfaces.IPersistenceLogIn;
 import domain.User;
 
 public class LoginHandler implements IPersistenceLogIn {

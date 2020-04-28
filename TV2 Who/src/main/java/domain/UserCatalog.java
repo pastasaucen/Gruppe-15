@@ -1,5 +1,10 @@
 package domain;
 
+import domain.editor.Editor;
+import domain.persistenceInterfaces.IPersistenceUser;
+import domain.producer.Producer;
+import domain.rDUser.RDUser;
+
 public class UserCatalog {
 
     private static UserCatalog instance;

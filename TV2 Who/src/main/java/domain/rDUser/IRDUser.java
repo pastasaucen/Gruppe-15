@@ -1,4 +1,4 @@
-package domain;
+package domain.rDUser;
 
 public interface IRDUser {
 }

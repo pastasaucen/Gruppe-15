@@ -1,4 +1,6 @@
-package domain;
+package domain.persistenceInterfaces;
+
+import domain.Production;
 
 import java.util.List;
 

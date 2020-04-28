@@ -1,4 +1,7 @@
-package domain;
+package domain.rDUser;
+
+import domain.User;
+import domain.UserType;
 
 public class RDUser extends User implements IRDUser{
 

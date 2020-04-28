@@ -1,5 +1,6 @@
 package domain;
 
+import domain.persistenceInterfaces.IPersistenceProduction;
 import persistence.fileHandlers.ProductionsFileHandler;
 
 import java.util.ArrayList;

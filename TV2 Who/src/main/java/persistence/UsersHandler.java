@@ -1,6 +1,6 @@
 package persistence;
 
-import domain.IPersistenceUser;
+import domain.persistenceInterfaces.IPersistenceUser;
 import domain.User;
 
 public class UsersHandler implements IPersistenceUser {

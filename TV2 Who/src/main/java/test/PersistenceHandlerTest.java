@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import persistence.PersistenceHandler;
 
+import java.sql.SQLOutput;
+
 import static org.junit.Assert.*;
 
 public class PersistenceHandlerTest {
@@ -34,12 +36,16 @@ public class PersistenceHandlerTest {
     @Test
     public void logInValidation() {
         // Should find a user
+        System.out.println("Should find a user");
         User user = persistenceHandler.logInValidation("w.bolding@outlook.com", "1x2c3v4b");
         Assert.assertEquals(UserType.SYSTEMADMINISTRATOR, user.getUserType());
+        System.out.println("The user was found: " + user.toString());
 
         // Should not find a user
+        System.out.println("Should receive a null pointer value");
         User nullUser = persistenceHandler.logInValidation("null", "null");
         Assert.assertNull(nullUser);
+        System.out.println("Found this: " + null);
     }
 
     @Test

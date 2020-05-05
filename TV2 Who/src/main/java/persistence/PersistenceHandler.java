@@ -86,10 +86,6 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                         return new RDUser(name, email);
                     case "EDITOR":
                         return new Editor(name, email);
-                    default:
-                        System.out.println("The user type \"" + userType.toString() + "\" does not match any user " +
-                                "types in the system...");
-                        return null;
                 }
             } else {
                 // Invalid login

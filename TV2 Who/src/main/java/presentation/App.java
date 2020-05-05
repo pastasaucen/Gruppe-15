@@ -14,8 +14,9 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    private static Parent root;
 
-    @Override
+  /*  @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("primary"));
         stage.setScene(scene);
@@ -30,7 +31,23 @@ public class App extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
-    }
+    }*/
+
+
+  @Override
+  public void start(Stage stage){
+      try {
+          root = FXMLLoader.load(getClass().getResource("frame.fxml"));
+          stage = stage;
+          stage.setTitle("TV2 WHO");
+
+          Scene scene = new Scene(root);
+          stage.setScene(scene);
+          stage.show();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+  }
 
     public static void main(String[] args) {
         launch();

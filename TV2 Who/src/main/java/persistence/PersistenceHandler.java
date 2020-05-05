@@ -62,7 +62,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
         try {
             PreparedStatement getUserStmt = connection.prepareStatement(
-                    "SELECT * FROM users WHERE email = ? AND password = ?;");
+                    "SELECT * FROM users WHERE email = ? AND password = md5(?);");
 
             getUserStmt.setString(1, email);          // Specifying the email and password
             getUserStmt.setString(2, password);

@@ -37,7 +37,8 @@ public class PersistenceHandlerTest {
     public void logInValidation() {
         // Should find a user
         System.out.println("Should find a user");
-        User user = persistenceHandler.logInValidation("w.bolding@outlook.com", "1x2c3v4b");
+        User user = persistenceHandler.logInValidation("andreas@edal.dk", "12345");
+        Assert.assertEquals("andreas@edal.dk", user.getEmail());
         Assert.assertEquals(UserType.SYSTEMADMINISTRATOR, user.getUserType());
         System.out.println("The user was found: " + user.toString());
 
@@ -45,7 +46,6 @@ public class PersistenceHandlerTest {
         System.out.println("Should receive a null pointer value");
         User nullUser = persistenceHandler.logInValidation("null", "null");
         Assert.assertNull(nullUser);
-        System.out.println("Found this: " + null);
     }
 
     @Test

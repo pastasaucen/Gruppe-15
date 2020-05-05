@@ -20,7 +20,7 @@
             <SplitPane prefHeight="74.0" prefWidth="182.0" />
             <SplitPane prefHeight="64.0" prefWidth="532.0">
                <items>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" snapToPixel="false">
                      <children>
                         <Label alignment="CENTER" prefHeight="65.0" prefWidth="231.0" text="PRODUKTIONER" />
                         <Label alignment="CENTER" ellipsisString="" prefHeight="74.0" prefWidth="264.0" text="SKUESPILLERE" />
@@ -30,18 +30,23 @@
             </SplitPane>
             <Pane prefHeight="64.0" prefWidth="298.0">
                <children>
-                  <TextField layoutX="43.0" layoutY="12.0" prefHeight="25.0" prefWidth="205.0" />
-                  <RadioButton layoutX="43.0" layoutY="41.0" mnemonicParsing="false" text="PRODUKTIONER">
+                  <TextField fx:id="searchTextField" layoutX="43.0" layoutY="12.0" prefHeight="25.0" prefWidth="188.0" promptText="Type search word here" />
+                  <RadioButton fx:id="productionRadioButton" layoutX="43.0" layoutY="41.0" mnemonicParsing="false" text="PRODUKTIONER">
                      <font>
                         <Font size="9.0" />
                      </font>
                   </RadioButton>
                   <Text layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SØG" />
-                  <RadioButton layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="SKUESPILLERE">
+                  <RadioButton fx:id="actorRadioButton" layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="SKUESPILLERE">
                      <font>
                         <Font size="9.0" />
                      </font>
                   </RadioButton>
+                  <ImageView fx:id="searchImage" fitHeight="20.0" fitWidth="20.0" layoutX="231.0" layoutY="15.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Pictures/searchPurple.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
          </children>

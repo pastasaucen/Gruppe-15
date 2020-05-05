@@ -42,7 +42,7 @@ public class TV2Who implements ITV2WhoUI {
     }
 
     /**
-     * Attempts to create a usersession, if the requested email and password is valid. Prints an error message if the
+     * Attempts to create a user session, if the requested email and password is valid. Prints an error message if the
      * email or password is incorrect.
      * @param email
      * @param password
@@ -54,6 +54,7 @@ public class TV2Who implements ITV2WhoUI {
             System.out.println("Invalid username or password");
             return;
         }
+
         currentUser = newUser;
     }
 

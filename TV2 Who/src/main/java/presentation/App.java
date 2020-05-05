@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    private static Scene scene;
+
     private static Parent root;
 
   /*  @Override
@@ -38,7 +38,6 @@ public class App extends Application {
   public void start(Stage stage){
       try {
           root = FXMLLoader.load(getClass().getResource("frame.fxml"));
-          stage = stage;
           stage.setTitle("TV2 WHO");
 
           Scene scene = new Scene(root);

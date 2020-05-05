@@ -1,17 +1,21 @@
 package presentation;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
-public class FrameController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class FrameController implements Initializable {
     @FXML
     BorderPane mainBorderPane;
 
-    @FXML
-    public void onBtn1Click(){
-        Scene1 scene1 = new Scene1();
-        mainBorderPane.setCenter(scene1);
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        WelcomeController welcomeController = new WelcomeController();
+        mainBorderPane.setCenter(welcomeController);
     }
+
 }

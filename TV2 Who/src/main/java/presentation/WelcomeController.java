@@ -1,16 +1,15 @@
 package presentation;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
-public class Scene1 extends AnchorPane {
-
-
-    public Scene1(){
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("scene1.fxml"));
+public class WelcomeController extends BorderPane
+{
+    public WelcomeController(){
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("welcome.fxml"));
         fxmlLoader.setRoot(this);
 
         fxmlLoader.setController(this);
@@ -21,8 +20,5 @@ public class Scene1 extends AnchorPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
-
 }

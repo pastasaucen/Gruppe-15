@@ -8,6 +8,8 @@ public interface ITV2WhoUI {
 
     public List<Production> prepareProductionSearchList(String nameOrId);
 
+    public void createUserSession(String email, String password);
+
     public static TV2Who getInstance(){
         return TV2Who.getInstance();
     }

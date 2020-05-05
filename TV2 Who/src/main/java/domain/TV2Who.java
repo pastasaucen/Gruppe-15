@@ -1,5 +1,8 @@
 package domain;
 
+import domain.persistenceInterfaces.IPersistenceLogIn;
+import persistence.LoginHandler;
+
 import java.util.List;
 
 
@@ -7,6 +10,8 @@ public class TV2Who implements ITV2WhoUI {
 
     ProductionCatalog productionCatalog;
     private static TV2Who instance = null;
+    private User currentUser;
+    private IPersistenceLogIn iPersistenceLogIn = new LoginHandler();
 
     private TV2Who() {
         this.productionCatalog = ProductionCatalog.getInstance();
@@ -34,6 +39,22 @@ public class TV2Who implements ITV2WhoUI {
     @Override
     public List<Production> prepareProductionSearchList(String nameOrId) {
         return productionCatalog.getProduction(nameOrId);
+    }
+
+    /**
+     * Attempts to create a usersession, if the requested email and password is valid. Prints an error message if the
+     * email or password is incorrect.
+     * @param email
+     * @param password
+     */
+    @Override
+    public void createUserSession(String email, String password) {
+        User newUser = iPersistenceLogIn.logInValidation(email, password);
+        if (newUser == null) {
+            System.out.println("Invalid username or password");
+            return;
+        }
+        currentUser = newUser;
     }
 
     /**

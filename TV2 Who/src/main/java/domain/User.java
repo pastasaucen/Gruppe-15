@@ -10,4 +10,8 @@ public abstract class User {
 		this.email = email;
 		this.userType = userType;
 	}
+
+	public UserType getUserType() {
+		return userType;
+	}
 }

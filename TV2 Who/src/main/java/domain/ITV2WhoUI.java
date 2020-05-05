@@ -2,7 +2,7 @@ package domain;
 
 import java.util.List;
 
-public interface ITv2Who {
+public interface ITV2WhoUI {
 
     public List<Cast> prepareCastSearchList(String firstName,String lastName);
 

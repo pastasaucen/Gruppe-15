@@ -1,10 +1,9 @@
 package presentation;
 
-import java.io.IOException;
 import java.util.List;
 
 import domain.Cast;
-import domain.ITv2Who;
+import domain.ITV2WhoUI;
 import domain.Production;
 import domain.TV2Who;
 import javafx.collections.FXCollections;
@@ -12,12 +11,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class DemoController {
 
-    private ITv2Who tv2 = TV2Who.getInstance();
+    private ITV2WhoUI tv2 = TV2Who.getInstance();
     private int searchCategory = 1;
 
     @FXML

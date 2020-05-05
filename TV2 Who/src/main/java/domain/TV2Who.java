@@ -3,7 +3,7 @@ package domain;
 import java.util.List;
 
 
-public class TV2Who implements ITv2Who {
+public class TV2Who implements ITV2WhoUI {
 
     ProductionCatalog productionCatalog;
     private static TV2Who instance = null;

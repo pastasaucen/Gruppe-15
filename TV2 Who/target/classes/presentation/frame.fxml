@@ -22,8 +22,8 @@
                <items>
                   <HBox prefHeight="100.0" prefWidth="200.0" snapToPixel="false">
                      <children>
-                        <Label alignment="CENTER" prefHeight="65.0" prefWidth="231.0" text="PRODUKTIONER" />
-                        <Label alignment="CENTER" ellipsisString="" prefHeight="74.0" prefWidth="264.0" text="SKUESPILLERE" />
+                        <Label fx:id="productionLabel" alignment="CENTER" onMouseClicked="#productionScene" prefHeight="65.0" prefWidth="231.0" text="PRODUKTIONER" />
+                        <Label fx:id="roleLabel" alignment="CENTER" ellipsisString="" prefHeight="74.0" prefWidth="264.0" text="MEDVIRKENDE" />
                      </children>
                   </HBox>
                </items>

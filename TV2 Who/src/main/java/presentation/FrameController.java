@@ -44,10 +44,13 @@ public class FrameController implements Initializable {
         productionRadioButton.setToggleGroup(searchParameters);
         actorRadioButton.setToggleGroup(searchParameters);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     }
 
 =======
+=======
+>>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
     }
 
     /**
@@ -71,6 +74,9 @@ public class FrameController implements Initializable {
      * TODO skal kunne reagere på om der søges på skuespillere
      * @param mouseEvent
      */
+<<<<<<< HEAD
+>>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
+=======
 >>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
     public void search(javafx.scene.input.MouseEvent mouseEvent) {
         String searchWord = searchTextField.getText();
@@ -90,7 +96,11 @@ public class FrameController implements Initializable {
             //Todo Herfra til todo før denne slettes
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             mainBorderPane.setCenter(productionController);
+=======
+            centerProduction();
+>>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
 =======
             centerProduction();
 >>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"

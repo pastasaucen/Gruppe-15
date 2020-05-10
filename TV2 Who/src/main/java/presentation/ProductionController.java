@@ -62,6 +62,7 @@ public class ProductionController extends BorderPane {
         ObservableList<String> list = FXCollections.observableArrayList(stringList);
         searchedProductionsList = new ListView<String>(list);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         searchedProductionsList.setStyle("-fx-control-inner-background: white"); //sets bagground color for listview
 >>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
@@ -83,6 +84,18 @@ public class ProductionController extends BorderPane {
         headerText = "Der er " + productions.size() +  " produktion(er) der matcher din søgning: '" + searchWord + "'";
         setHeader();
 
+=======
+        searchedProductionsList.setStyle("-fx-control-inner-background: white"); //sets bagground color for listview
+        searchedProductionsList.getSelectionModel().getSelectedItem();
+
+        clickingOnproductionList(productions); //makes it possible to click on the results
+
+        //sets header and listview on centerBorderPain
+        clearProductionListBorderPane();
+        headerText = "Der er " + productions.size() +  " produktion(er) der matcher din søgning: '" + searchWord + "'";
+        setHeader();
+
+>>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
         productionBorderPane.setCenter(searchedProductionsList);
     }
 
@@ -95,6 +108,9 @@ public class ProductionController extends BorderPane {
         productionBorderPane.setCenter(null);
         productionBorderPane.setBottom(null);
         productionBorderPane.setCenter(null);
+<<<<<<< HEAD
+>>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
+=======
 >>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
     }
 
@@ -127,7 +143,11 @@ public class ProductionController extends BorderPane {
         center.setTextAlignment(TextAlignment.CENTER);
         center.setFont(Font.font(15));
 <<<<<<< HEAD
+<<<<<<< HEAD
         productionListBorderPane.setCenter(center);
+=======
+        productionBorderPane.setCenter(center);
+>>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
 =======
         productionBorderPane.setCenter(center);
 >>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
@@ -186,6 +206,9 @@ public class ProductionController extends BorderPane {
                 left.setLeft(space);
                 left.setCenter(vbox);
                 productionBorderPane.setLeft(left);
+<<<<<<< HEAD
+>>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
+=======
 >>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
 
                 //Makes listview with all the roles in the production

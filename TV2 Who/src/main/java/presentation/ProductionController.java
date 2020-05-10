@@ -8,12 +8,9 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -54,25 +51,17 @@ public class ProductionController extends BorderPane {
 
         ObservableList<String> list = FXCollections.observableArrayList(stringList);
         searchedProductionsList = new ListView<String>(list);
-        searchedProductionsList.setStyle("-fx-control-inner-background: white");
         searchedProductionsList.getSelectionModel().getSelectedItem();
 
         trying(productions);
 
-        clearProductionListBorderPane();
+
         headerText = "Der er " + productions.size() +  " produktion(er) der matcher din søgning: '" + searchWord + "'";
         setHeader();
 
-
         productionListBorderPane.setCenter(searchedProductionsList);
-    }
 
-    private void clearProductionListBorderPane(){
-        productionListBorderPane.setLeft(null);
-        productionListBorderPane.setTop(null);
-        productionListBorderPane.setCenter(null);
-        productionListBorderPane.setBottom(null);
-        productionListBorderPane.setCenter(null);
+
     }
     private void setHeader(){
         header = new Text(headerText);
@@ -91,6 +80,7 @@ public class ProductionController extends BorderPane {
         center = new Text(centerText);
         center.setTextAlignment(TextAlignment.CENTER);
         center.setFont(Font.font(15));
+        productionListBorderPane.setCenter(center);
     }
 
     public void setCenter(String centerText) {
@@ -109,24 +99,8 @@ public class ProductionController extends BorderPane {
             public void handle(MouseEvent mouseEvent) {
                 Production prodUsing = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
                 setHeader(prodUsing.getName());
-
-                Label label = new Label("  RELEASE DATE :" );
-                label.setFont(Font.font(15));
-                Label label2 = new Label("   " + prodUsing.getReleaseDate().toString());
-                label2.setFont(Font.font(12));
-
-                VBox vbox = new VBox(10);
-                vbox.setPrefWidth(120);
-                vbox.setAlignment(Pos.TOP_LEFT);
-                vbox.getChildren().addAll(label,label2);
-
-
-                BorderPane left = new BorderPane();
-                Label space = new Label("");
-                label.setMinWidth(20);
-                left.setLeft(space);
-                left.setCenter(vbox);
-                productionListBorderPane.setLeft(left);
+                String space = "       ";
+                productionListBorderPane.setLeft(new Text( "  RELEASE DATE :\n  " + prodUsing.getReleaseDate().toString() + space));
 
                 ArrayList<String> castList = new ArrayList<>();
                 for(Cast cast: prodUsing.getCast()){

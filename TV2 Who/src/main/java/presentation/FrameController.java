@@ -32,29 +32,18 @@ public class FrameController implements Initializable {
 
     IPersistenceProduction persistenceProduction;
     ProductionController productionController = new ProductionController();
-    WelcomeController welcomeController = new WelcomeController();
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        centerWelcome();
+        WelcomeController welcomeController = new WelcomeController();
+        mainBorderPane.setCenter(welcomeController);
 
         ToggleGroup searchParameters = new ToggleGroup();
         productionRadioButton.setToggleGroup(searchParameters);
         actorRadioButton.setToggleGroup(searchParameters);
 
-
     }
-
-    public void centerWelcome(){
-        welcomeController.setPrefHeight(450);
-        mainBorderPane.setCenter(welcomeController);
-    }
-
-    public void centerWelcomeMouse(javafx.scene.input.MouseEvent mouseEvent){
-        centerWelcome();
-    }
-
 
     public void search(javafx.scene.input.MouseEvent mouseEvent) {
         String searchWord = searchTextField.getText();
@@ -73,7 +62,6 @@ public class FrameController implements Initializable {
             name.addCastMember(new Cast(2, "kj", "jn", "jk"));
             //Todo Herfra til todo før denne slettes
 
-            productionController.setPrefHeight(450);
             mainBorderPane.setCenter(productionController);
             productionController.productionList(searchWord, productionList); //Den her skal fikses
         } else if(productionRadioButton.isSelected() && searchWord.equals("")){

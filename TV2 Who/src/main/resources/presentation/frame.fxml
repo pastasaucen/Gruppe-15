@@ -17,7 +17,10 @@
    <top>
       <HBox prefHeight="64.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <SplitPane prefHeight="74.0" prefWidth="182.0" />
+            <SplitPane prefHeight="27.0" prefWidth="202.0">
+               <items>
+                  <ImageView fitHeight="62.0" fitWidth="155.0" onMouseClicked="#centerWelcome" pickOnBounds="true" preserveRatio="true" />
+               </items></SplitPane>
             <SplitPane prefHeight="64.0" prefWidth="532.0">
                <items>
                   <HBox prefHeight="100.0" prefWidth="200.0" snapToPixel="false">
@@ -53,7 +56,7 @@
       </HBox>
    </top>
    <bottom>
-      <AnchorPane prefHeight="41.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="13.0" prefWidth="902.0" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="14.0" layoutY="49.0" text="TV2 Who @2020 Gruppe 15 all rights reserved">
                <font>

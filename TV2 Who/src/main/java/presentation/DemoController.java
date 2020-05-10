@@ -13,7 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
-public class DemoControllerSlettesNårFærdig {
+public class DemoController {
 
     private ITV2WhoUI tv2 = TV2Who.getInstance();
     private int searchCategory = 1;

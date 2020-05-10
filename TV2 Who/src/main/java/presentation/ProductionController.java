@@ -24,17 +24,14 @@ import java.util.List;
 
 public class ProductionController extends BorderPane {
     @FXML
-    ListView<String> searchedProductionsList; //List of productions that matches the search
+    ListView<String> searchedProductionsList;
     @FXML
-    BorderPane productionBorderPane, centerBorderPane;//boarderpane for production.fxml and borderpain for the borderpain
+    BorderPane productionListBorderPane, centerBorderPane;
     @FXML
-    Text header, center; //used for centerBorderPane
+    Text header, center;
 
-    String headerText, centerText; //used for Text header and center
+    String headerText, centerText;
 
-    /**
-     * makes subscene that can be loaded by fram
-     */
     public ProductionController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("production.fxml"));
         fxmlLoader.setRoot(this);
@@ -49,14 +46,7 @@ public class ProductionController extends BorderPane {
         }
     }
 
-    /**
-     * Makes listView for searched productions and sets it in the center of centerBorderPain and sets the text for top
-     * of that(makes a header)
-     * @param searchWord
-     * @param productions
-     */
     public void productionList(String searchWord, List<Production> productions){
-        //makes listview
         ArrayList<String> stringList = new ArrayList<>();
         for (Production production: productions){
             stringList.add(production.getName() + "\n" + production.getReleaseDate());
@@ -64,93 +54,62 @@ public class ProductionController extends BorderPane {
 
         ObservableList<String> list = FXCollections.observableArrayList(stringList);
         searchedProductionsList = new ListView<String>(list);
-        searchedProductionsList.setStyle("-fx-control-inner-background: white"); //sets bagground color for listview
+        searchedProductionsList.setStyle("-fx-control-inner-background: white");
         searchedProductionsList.getSelectionModel().getSelectedItem();
 
-        clickingOnproductionList(productions); //makes it possible to click on the results
+        trying(productions);
 
-        //sets header and listview on centerBorderPain
         clearProductionListBorderPane();
         headerText = "Der er " + productions.size() +  " produktion(er) der matcher din søgning: '" + searchWord + "'";
         setHeader();
 
-        productionBorderPane.setCenter(searchedProductionsList);
+
+        productionListBorderPane.setCenter(searchedProductionsList);
     }
 
-    /**
-     * Clears productionBorderPane
-     */
     private void clearProductionListBorderPane(){
-        productionBorderPane.setLeft(null);
-        productionBorderPane.setTop(null);
-        productionBorderPane.setCenter(null);
-        productionBorderPane.setBottom(null);
-        productionBorderPane.setCenter(null);
+        productionListBorderPane.setLeft(null);
+        productionListBorderPane.setTop(null);
+        productionListBorderPane.setCenter(null);
+        productionListBorderPane.setBottom(null);
+        productionListBorderPane.setCenter(null);
     }
-
-    /**
-     * Makes a header in centerBorderPane
-     */
     private void setHeader(){
         header = new Text(headerText);
         header.setTextAlignment(TextAlignment.CENTER);
         header.setFont(Font.font(30));
         centerBorderPane.setCenter(header);
         centerBorderPane.setPrefHeight(50);
-        productionBorderPane.setTop(centerBorderPane);
+        productionListBorderPane.setTop(centerBorderPane);
     }
-
-    /**
-     * Makes a header in centerBorderPane with text
-     * @param headerText
-     */
     private void setHeader(String headerText){
         this.headerText = headerText;
         setHeader();
     }
 
-    /**
-     * Makes a text and sets it in center of centerBorderPane
-     */
     public void setCenter() {
         center = new Text(centerText);
         center.setTextAlignment(TextAlignment.CENTER);
         center.setFont(Font.font(15));
-        productionBorderPane.setCenter(center);
     }
 
-    /**
-     * Makes a text and sets it in center of centerBorderPane with a text
-     * @param centerText
-     */
     public void setCenter(String centerText) {
         this.centerText = centerText;
         setCenter();
     }
 
-    /**
-     * Scene when no productions found
-     */
     public void productionNotFound(){
         setHeader("PRODUKTIONER");
         setCenter("INGEN PRODUKTIONER FUNDET");
     }
 
-    /**
-     * When clicking on a production scene gets changed to production information with listview of roles
-     * TODO make roles clickable
-     * @param productions
-     */
-    public void clickingOnproductionList(List<Production> productions){
-        //Action when clicked on something
+    public void trying(List<Production> productions){
         searchedProductionsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                //Gets the clicked item
                 Production prodUsing = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
                 setHeader(prodUsing.getName());
 
-                //Sets the left part for information about release date
                 Label label = new Label("  RELEASE DATE :" );
                 label.setFont(Font.font(15));
                 Label label2 = new Label("   " + prodUsing.getReleaseDate().toString());
@@ -167,9 +126,8 @@ public class ProductionController extends BorderPane {
                 label.setMinWidth(20);
                 left.setLeft(space);
                 left.setCenter(vbox);
-                productionBorderPane.setLeft(left);
+                productionListBorderPane.setLeft(left);
 
-                //Makes listview with all the roles in the production
                 ArrayList<String> castList = new ArrayList<>();
                 for(Cast cast: prodUsing.getCast()){
                     String roles = "";
@@ -185,7 +143,7 @@ public class ProductionController extends BorderPane {
                 ObservableList<String> list = FXCollections.observableArrayList(castList);
 
                 ListView<String> castView = new ListView<>(list);
-                productionBorderPane.setCenter(castView);
+                productionListBorderPane.setCenter(castView);
 
             }
         });

@@ -39,33 +39,23 @@ public class FrameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         centerWelcome();
 
-        //Sets radiobuttons together for searching
         ToggleGroup searchParameters = new ToggleGroup();
         productionRadioButton.setToggleGroup(searchParameters);
         actorRadioButton.setToggleGroup(searchParameters);
+
+
     }
 
-    /**
-     * Sets center borderpain to welcome.fxml
-     */
     public void centerWelcome(){
         welcomeController.setPrefHeight(450);
         mainBorderPane.setCenter(welcomeController);
     }
 
-    /**
-     * Used on tv2 icon on frame to set center to welcome
-     * @param mouseEvent
-     */
     public void centerWelcomeMouse(javafx.scene.input.MouseEvent mouseEvent){
         centerWelcome();
     }
 
-    /**
-     * CHanges the scene depending on what gets searched
-     * TODO skal kunne reagere på om der søges på skuespillere
-     * @param mouseEvent
-     */
+
     public void search(javafx.scene.input.MouseEvent mouseEvent) {
         String searchWord = searchTextField.getText();
         if(productionRadioButton.isSelected() && !searchWord.equals("")){
@@ -83,36 +73,18 @@ public class FrameController implements Initializable {
             name.addCastMember(new Cast(2, "kj", "jn", "jk"));
             //Todo Herfra til todo før denne slettes
 
-            centerProduction();
+            productionController.setPrefHeight(450);
+            mainBorderPane.setCenter(productionController);
             productionController.productionList(searchWord, productionList); //Den her skal fikses
         } else if(productionRadioButton.isSelected() && searchWord.equals("")){
-            productionScene();
+            productionController.productionNotFound();
+            mainBorderPane.setCenter(productionController);
         }
 
     }
 
-    /**
-     * Sets center to production.fxml with right size
-     */
-    private void centerProduction(){
-        productionController.setPrefHeight(450);
-        mainBorderPane.setCenter(productionController);
-    }
-
-    /**
-     * Used for GUI when no productions found
-     * @param mouseEvent
-     */
     public void productionScene(javafx.scene.input.MouseEvent mouseEvent){
         productionController.productionNotFound();
-        centerProduction();
-    }
-
-    /**
-     * Sets center no productions found
-     */
-    private void productionScene(){
-        productionController.productionNotFound();
-        centerProduction();
+        mainBorderPane.setCenter(productionController);
     }
 }

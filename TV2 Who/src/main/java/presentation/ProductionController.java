@@ -8,9 +8,12 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -61,31 +64,8 @@ public class ProductionController extends BorderPane {
 
         ObservableList<String> list = FXCollections.observableArrayList(stringList);
         searchedProductionsList = new ListView<String>(list);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
         searchedProductionsList.setStyle("-fx-control-inner-background: white"); //sets bagground color for listview
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
-        searchedProductionsList.getSelectionModel().getSelectedItem();
 
-        clickingOnproductionList(productions); //makes it possible to click on the results
-
-<<<<<<< HEAD
-
-        headerText = "Der er " + productions.size() +  " produktion(er) der matcher din søgning: '" + searchWord + "'";
-        setHeader();
-
-        productionListBorderPane.setCenter(searchedProductionsList);
-
-
-=======
-        //sets header and listview on centerBorderPain
-        clearProductionListBorderPane();
-        headerText = "Der er " + productions.size() +  " produktion(er) der matcher din søgning: '" + searchWord + "'";
-        setHeader();
-
-=======
-        searchedProductionsList.setStyle("-fx-control-inner-background: white"); //sets bagground color for listview
         searchedProductionsList.getSelectionModel().getSelectedItem();
 
         clickingOnproductionList(productions); //makes it possible to click on the results
@@ -95,7 +75,7 @@ public class ProductionController extends BorderPane {
         headerText = "Der er " + productions.size() +  " produktion(er) der matcher din søgning: '" + searchWord + "'";
         setHeader();
 
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
+
         productionBorderPane.setCenter(searchedProductionsList);
     }
 
@@ -107,11 +87,6 @@ public class ProductionController extends BorderPane {
         productionBorderPane.setTop(null);
         productionBorderPane.setCenter(null);
         productionBorderPane.setBottom(null);
-        productionBorderPane.setCenter(null);
-<<<<<<< HEAD
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
-=======
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
     }
 
     /**
@@ -142,15 +117,7 @@ public class ProductionController extends BorderPane {
         center = new Text(centerText);
         center.setTextAlignment(TextAlignment.CENTER);
         center.setFont(Font.font(15));
-<<<<<<< HEAD
-<<<<<<< HEAD
-        productionListBorderPane.setCenter(center);
-=======
         productionBorderPane.setCenter(center);
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
-=======
-        productionBorderPane.setCenter(center);
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
     }
 
     /**
@@ -183,10 +150,7 @@ public class ProductionController extends BorderPane {
                 //Gets the clicked item
                 Production prodUsing = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
                 setHeader(prodUsing.getName());
-<<<<<<< HEAD
-                String space = "       ";
-                productionListBorderPane.setLeft(new Text( "  RELEASE DATE :\n  " + prodUsing.getReleaseDate().toString() + space));
-=======
+
 
                 //Sets the left part for information about release date
                 Label label = new Label("  RELEASE DATE :" );
@@ -206,10 +170,7 @@ public class ProductionController extends BorderPane {
                 left.setLeft(space);
                 left.setCenter(vbox);
                 productionBorderPane.setLeft(left);
-<<<<<<< HEAD
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
-=======
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
+
 
                 //Makes listview with all the roles in the production
                 ArrayList<String> castList = new ArrayList<>();

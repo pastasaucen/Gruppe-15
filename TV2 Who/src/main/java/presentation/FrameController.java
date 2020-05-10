@@ -32,6 +32,7 @@ public class FrameController implements Initializable {
 
     IPersistenceProduction persistenceProduction;
     ProductionController productionController = new ProductionController();
+    WelcomeController welcomeController = new WelcomeController();
 
 
     @Override
@@ -43,15 +44,9 @@ public class FrameController implements Initializable {
         ToggleGroup searchParameters = new ToggleGroup();
         productionRadioButton.setToggleGroup(searchParameters);
         actorRadioButton.setToggleGroup(searchParameters);
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     }
 
-=======
-=======
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
-    }
 
     /**
      * Sets center borderpain to welcome.fxml
@@ -74,10 +69,6 @@ public class FrameController implements Initializable {
      * TODO skal kunne reagere på om der søges på skuespillere
      * @param mouseEvent
      */
-<<<<<<< HEAD
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
-=======
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
     public void search(javafx.scene.input.MouseEvent mouseEvent) {
         String searchWord = searchTextField.getText();
         if(productionRadioButton.isSelected() && !searchWord.equals("")){
@@ -95,15 +86,10 @@ public class FrameController implements Initializable {
             name.addCastMember(new Cast(2, "kj", "jn", "jk"));
             //Todo Herfra til todo før denne slettes
 
-<<<<<<< HEAD
-<<<<<<< HEAD
             mainBorderPane.setCenter(productionController);
-=======
+
             centerProduction();
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
-=======
-            centerProduction();
->>>>>>> parent of ab7fa5f... Revert "Finsihed with comments"
+
             productionController.productionList(searchWord, productionList); //Den her skal fikses
         } else if(productionRadioButton.isSelected() && searchWord.equals("")){
             productionScene();

@@ -6,10 +6,10 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class Scene1 extends AnchorPane {
+public class SkabelonSlettesNårFærdig extends AnchorPane {
 
 
-    public Scene1(){
+    public SkabelonSlettesNårFærdig(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("scene1.fxml"));
         fxmlLoader.setRoot(this);
 

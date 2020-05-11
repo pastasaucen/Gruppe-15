@@ -15,13 +15,13 @@ public class App extends Application {
 
 
     private static Parent root;
-    private static Scene scene;
 
   @Override
   public void start(Stage stage){
       try {
           root = FXMLLoader.load(getClass().getResource("frame.fxml"));
           stage.setTitle("TV2 WHO");
+          stage.setResizable(false);
 
           Scene scene = new Scene(root);
           stage.setScene(scene);

@@ -17,7 +17,10 @@
    <top>
       <HBox prefHeight="64.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <SplitPane prefHeight="74.0" prefWidth="182.0" />
+            <SplitPane prefHeight="74.0" prefWidth="182.0">
+               <items>
+                  <ImageView fitHeight="61.0" fitWidth="154.0" onMouseClicked="#centerWelcome" pickOnBounds="true" preserveRatio="true" />
+               </items></SplitPane>
             <SplitPane prefHeight="64.0" prefWidth="532.0">
                <items>
                   <HBox prefHeight="100.0" prefWidth="200.0" snapToPixel="false">

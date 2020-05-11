@@ -71,7 +71,7 @@ public class ProductionController extends BorderPane {
         clickingOnproductionList(productions); //makes it possible to click on the results
 
         //sets header and listview on centerBorderPain
-        clearProductionListBorderPane();
+        clearProductionBorderPane();
         headerText = "Der er " + productions.size() +  " produktion(er) der matcher din søgning: '" + searchWord + "'";
         setHeader();
 
@@ -82,11 +82,12 @@ public class ProductionController extends BorderPane {
     /**
      * Clears productionBorderPane
      */
-    private void clearProductionListBorderPane(){
-        productionBorderPane.setLeft(null);
+    private void clearProductionBorderPane(){
         productionBorderPane.setTop(null);
         productionBorderPane.setCenter(null);
         productionBorderPane.setBottom(null);
+        productionBorderPane.setLeft(null);
+        productionBorderPane.setRight(null);
     }
 
     /**
@@ -133,6 +134,7 @@ public class ProductionController extends BorderPane {
      * Scene when no productions found
      */
     public void productionNotFound(){
+        clearProductionBorderPane();
         setHeader("PRODUKTIONER");
         setCenter("INGEN PRODUKTIONER FUNDET");
     }

@@ -29,7 +29,7 @@ public class FrameController implements Initializable {
     @FXML
     TextField searchTextField;
     @FXML
-    RadioButton productionRadioButton, actorRadioButton;
+    RadioButton productionRadioButton, roleRadioButton;
     @FXML
     Label productionLabel, roleLabel;
 
@@ -46,7 +46,7 @@ public class FrameController implements Initializable {
         //Sets radiobuttons together for searching
         ToggleGroup searchParameters = new ToggleGroup();
         productionRadioButton.setToggleGroup(searchParameters);
-        actorRadioButton.setToggleGroup(searchParameters);
+        roleRadioButton.setToggleGroup(searchParameters);
 
     }
 

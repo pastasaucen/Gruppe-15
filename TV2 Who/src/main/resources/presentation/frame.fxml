@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.FrameController">
+<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.FrameController">
    <top>
       <HBox prefHeight="64.0" prefWidth="900.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER">
          <children>
@@ -14,15 +22,14 @@
                <items>
                   <ImageView fx:id="frameImage" fitHeight="58.0" fitWidth="160.0" onMouseClicked="#centerWelcome" pickOnBounds="true">
                      <image>
-                        <Image url="@Pictures/TV2%20Mini%20Alpha.png" />
                      </image></ImageView>
                </items></SplitPane>
             <SplitPane prefHeight="64.0" prefWidth="532.0" style="-fx-background-color: #303030;">
                <items>
                   <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #303030; -fx-border-color: #303030;">
                      <children>
-                        <Label alignment="CENTER" prefHeight="65.0" prefWidth="231.0" style="-fx-text-fill: #f0f0f0; -fx-border-color: transparent;" text="PRODUKTIONER" />
-                        <Label alignment="CENTER" ellipsisString="" prefHeight="74.0" prefWidth="264.0" style="-fx-text-fill: #f0f0f0;" text="SKUESPILLERE" />
+                        <Label alignment="CENTER" onMouseClicked="#productionScene" prefHeight="65.0" prefWidth="231.0" style="-fx-text-fill: #f0f0f0; -fx-border-color: transparent;" text="PRODUKTIONER" />
+                        <Label alignment="CENTER" ellipsisString="" prefHeight="74.0" prefWidth="264.0" style="-fx-text-fill: #f0f0f0;" text="MEDVIRKENDE" />
 
                      </children>
                   </HBox>
@@ -30,23 +37,18 @@
             </SplitPane>
             <Pane prefHeight="64.0" prefWidth="298.0" style="-fx-background-color: #303030; -fx-border-color: #303030;">
                <children>
-                  <TextField fx:id="searchTextField" layoutX="43.0" layoutY="12.0" prefHeight="25.0" prefWidth="205.0" />
-                  <RadioButton fx:id="productionRadioButton" layoutX="43.0" layoutY="41.0" mnemonicParsing="false" text="PRODUKTIONER" textFill="WHITE">
-                  <TextField  layoutX="43.0" layoutY="12.0" prefHeight="25.0" prefWidth="188.0" promptText="Type search word here" />
-                  <RadioButton  layoutX="43.0" layoutY="41.0" mnemonicParsing="false" text="PRODUKTIONER">
+                  <TextField fx:id="searchTextField" layoutX="43.0" layoutY="12.0" prefHeight="20.0" prefWidth="182.0" promptText="Indtast søgeord her" />
+                  <RadioButton fx:id="productionRadioButton" layoutX="43.0" layoutY="41.0" mnemonicParsing="false" prefHeight="4.0" prefWidth="105.0" text="PRODUKTIONER" textFill="WHITE">
                      <font>
-                        <Font size="9.0" />
-                     </font>
-                  </RadioButton>
+                        <Font size="10.0" />
+                     </font></RadioButton>
                   <Text fill="WHITE" layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SØG" />
-                  <RadioButton layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="SKUESPILLERE" textFill="WHITE">
-                  <Text layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SØG" />
-                  <RadioButton fx:id="actorRadioButton" layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="SKUESPILLERE">
+                  <RadioButton fx:id="roleRadioButton" layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="MEDVIRKENDE" textFill="WHITE">
                      <font>
-                        <Font size="9.0" />
-                     </font>
-                  </RadioButton>
-                  <ImageView fx:id="searchImage" fitHeight="20.0" fitWidth="20.0" layoutX="231.0" layoutY="15.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
+                        <Font size="10.0" />
+                     </font></RadioButton>
+                  <Text fill="#f8f3f3" layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SØG" />
+                  <ImageView fx:id="searchImage" fitHeight="24.0" fitWidth="25.0" layoutX="226.0" layoutY="12.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Pictures/searchPurple.png" />
                      </image>

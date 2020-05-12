@@ -1,0 +1,2 @@
+GUI: Background grey: #303030
+TV2 Who logo purple: #A43AD9

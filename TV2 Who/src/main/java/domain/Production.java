@@ -7,16 +7,12 @@ import java.util.List;
 public class Production {
 
 	private int id;
-
 	private String name;
-
 	private Date releaseDate;
-
 	private State state = State.PENDING;
-
 	private String associatedProducerEmail;
-
 	private List<Cast> cast = new ArrayList<>();
+	private String tvCode;
 
 	/**
 	 * Creates a production instance.
@@ -35,11 +31,12 @@ public class Production {
 		this.releaseDate = releaseDate;
 	}
 
-	public Production(int id, String name, Date releaseDate, State state, String associatedProducerEmail) {
+	public Production(int id, String name, Date releaseDate, State state, String tvCode, String associatedProducerEmail) {
 		this.id = id;
 		this.name = name;
 		this.releaseDate = releaseDate;
 		this.state = state;
+		this.tvCode = tvCode;
 		this.associatedProducerEmail = associatedProducerEmail;
 	}
 
@@ -86,6 +83,14 @@ public class Production {
 		return cast;
 	}
 
+	public void setAssociatedProducerEmail(String associatedProducerEmail) {
+		this.associatedProducerEmail = associatedProducerEmail;
+	}
+
+	public String getTvCode() {
+		return tvCode;
+	}
+
 	@Override
 	public String toString() {
 		String castString = "";
@@ -101,9 +106,5 @@ public class Production {
 				"state =" + state + '\n' +
 				"associatedProducerEmail ='" + associatedProducerEmail + '\'' + '\n' +
 				"cast =" + "\n" + castString;
-	}
-
-	public void setAssociatedProducerEmail(String associatedProducerEmail) {
-		this.associatedProducerEmail = associatedProducerEmail;
 	}
 }

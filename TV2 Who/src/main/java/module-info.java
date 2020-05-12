@@ -3,7 +3,7 @@ module gruppe15 {
     requires javafx.fxml;
     requires java.sql;
     requires junit;
-    requires postgresql;
+    requires org.postgresql.jdbc;
 
     opens presentation to javafx.fxml;
     exports presentation;

@@ -1,7 +1,7 @@
 package domain;
 
 import domain.persistenceInterfaces.IPersistenceProduction;
-import persistence.fileHandlers.ProductionsFileHandler;
+import persistence.PersistenceHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,10 @@ import java.util.List;
 public class ProductionCatalog {
 
     private static ProductionCatalog instance;
-    private IPersistenceProduction persistenceProduction = new ProductionsFileHandler();
+    private IPersistenceProduction persistenceProduction = PersistenceHandler.getInstance();
 
     //  Gets overridden every time to search in the persistence layer
     private List<Production> productions;
-
 
     private ProductionCatalog() {
         productions = new ArrayList<>();

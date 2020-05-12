@@ -9,9 +9,10 @@
    <top>
       <HBox prefHeight="64.0" prefWidth="900.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER">
          <children>
+
             <SplitPane prefHeight="74.0" prefWidth="182.0" style="-fx-background-color: #303030;">
                <items>
-                  <ImageView fx:id="frameImage" fitHeight="58.0" fitWidth="160.0" pickOnBounds="true">
+                  <ImageView fx:id="frameImage" fitHeight="58.0" fitWidth="160.0" onMouseClicked="#centerWelcome" pickOnBounds="true">
                      <image>
                         <Image url="@Pictures/TV2%20Mini%20Alpha.png" />
                      </image></ImageView>
@@ -22,24 +23,34 @@
                      <children>
                         <Label alignment="CENTER" prefHeight="65.0" prefWidth="231.0" style="-fx-text-fill: #f0f0f0; -fx-border-color: transparent;" text="PRODUKTIONER" />
                         <Label alignment="CENTER" ellipsisString="" prefHeight="74.0" prefWidth="264.0" style="-fx-text-fill: #f0f0f0;" text="SKUESPILLERE" />
+
                      </children>
                   </HBox>
                </items>
             </SplitPane>
             <Pane prefHeight="64.0" prefWidth="298.0" style="-fx-background-color: #303030; -fx-border-color: #303030;">
                <children>
-                  <TextField layoutX="43.0" layoutY="12.0" prefHeight="25.0" prefWidth="205.0" />
-                  <RadioButton layoutX="43.0" layoutY="41.0" mnemonicParsing="false" text="PRODUKTIONER" textFill="WHITE">
+                  <TextField fx:id="searchTextField" layoutX="43.0" layoutY="12.0" prefHeight="25.0" prefWidth="205.0" />
+                  <RadioButton fx:id="productionRadioButton" layoutX="43.0" layoutY="41.0" mnemonicParsing="false" text="PRODUKTIONER" textFill="WHITE">
+                  <TextField  layoutX="43.0" layoutY="12.0" prefHeight="25.0" prefWidth="188.0" promptText="Type search word here" />
+                  <RadioButton  layoutX="43.0" layoutY="41.0" mnemonicParsing="false" text="PRODUKTIONER">
                      <font>
                         <Font size="9.0" />
                      </font>
                   </RadioButton>
                   <Text fill="WHITE" layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SØG" />
                   <RadioButton layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="SKUESPILLERE" textFill="WHITE">
+                  <Text layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SØG" />
+                  <RadioButton fx:id="actorRadioButton" layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="SKUESPILLERE">
                      <font>
                         <Font size="9.0" />
                      </font>
                   </RadioButton>
+                  <ImageView fx:id="searchImage" fitHeight="20.0" fitWidth="20.0" layoutX="231.0" layoutY="15.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Pictures/searchPurple.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
          </children>

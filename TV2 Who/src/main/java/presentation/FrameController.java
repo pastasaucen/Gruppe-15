@@ -14,6 +14,7 @@ import javafx.scene.control.ToggleGroup;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.sql.Date;
@@ -32,6 +33,8 @@ public class FrameController implements Initializable {
     RadioButton productionRadioButton, roleRadioButton;
     @FXML
     Label productionLabel, roleLabel;
+    @FXML
+    HBox frameHBox;
 
     IPersistenceProduction persistenceProduction;
     ProductionController productionController = new ProductionController();

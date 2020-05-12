@@ -26,7 +26,7 @@
                </items></SplitPane>
             <SplitPane prefHeight="64.0" prefWidth="532.0" style="-fx-background-color: #303030;">
                <items>
-                  <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #303030; -fx-border-color: #303030;">
+                  <HBox fx:id="frameHBox" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #303030; -fx-border-color: #303030;">
                      <children>
                         <Label alignment="CENTER" onMouseClicked="#productionScene" prefHeight="65.0" prefWidth="231.0" style="-fx-text-fill: #f0f0f0; -fx-border-color: transparent;" text="PRODUKTIONER" />
                         <Label alignment="CENTER" ellipsisString="" prefHeight="74.0" prefWidth="264.0" style="-fx-text-fill: #f0f0f0;" text="MEDVIRKENDE" />

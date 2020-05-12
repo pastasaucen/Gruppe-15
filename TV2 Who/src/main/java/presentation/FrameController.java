@@ -70,6 +70,7 @@ public class FrameController implements Initializable {
     /**
      * CHanges the scene depending on what gets searched
      * TODO skal kunne reagere på om der søges på skuespillere
+     * TODO Funktionalitet for søg efter medvirkedne her
      * @param mouseEvent
      */
     public void search(javafx.scene.input.MouseEvent mouseEvent) {
@@ -88,8 +89,6 @@ public class FrameController implements Initializable {
             name.addCastMember(cast1);
             name.addCastMember(new Cast(2, "kj", "jn", "jk"));
             //Todo Herfra til todo før denne slettes
-
-            mainBorderPane.setCenter(productionController);
 
             centerProduction();
 

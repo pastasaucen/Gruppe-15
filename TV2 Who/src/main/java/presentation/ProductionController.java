@@ -66,7 +66,7 @@ public class ProductionController extends BorderPane {
         searchedProductionsList = new ListView<String>(list);
         searchedProductionsList.setStyle("-fx-control-inner-background: white"); //sets bagground color for listview
 
-        searchedProductionsList.getSelectionModel().getSelectedItem();
+        searchedProductionsList.getSelectionModel().getSelectedItem(); //Makes it possible to click on one
 
         clickingOnproductionList(productions); //makes it possible to click on the results
 

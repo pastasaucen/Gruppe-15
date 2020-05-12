@@ -126,4 +126,8 @@ public class FrameController implements Initializable {
         productionController.productionNotFound();
         centerProduction();
     }
+
+    public void TesniemTesting(javafx.scene.input.MouseEvent mouseEvent){
+        productionController.createProduction();
+    }
 }

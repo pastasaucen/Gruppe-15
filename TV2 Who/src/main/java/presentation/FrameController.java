@@ -127,6 +127,10 @@ public class FrameController implements Initializable {
         centerProduction();
     }
 
+    /**
+     * This should be deleted when createProduction has been tested
+     * @param mouseEvent
+     */
     public void TesniemTesting(javafx.scene.input.MouseEvent mouseEvent){
         productionController.createProduction();
     }

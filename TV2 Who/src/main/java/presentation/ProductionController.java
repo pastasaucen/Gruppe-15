@@ -8,7 +8,6 @@ import domain.persistenceInterfaces.IPersistenceProduction;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,32 +24,31 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.converter.DateTimeStringConverter;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.time.DateTimeException;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ProductionController extends BorderPane {
     @FXML
-    ListView<String> searchedProductionsList, searchedCastList; //List of productions that matches the search
+    ListView<String> searchedProductionsList = null, searchedCastList = null; //List of productions that matches the search used to make listView in the code
     @FXML
-    BorderPane productionBorderPane, centerBorderPane;//boarderpane for production.fxml and borderpain for the top of productionBorderPane
+    BorderPane productionBorderPane, //Border pane in the scene
+            centerBorderPane;//boarderpane used for top in productionBorderPane for layout
     @FXML
     Text header, center; //used for centerBorderPane
 
     String headerText, centerText; //used for Text header and center
     IPersistenceProduction persistenceProduction; //TODO Instansiate
     IPersistenceCast persistenceCast; //TODO Instansiate
-    List<Cast> castList;
+    List<Cast> castList; //Used for searchedCastList
 
     /**
-     * makes subscene that can be loaded by fram
+     * makes subscene that can be loaded by frame
      */
     public ProductionController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("production.fxml"));
@@ -67,6 +65,7 @@ public class ProductionController extends BorderPane {
     }
 
     /**
+     * Used for when search on productions in frame
      * Makes listView for searched productions and sets it in the center of centerBorderPain and sets the text for top
      * of that(makes a header)
      * @param searchWord
@@ -85,14 +84,12 @@ public class ProductionController extends BorderPane {
 
         searchedProductionsList.getSelectionModel().getSelectedItem(); //Makes it possible to click on one
 
-        clickingOnproductionList(productions); //makes it possible to click on the results
+        clickingOnproductionList(productions); //Action when click on one
 
         //sets header and listview on centerBorderPain
-        clearProductionBorderPane();
+        clearProductionBorderPane();//clears the borderPane
         headerText = "Der er " + productions.size() +  " produktion(er) der matcher din søgning: '" + searchWord + "'";
         setHeader();
-
-
         productionBorderPane.setCenter(searchedProductionsList);
     }
 
@@ -168,9 +165,8 @@ public class ProductionController extends BorderPane {
             public void handle(MouseEvent mouseEvent) {
                 //Gets the clicked item
                 Production prodUsing = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
+
                 setHeader(prodUsing.getName());
-
-
                 //Sets the left part for information about release date
                 Label label = new Label("  RELEASE DATE :" );
                 label.setFont(Font.font(15));
@@ -182,14 +178,12 @@ public class ProductionController extends BorderPane {
                 vbox.setAlignment(Pos.TOP_LEFT);
                 vbox.getChildren().addAll(label,label2);
 
-
                 BorderPane left = new BorderPane();
                 Label space = new Label("");
                 label.setMinWidth(20);
                 left.setLeft(space);
                 left.setCenter(vbox);
                 productionBorderPane.setLeft(left);
-
 
                 //Makes listview with all the roles in the production
                 ArrayList<String> castList = new ArrayList<>();
@@ -199,7 +193,14 @@ public class ProductionController extends BorderPane {
 
                     for(Role r: cast.getRoles()){
                         if(r.getProduction().equals(prodUsing)){
-                            roles = r.getRoleName();
+                            roleListString.add(r.getRoleName());
+                        }
+                    }
+                    for(int i = 0; i < roleListString.size(); i++){
+                        if( roleListString.size() == i-1){
+                            roles = roles + roleListString.get(i);
+                        } else {
+                            roles = roles + roleListString + ", ";
                         }
                     }
                     castList.add(cast.getFirstName() + " " + cast.getLastName() +"\n" + roles );
@@ -214,8 +215,10 @@ public class ProductionController extends BorderPane {
     }
 
     /**
-     * Creates production
-     * TODO tilføje opretter
+     * CALL THIS METHOD FOR WHEN WANTING TO ADD PRODUCTION
+     *
+     * Start scene for creating production, adds roles and ends at the start scene again
+     * TODO TILFØJE STED DEN BLIVER KALDT
      */
     public void createProduction() {
         clearProductionBorderPane();
@@ -264,8 +267,7 @@ public class ProductionController extends BorderPane {
         grid.add(createProductionButton, 2, 11);
         grid.add(warningText,2,12);
 
-
-
+        //Action for createProductionButton
         createProductionButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -286,6 +288,11 @@ public class ProductionController extends BorderPane {
                     nameUsable = false;
                 }
 
+                if(productionDayField.getText().length() > 2 || productionMonthField.getText().length() > 2
+                        || productionYearField.getText().length() > 4){
+                    dateUsable = false;
+                }
+
                 if(nameUsable.equals(false)){
                     warningText.setText("UDFYLD PRODUKTIONS NAVN");
                     return;
@@ -301,12 +308,12 @@ public class ProductionController extends BorderPane {
                 }
 
 
-
                 /*
                 TODO fjerne kommentar
                 List<Production> list = iPersistenceProduction.getProductions(productionNameField.getText());
-
                  */
+
+                //TODO Fjerne herfra
                 ArrayList<Production> list = new ArrayList<>();
                 Production name = new Production(1, "name", new Date(2014,02,11));
                 list.add(name);
@@ -315,6 +322,7 @@ public class ProductionController extends BorderPane {
                 cast1.addRole("role", name);
                 name.addCastMember(cast1);
                 name.addCastMember(new Cast(2, "kj", "jn", "jk"));
+                //TODO Hertil
 
                 ArrayList<Production> exists = new ArrayList<>();
                 for(Production production: list){
@@ -360,6 +368,9 @@ public class ProductionController extends BorderPane {
                         }
                     });
 
+                    stage.setAlwaysOnTop(true);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+
                     stage.setScene(scene);
                     stage.show();
 
@@ -370,13 +381,20 @@ public class ProductionController extends BorderPane {
 
         });
 
-
         centerBorderPane.setCenter(grid);
     }
 
-    public void addCastScene(String pName, Date pReleaseDate){
+    /**
+     * creates a production but doesn't save at first. changes scene to where can add cast and roles .
+     * When finished saves production in database
+     * todo tilføje opretter email
+     * @param pName
+     * @param pReleaseDate
+     */
+    private void addCastScene(String pName, Date pReleaseDate){
         Production production = new Production(pName,pReleaseDate);
-        //production.setAssociatedProducerEmail(); //ToDo tilføje skaberen
+        //production.setAssociatedProducerEmail(); //ToDo tilføje skaberen, hvor finder jeg den henne
+        List<String> roleListString = new ArrayList<>();
 
         clearProductionBorderPane();
         setHeader("TILFØJ MEDVIRKENDE");
@@ -396,7 +414,11 @@ public class ProductionController extends BorderPane {
         grid.add(hBox,2,2);
         productionBorderPane.setCenter(grid);
 
-
+        Text castText = new Text("Valgte medspiller");
+        grid.add(castText,2,4);
+        String stringCastNotChoosen = "Ingen valgte medspiller";
+        Text castChoosenText = new Text(stringCastNotChoosen);
+        grid.add(castChoosenText,2,5);
 
         search.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -406,6 +428,8 @@ public class ProductionController extends BorderPane {
                 Cast cast1 = new Cast(1, "1 firstname", "1 lastname", "1email");
                 castList = new ArrayList<>();
                 castList.add(cast1);
+                Cast cast2 = new Cast(2, "2 firstname", "2 lastname", "1email");
+                castList.add(cast2);
                 //Todo Herfra til todo før denne slettes
 
                 ArrayList<String> string = new ArrayList<>();
@@ -415,7 +439,10 @@ public class ProductionController extends BorderPane {
 
                 ObservableList<String> list = FXCollections.observableArrayList(string);
                 searchedCastList = new ListView<>(list);
+
                 searchedCastList.getSelectionModel().getSelectedItem();
+                choosingActorforRole(castList, castChoosenText);
+
 
                 grid.add(searchedCastList,2,3);
 
@@ -436,16 +463,54 @@ public class ProductionController extends BorderPane {
         warning.setFill(Color.RED);
         grid.add(warning,3,4);
 
+
         addRole.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 warning.setText("");
-                if(searchedCastList.getSelectionModel().getSelectedItem().isBlank() || roleName.getText().isEmpty()){
-                    if(searchedCastList.getSelectionModel().getSelectedItem().isBlank()){
-                        warning.setText("vælg en medspiller");
-                    }else{
-                        warning.setText("Giv rollen et navn");
-                    }
+
+                if(castChoosenText.getText().equalsIgnoreCase(stringCastNotChoosen)){
+                    warning.setText("vælg en medspiller");
+                } else if(roleName.getText().isEmpty()){
+                    Stage stage = new Stage();
+                    stage.setResizable(false);
+                    BorderPane borderPane = new BorderPane();
+                    borderPane.setPrefSize(500,500);
+                    Scene scene = new Scene(borderPane);
+
+                    Text text = new Text("Der er ikke tilføjet en rolle til medspilleren \n" +
+                            "Vil du stadig tilføje medspilleren?");
+                    borderPane.setCenter(text);
+
+                    HBox hbox = new HBox();
+                    Button yes = new Button("Ja");
+                    Button no = new Button("Nej");
+                    hbox.getChildren().addAll(yes,no);
+                    hbox.setAlignment(Pos.TOP_CENTER);
+                    hbox.setPrefHeight(150);
+                    hbox.setSpacing(100);
+                    borderPane.setBottom(hbox);
+                    stage.setAlwaysOnTop(true);
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.setScene(scene);
+                    stage.show();
+
+                    yes.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            stage.close();
+                            Cast castUsing = castList.get(searchedCastList.getSelectionModel().getSelectedIndex());
+                            castUsing.addRole("ROLLE IKKE DEFINERET",production);
+                            production.addCastMember(castUsing);
+                            updateRoleList(grid, production);
+                        }
+                    });
+                    no.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            stage.close();
+                        }
+                    });
                 } else{
                     Cast castUsing = castList.get(searchedCastList.getSelectionModel().getSelectedIndex());
                     castUsing.addRole(roleName.getText(),production);
@@ -461,26 +526,64 @@ public class ProductionController extends BorderPane {
         finished.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //persistenceProduction.saveProduction(production);
                 createProduction();
+                //persistenceProduction.saveProduction(production); //TODO remove comment
+
+                Stage stage = new Stage();
+                stage.setResizable(false);
+                BorderPane borderPane = new BorderPane();
+                borderPane.setPrefSize(300,300);
+                Scene scene = new Scene(borderPane);
+
+                Text text = new Text("PRODUKTIONEN ER OPRETTET");
+                borderPane.setCenter(text);
+
+                HBox hbox = new HBox();
+                Button ok = new Button("OK");
+                hbox.getChildren().addAll(ok);
+                hbox.setAlignment(Pos.TOP_CENTER);
+                hbox.setPrefHeight(150);
+                hbox.setSpacing(100);
+                borderPane.setBottom(hbox);
+                stage.setAlwaysOnTop(true);
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(scene);
+                stage.show();
+
+                ok.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        stage.close();
+                    }
+                });
             }
         });
 
-
-
-        //Todo tilføje produktion
-
     }
 
+    /**
+     * call this for updating roll list in addCastScene
+     * @param grid
+     * @param production
+     */
     private void updateRoleList(GridPane grid, Production production){
         ArrayList<String> roleString = new ArrayList<>();
         for(Cast cast: production.getCast()){
             String roleCounts = "";
+            ArrayList<String> roleCountsString= new ArrayList<>();
             for(Role role: cast.getRoles()){
                 if(role.getProduction().equals(production)){
-                    roleCounts = role.getRoleName();
+                    roleCountsString.add(role.getRoleName());
                 }
             }
+            for(int i = 0; i < roleCountsString.size(); i++){
+                if(i == roleCountsString.size() -1){
+                    roleCounts = roleCounts + roleCountsString.get(i);
+                } else {
+                    roleCounts = roleCounts + roleCountsString.get(i) + ", ";
+                }
+            }
+
             roleString.add(cast.getFirstName() + " " + cast.getLastName() + "\n" + roleCounts );
         }
 
@@ -493,10 +596,21 @@ public class ProductionController extends BorderPane {
 
     }
 
-
-
-
-
-
+    /**
+     * click action for searchedCastList
+     * Prints error when choose somthing that's not an item but ignore that
+     * @param casts
+     * @param text
+     */
+   private void choosingActorforRole(List<Cast> casts, Text text){
+        //Action when clicked on something
+        searchedCastList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Cast castUsing = casts.get(searchedCastList.getSelectionModel().getSelectedIndex());
+                text.setText(castUsing.getFirstName() + " " + castUsing.getLastName() + "\n" + castUsing.getEmail());
+            }
+        });
+    }
 
 }

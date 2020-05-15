@@ -1,8 +1,6 @@
 package presentation;
 
-import domain.Cast;
-import domain.Production;
-import domain.Role;
+import domain.*;
 import domain.persistenceInterfaces.IPersistenceCast;
 import domain.persistenceInterfaces.IPersistenceProduction;
 import javafx.collections.FXCollections;
@@ -35,7 +33,9 @@ import java.util.List;
 
 public class ProductionController extends BorderPane {
     @FXML
-    ListView<String> searchedProductionsList = null, searchedCastList = null; //List of productions that matches the search used to make listView in the code
+    ListView<String> searchedProductionsList = null, //List of productions that matches the search used to make listView in the code
+            searchedCastList = null,
+            castView = null;
     @FXML
     BorderPane productionBorderPane, //Border pane in the scene
             centerBorderPane;//boarderpane used for top in productionBorderPane for layout
@@ -43,9 +43,11 @@ public class ProductionController extends BorderPane {
     Text header, center; //used for centerBorderPane
 
     String headerText, centerText; //used for Text header and center
-    IPersistenceProduction persistenceProduction; //TODO Instansiate
-    IPersistenceCast persistenceCast; //TODO Instansiate
     List<Cast> castList; //Used for searchedCastList
+    ArrayList<String> roleString; //List for update rollList
+
+    ITV2WhoUI tv2Who = TV2Who.getInstance();
+
 
     /**
      * makes subscene that can be loaded by frame
@@ -207,12 +209,28 @@ public class ProductionController extends BorderPane {
                 }
                 ObservableList<String> list = FXCollections.observableArrayList(castList);
 
-                ListView<String> castView = new ListView<>(list);
+                castView = new ListView<>(list);
+                clickingOnCastList(prodUsing.getCast());
                 productionBorderPane.setCenter(castView);
 
             }
         });
     }
+
+    /**
+     * For when clicking on castView in clickOnProduction
+     * @param casts
+     */
+    private void clickingOnCastList(List<Cast> casts) {
+        //Action when clicked on something
+        castView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Cast castUsing = casts.get(castView.getSelectionModel().getSelectedIndex());
+            }
+        });
+    }
+
 
     /**
      * CALL THIS METHOD FOR WHEN WANTING TO ADD PRODUCTION
@@ -310,7 +328,7 @@ public class ProductionController extends BorderPane {
 
                 /*
                 TODO fjerne kommentar
-                List<Production> list = iPersistenceProduction.getProductions(productionNameField.getText());
+                List<Production> list = tv2Who.prepareProductionSearchList(productionNameField.getText());
                  */
 
                 //TODO Fjerne herfra
@@ -392,7 +410,9 @@ public class ProductionController extends BorderPane {
      * @param pReleaseDate
      */
     private void addCastScene(String pName, Date pReleaseDate){
-        Production production = new Production(pName,pReleaseDate);
+        Production production = tv2Who.createProduction(pName,pReleaseDate);
+        roleString = new ArrayList<>();
+
         //production.setAssociatedProducerEmail(); //ToDo tilføje skaberen, hvor finder jeg den henne
         List<String> roleListString = new ArrayList<>();
 
@@ -416,14 +436,15 @@ public class ProductionController extends BorderPane {
 
         Text castText = new Text("Valgte medspiller");
         grid.add(castText,2,4);
-        String stringCastNotChoosen = "Ingen valgte medspiller";
+        String stringCastNotChoosen = "ROLLENAVN IKKE DEFINERET";
         Text castChoosenText = new Text(stringCastNotChoosen);
         grid.add(castChoosenText,2,5);
 
         search.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //castList = persistenceCast.getCastMembers(searchCast.getText());
+                //TODO fjerne kommentering
+                //castList = tv2Who.prepareCastSearchList(searchCast.getText(), "");
                 //TODO Herfra til næste to do skal slettes
                 Cast cast1 = new Cast(1, "1 firstname", "1 lastname", "1email");
                 castList = new ArrayList<>();
@@ -443,7 +464,6 @@ public class ProductionController extends BorderPane {
                 searchedCastList.getSelectionModel().getSelectedItem();
                 choosingActorforRole(castList, castChoosenText);
 
-
                 grid.add(searchedCastList,2,3);
 
             }
@@ -456,8 +476,6 @@ public class ProductionController extends BorderPane {
         HBox hBoxRolle = new HBox();
         hBoxRolle.getChildren().addAll(roleName, addRole);
         grid.add(hBoxRolle,3, 2);
-
-        updateRoleList(grid, production);
 
         Text warning = new Text();
         warning.setFill(Color.RED);
@@ -502,7 +520,7 @@ public class ProductionController extends BorderPane {
                             Cast castUsing = castList.get(searchedCastList.getSelectionModel().getSelectedIndex());
                             castUsing.addRole("ROLLE IKKE DEFINERET",production);
                             production.addCastMember(castUsing);
-                            updateRoleList(grid, production);
+                            updateRoleList(grid, production, roleName.getText(), castChoosenText.getText());
                         }
                     });
                     no.setOnAction(new EventHandler<ActionEvent>() {
@@ -515,7 +533,7 @@ public class ProductionController extends BorderPane {
                     Cast castUsing = castList.get(searchedCastList.getSelectionModel().getSelectedIndex());
                     castUsing.addRole(roleName.getText(),production);
                     production.addCastMember(castUsing);
-                    updateRoleList(grid, production);
+                    updateRoleList(grid, production, roleName.getText(), castChoosenText.getText());
                 }
             }
         });
@@ -527,7 +545,7 @@ public class ProductionController extends BorderPane {
             @Override
             public void handle(ActionEvent actionEvent) {
                 createProduction();
-                //persistenceProduction.saveProduction(production); //TODO remove comment
+                //tv2Who.saveProduction(production); //TODO remove comment
 
                 Stage stage = new Stage();
                 stage.setResizable(false);
@@ -566,26 +584,14 @@ public class ProductionController extends BorderPane {
      * @param grid
      * @param production
      */
-    private void updateRoleList(GridPane grid, Production production){
-        ArrayList<String> roleString = new ArrayList<>();
-        for(Cast cast: production.getCast()){
-            String roleCounts = "";
-            ArrayList<String> roleCountsString= new ArrayList<>();
-            for(Role role: cast.getRoles()){
-                if(role.getProduction().equals(production)){
-                    roleCountsString.add(role.getRoleName());
-                }
-            }
-            for(int i = 0; i < roleCountsString.size(); i++){
-                if(i == roleCountsString.size() -1){
-                    roleCounts = roleCounts + roleCountsString.get(i);
-                } else {
-                    roleCounts = roleCounts + roleCountsString.get(i) + ", ";
-                }
-            }
+    private void updateRoleList(GridPane grid, Production production, String roleName, String castText){
 
-            roleString.add(cast.getFirstName() + " " + cast.getLastName() + "\n" + roleCounts );
+        String roleCounts = roleName;
+        if(roleCounts.equalsIgnoreCase("")){
+            roleCounts = "ROLLENAVN IKKE DEFINERET";
         }
+        roleString.add(castText + "\n" + roleCounts );
+
 
         ObservableList<String> list = FXCollections.observableArrayList(roleString);
         ListView<String> roleList = new ListView<>(list);
@@ -607,8 +613,13 @@ public class ProductionController extends BorderPane {
         searchedCastList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Cast castUsing = casts.get(searchedCastList.getSelectionModel().getSelectedIndex());
-                text.setText(castUsing.getFirstName() + " " + castUsing.getLastName() + "\n" + castUsing.getEmail());
+                try{
+                    Cast castUsing = casts.get(searchedCastList.getSelectionModel().getSelectedIndex());
+                    text.setText(castUsing.getFirstName() + " " + castUsing.getLastName() + "\n" + castUsing.getEmail());
+                } catch (IndexOutOfBoundsException e){
+
+                }
+
             }
         });
     }

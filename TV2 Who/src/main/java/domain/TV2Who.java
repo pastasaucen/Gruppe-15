@@ -29,8 +29,6 @@ public class TV2Who implements ITV2WhoUI {
         return instance;
     }
 
-    public void findProduction(String nameOrId) { }
-
     /**
      * Searches for productions through productionCatalog by name or ID.
      *

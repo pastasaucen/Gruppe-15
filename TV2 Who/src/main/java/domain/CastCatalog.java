@@ -2,20 +2,23 @@ package domain;
 
 import domain.persistenceInterfaces.IPersistenceCast;
 import persistence.PersistenceHandler;
+import domain.producer.Producer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CastCatalog {
 
+
+    //private ITV2WhoUI tv2 = TV2Who.getInstance();
+
+    private IPersistenceCast persistenceCast = PersistenceHandler.getInstance();
     private static CastCatalog instance;
+
     // Temporary until the persistence layer is implemented. We always want the newest data from the persistence layer.
     private List<Cast> cast = new ArrayList<>();
 
-    private IPersistenceCast persistenceCast = PersistenceHandler.getInstance();
-
     private CastCatalog() {
-
     }
 
     public static CastCatalog getInstance() {

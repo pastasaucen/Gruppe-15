@@ -85,6 +85,9 @@ public class Producer extends User implements IProducer {
 		production = null;
 	}
 
+	public Production getProduction() {
+		return production;
+	}
 
 	/**
 	 * Creates cast if not exist. if exist asks if still wants to create.

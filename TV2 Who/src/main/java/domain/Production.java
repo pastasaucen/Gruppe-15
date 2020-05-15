@@ -1,8 +1,11 @@
 package domain;
 
+import domain.producer.Producer;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Production {
 
@@ -11,7 +14,7 @@ public class Production {
 	private Date releaseDate;
 	private State state = State.PENDING;
 	private String associatedProducerEmail;
-	private List<Cast> cast = new ArrayList<>();
+	private List<Cast> castList = new ArrayList<>();
 	private String tvCode;
 
 	/**
@@ -41,18 +44,21 @@ public class Production {
 	}
 
 	public void addCastMember(Cast castMember) {
-		cast.add(castMember);
+		castList.add(castMember);
 }
 
+	//Returns updated list, after adding a role to a cast.
 	public void addRole(String roleName, Cast castMember) {
 		// Iterates through every cast member in this production
-		for (int castNum = 0; castNum < cast.size(); castNum++) {
+		for (int castNum = 0; castNum < castList.size(); castNum++) {
 			// If the cast member is the same as the given cast member, then add the role to that one.
-			if (castMember.equals(cast.get(castNum))) {
-				cast.get(castNum).addRole(-1, roleName, this);
+			if (castMember.equals(castList.get(castNum))) {
+				castList.get(castNum).addRole(-1, roleName, this);
 				return;
 			}
 		}
+
+		castMember.addRole(-1, roleName, this);
 	}
 
 	public String getName() {
@@ -79,8 +85,8 @@ public class Production {
 		return associatedProducerEmail;
 	}
 
-	public List<Cast> getCast() {
-		return cast;
+	public List<Cast> getCastList() {
+		return castList;
 	}
 
 	public void setAssociatedProducerEmail(String associatedProducerEmail) {
@@ -95,7 +101,7 @@ public class Production {
 	public String toString() {
 		String castString = "";
 
-		for (Cast value : cast) {
+		for (Cast value : castList) {
 			castString += "- " +(value.toString() + '\n');
 		}
 

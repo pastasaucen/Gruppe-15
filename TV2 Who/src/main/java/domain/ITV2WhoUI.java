@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ITV2WhoUI {
 
-    public List<Cast> prepareCastSearchList(String firstName,String lastName);
+    public List<Cast> prepareCastSearchList(String name);
 
     public List<Production> prepareProductionSearchList(String nameOrId);
 

@@ -159,7 +159,6 @@ public class ProductionController extends BorderPane {
 
     /**
      * When clicking on a production scene gets changed to production information with listview of roles
-     * TODO make roles clickable
      * @param productions
      */
     public void clickingOnproductionList(List<Production> productions){
@@ -264,7 +263,7 @@ public class ProductionController extends BorderPane {
         castNameLabel.setFont(Font.font(25));
         castNameLabel.setAlignment(Pos.CENTER);
         //castNameLabel.setPrefHeight(400);
-        TextArea profileText = new TextArea("Dette er en dummy bio. Når getBio() metoden er færdig, implementeres den her");
+        TextArea profileText = new TextArea(cast.getBio());
         profileText.setPrefHeight(400);
         profileText.setWrapText(true);
         profileText.setEditable(false);
@@ -376,22 +375,7 @@ public class ProductionController extends BorderPane {
                     warningText.setText("");
                 }
 
-
-                /*
-                TODO fjerne kommentar
                 List<Production> list = tv2Who.prepareProductionSearchList(productionNameField.getText());
-                 */
-
-                //TODO Fjerne herfra
-                ArrayList<Production> list = new ArrayList<>();
-                Production name = new Production(1, "name", new Date(2014,02,11));
-                list.add(name);
-                list.add(new Production(1, "second", new Date(2014,02,11)));
-                Cast cast1 = new Cast(1, "1 firstname", "1 lastname", "1email");
-                cast1.addRole("role", name);
-                name.addCastMember(cast1);
-                name.addCastMember(new Cast(2, "kj", "jn", "jk"));
-                //TODO Hertil
 
                 ArrayList<Production> exists = new ArrayList<>();
                 for(Production production: list){
@@ -494,15 +478,7 @@ public class ProductionController extends BorderPane {
         search.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //TODO fjerne kommentering
-                //castList = tv2Who.prepareCastSearchList(searchCast.getText(), "");
-                //TODO Herfra til næste to do skal slettes
-                Cast cast1 = new Cast(1, "1 firstname", "1 lastname", "1email");
-                castList = new ArrayList<>();
-                castList.add(cast1);
-                Cast cast2 = new Cast(2, "2 firstname", "2 lastname", "1email");
-                castList.add(cast2);
-                //Todo Herfra til todo før denne slettes
+                castList = tv2Who.prepareCastSearchList(searchCast.getText());
 
                 ArrayList<String> string = new ArrayList<>();
                 for(Cast cast: castList){
@@ -569,7 +545,7 @@ public class ProductionController extends BorderPane {
                         public void handle(ActionEvent actionEvent) {
                             stage.close();
                             Cast castUsing = castList.get(searchedCastList.getSelectionModel().getSelectedIndex());
-                            castUsing.addRole("ROLLE IKKE DEFINERET",production);
+                            castUsing.addRole(-1, "ROLLE IKKE DEFINERET", production);
                             production.addCastMember(castUsing);
                             updateRoleList(grid, production, roleName.getText(), castChoosenText.getText());
                         }
@@ -582,7 +558,7 @@ public class ProductionController extends BorderPane {
                     });
                 } else{
                     Cast castUsing = castList.get(searchedCastList.getSelectionModel().getSelectedIndex());
-                    castUsing.addRole(roleName.getText(),production);
+                    castUsing.addRole(-1, roleName.getText(),production);
                     production.addCastMember(castUsing);
                     updateRoleList(grid, production, roleName.getText(), castChoosenText.getText());
                 }
@@ -596,7 +572,7 @@ public class ProductionController extends BorderPane {
             @Override
             public void handle(ActionEvent actionEvent) {
                 createProduction();
-                //tv2Who.saveProduction(production); //TODO remove comment
+                tv2Who.saveProduction(production);
 
                 Stage stage = new Stage();
                 stage.setResizable(false);

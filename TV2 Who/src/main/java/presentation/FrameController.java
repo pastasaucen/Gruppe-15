@@ -42,10 +42,7 @@ public class FrameController implements Initializable {
     private WelcomeController welcomeController = new WelcomeController();
     private ITV2WhoUI tv2Who = TV2Who.getInstance();
 
-
-
     public FrameController(){}
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,7 +55,6 @@ public class FrameController implements Initializable {
         castRadioButton.setToggleGroup(searchParameters);
 
     }
-
 
     /**
      * Sets center borderpain to welcome.fxml
@@ -88,18 +84,7 @@ public class FrameController implements Initializable {
         String searchWord = searchTextField.getText();
         if(productionRadioButton.isSelected() && !searchWord.equals("")){
 //Todo næste linje fjerne kommentar
-            //næste linje fjerne kommentar
-            //List<Production> productionList = tv2Who.prepareProductionSearchList(searchWord);
-//TODO Herfra til næste to do skal slettes
-            List<Production> productionList = new ArrayList<>();
-            Production name = new Production(1, "name", new Date(2014,02,11));
-            productionList.add(name);
-            productionList.add(new Production(1, "second", new Date(2014,02,11)));
-            Cast cast1 = new Cast(1, "1 firstname", "1 lastname", "1email");
-            cast1.addRole("role", name);
-            name.addCastMember(cast1);
-            name.addCastMember(new Cast(2, "kj", "jn", "jk"));
-            //Todo Herfra til todo før denne slettes
+            List<Production> productionList = tv2Who.prepareProductionSearchList(searchWord);
 
             centerProduction();
 
@@ -109,15 +94,8 @@ public class FrameController implements Initializable {
         } else if(castRadioButton.isSelected() && !searchWord.equals("")){
             centerCast();
             //TODO: Næste linje virker først når IPersistence også virker!
-            castController.showCastList(searchWord,tv2Who.prepareCastSearchList(searchWord,""));
+            castController.showCastList(searchWord,tv2Who.prepareCastSearchList(searchWord));
 
-            //TODO: Følgende test slettes senere..
-            ArrayList<Cast> testCastList = new ArrayList<>();
-            Cast dummy1 = new Cast(80,"Nicolaj","Nielsen","nicoskov993@hotmail.com");
-            Cast dummy2 = new Cast(81,"Tesniem","El-Merie","tesPrivat@gmail.com");
-            testCastList.add(dummy1);
-            testCastList.add(dummy2);
-            castController.showCastList(searchWord,testCastList);
         } else if(castRadioButton.isSelected() && searchWord.equals("")){
             centerCast();
         } else {

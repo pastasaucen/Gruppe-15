@@ -154,7 +154,7 @@ public class CastController extends BorderPane {
         castNameLabel.setFont(Font.font(25));
         castNameLabel.setAlignment(Pos.CENTER);
         //castNameLabel.setPrefHeight(400);
-        TextArea profileText = new TextArea("Dette er en dummy bio. Når getBio() metoden er færdig, implementeres den her");
+        TextArea profileText = new TextArea(cast.getBio());
         profileText.setPrefHeight(400);
         profileText.setWrapText(true);
         profileText.setEditable(false);

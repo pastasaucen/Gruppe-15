@@ -62,13 +62,12 @@ public class TV2Who implements ITV2WhoUI {
     /**
      * Prepares a list of cast members for use in the presentation layer
      *
-     * @param firstName
-     * @param lastName
+     * @param name
      * @return List(Cast)
      */
     @Override
-    public List<Cast> prepareCastSearchList(String firstName, String lastName) {
-        return CastCatalog.getInstance().searchForCast(firstName + ' ' + lastName);
+    public List<Cast> prepareCastSearchList(String name) {
+        return CastCatalog.getInstance().searchForCast(name);
         // TODO: Is this correct?
     }
 

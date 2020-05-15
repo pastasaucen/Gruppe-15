@@ -12,10 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -49,6 +46,9 @@ public class ProductionController extends BorderPane {
     ArrayList<String> roleString; //List for update rollList
 
     ITV2WhoUI tv2Who = TV2Who.getInstance();
+   CastController castController = new CastController();
+   // FrameController frameController = new FrameController();
+
 
 
     /**
@@ -67,6 +67,7 @@ public class ProductionController extends BorderPane {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Used for when search on productions in frame
@@ -227,9 +228,54 @@ public class ProductionController extends BorderPane {
         castView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Cast castUsing = casts.get(castView.getSelectionModel().getSelectedIndex());
+                try{
+                    Cast castUsing = casts.get(castView.getSelectionModel().getSelectedIndex());
+                    createProfile(castUsing);
+                }catch (IndexOutOfBoundsException e){
+                    
+                }
+
+
             }
         });
+    }
+
+    public void createProfile(Cast cast) {
+        clearProductionBorderPane();
+        String lastName = cast.getLastName();
+        String firstName = cast.getFirstName();
+        //String bio = castList.get(index).getBio();
+
+        //The setup elements of a cast profile
+        VBox vertical1 = new VBox();
+        VBox vertical2 = new VBox();
+        HBox horizontal = new HBox();
+        horizontal.getChildren().addAll(vertical1, vertical2);
+        horizontal.setPadding(new Insets(5, 5, 5, 5));
+        vertical1.setPadding(new Insets(10, 20, 20, 20));
+        vertical2.setPadding(new Insets(20, 20, 20, 20));
+
+        //Profile left side setup
+        Label castNameLabel = new Label(firstName + " " + lastName);
+        castNameLabel.setFont(Font.font(25));
+        castNameLabel.setAlignment(Pos.CENTER);
+        //castNameLabel.setPrefHeight(400);
+        TextArea profileText = new TextArea("Dette er en dummy bio. Når getBio() metoden er færdig, implementeres den her");
+        profileText.setPrefHeight(400);
+        profileText.setWrapText(true);
+        profileText.setEditable(false);
+        vertical1.getChildren().addAll(castNameLabel, profileText);
+
+
+        //Profile right side setup
+        ListView<String> roleView = new ListView<>();
+        roleView.setPrefHeight(500);
+        roleView.setPrefWidth(350);
+        Label roleLabel = new Label("Medvirker i: ");
+        roleLabel.setFont(Font.font(14));
+        vertical2.getChildren().addAll(roleLabel, roleView);
+
+        productionBorderPane.setCenter(horizontal);
     }
 
 

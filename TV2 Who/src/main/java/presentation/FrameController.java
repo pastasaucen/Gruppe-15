@@ -42,6 +42,11 @@ public class FrameController implements Initializable {
     private WelcomeController welcomeController = new WelcomeController();
     private ITV2WhoUI tv2Who = TV2Who.getInstance();
 
+
+
+    public FrameController(){}
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         WelcomeController welcomeController = new WelcomeController();
@@ -125,7 +130,7 @@ public class FrameController implements Initializable {
         mainBorderPane.setCenter(productionController);
     }
 
-    private void centerCast(){
+    public void centerCast(){
         castController.setPrefHeight(450);
         mainBorderPane.setCenter(castController);
         castController.noCastFoundMessage();

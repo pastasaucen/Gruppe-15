@@ -1,5 +1,6 @@
 package presentation;
 
+import domain.*;
 import domain.Cast;
 import domain.ITV2WhoUI;
 import domain.Production;
@@ -30,16 +31,16 @@ public class FrameController implements Initializable {
     @FXML
     TextField searchTextField;
     @FXML
-    RadioButton productionRadioButton, roleRadioButton;
+    RadioButton productionRadioButton, castRadioButton;
     @FXML
     Label productionLabel, roleLabel;
     @FXML
     HBox frameHBox;
 
-    ProductionController productionController = new ProductionController();
-    WelcomeController welcomeController = new WelcomeController();
-    ITV2WhoUI tv2Who = TV2Who.getInstance();
-
+    private ProductionController productionController = new ProductionController();
+    private CastController castController = new CastController();
+    private WelcomeController welcomeController = new WelcomeController();
+    private ITV2WhoUI tv2Who = TV2Who.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -49,7 +50,7 @@ public class FrameController implements Initializable {
         //Sets radiobuttons together for searching
         ToggleGroup searchParameters = new ToggleGroup();
         productionRadioButton.setToggleGroup(searchParameters);
-        roleRadioButton.setToggleGroup(searchParameters);
+        castRadioButton.setToggleGroup(searchParameters);
 
     }
 
@@ -69,6 +70,8 @@ public class FrameController implements Initializable {
     public void centerWelcomeMouse(javafx.scene.input.MouseEvent mouseEvent){
         centerWelcome();
     }
+
+    public void centerCastMouse(javafx.scene.input.MouseEvent mouseEvent){ centerCast();}
 
     /**
      * CHanges the scene depending on what gets searched
@@ -98,6 +101,18 @@ public class FrameController implements Initializable {
             productionController.productionList(searchWord, productionList); //Den her skal fikses
         } else if(productionRadioButton.isSelected() && searchWord.equals("")){
             productionScene();
+        } else if(castRadioButton.isSelected() && !searchWord.equals("")){
+            centerCast();
+            //TODO: Næste linje virker først når IPersistence også virker!
+            castController.showCastList(searchWord,tv2Who.prepareCastSearchList(searchWord,""));
+
+            //TODO: Følgende test slettes senere..
+            ArrayList<Cast> testCastList = new ArrayList<>();
+            Cast dummy1 = new Cast(80,"Nicolaj","Nielsen","nicoskov993@hotmail.com");
+            Cast dummy2 = new Cast(81,"Tesniem","El-Merie","tesPrivat@gmail.com");
+            testCastList.add(dummy1);
+            testCastList.add(dummy2);
+            castController.showCastList(searchWord,testCastList);
         }
 
     }
@@ -108,6 +123,12 @@ public class FrameController implements Initializable {
     private void centerProduction(){
         productionController.setPrefHeight(450);
         mainBorderPane.setCenter(productionController);
+    }
+
+    private void centerCast(){
+        castController.setPrefHeight(450);
+        mainBorderPane.setCenter(castController);
+        castController.noCastFoundMessage();
     }
 
     /**

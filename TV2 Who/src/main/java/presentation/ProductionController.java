@@ -37,8 +37,10 @@ public class ProductionController extends BorderPane {
             searchedCastList = null,
             castView = null;
     @FXML
+
     BorderPane productionBorderPane, //Border pane in the scene
             centerBorderPane;//boarderpane used for top in productionBorderPane for layout
+
     @FXML
     Text header, center; //used for centerBorderPane
 
@@ -113,9 +115,8 @@ public class ProductionController extends BorderPane {
         header = new Text(headerText);
         header.setTextAlignment(TextAlignment.CENTER);
         header.setFont(Font.font(30));
-        centerBorderPane.setCenter(header);
-        centerBorderPane.setPrefHeight(50);
-        productionBorderPane.setTop(centerBorderPane);
+        productionBorderPane.setTop(header);
+        productionBorderPane.setAlignment(header,Pos.CENTER);
     }
 
     /**

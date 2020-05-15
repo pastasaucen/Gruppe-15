@@ -191,7 +191,7 @@ public class ProductionController extends BorderPane {
 
                     //Makes listview with all the roles in the production
                     ArrayList<String> castList = new ArrayList<>();
-                    for (Cast cast : prodUsing.getCast()) {
+                    for (Cast cast : prodUsing.getCastList()) {
                         String roles = "";
                         ArrayList<String> roleListString = new ArrayList<>();
 
@@ -212,7 +212,7 @@ public class ProductionController extends BorderPane {
                     ObservableList<String> list = FXCollections.observableArrayList(castList);
 
                     castView = new ListView<>(list);
-                    clickingOnCastList(prodUsing.getCast());
+                    clickingOnCastList(prodUsing.getCastList());
                     productionBorderPane.setCenter(castView);
                 } catch (IndexOutOfBoundsException e){
 

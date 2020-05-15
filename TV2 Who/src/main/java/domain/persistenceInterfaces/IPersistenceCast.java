@@ -16,14 +16,9 @@ public interface IPersistenceCast {
      */
     List<Cast> getCastMembers(String searchString);
 
-
-    List<Cast> getAllCastMembers(Production production);
     /**
      * Saves the given cast members to the persistence layer.
      * @param castMembers the cast member to be saved.
      */
     void saveCastMembers(List<Cast> castMembers);
-
-    void addRole(String roleName, Cast castMember, Production production);
-
 }

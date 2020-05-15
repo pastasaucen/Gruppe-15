@@ -23,7 +23,7 @@ public class ProductionTest {
 
         producer.createProduction("Shrek", new Date(1));
 
-        cast = new Cast(1, "Jens", "Vejmand", "mail@gmail.com");
+        cast = new Cast(-1, "Jens", "Vejmand", "mail@gmail.com", "");
 
         producer.getProduction().addCastMember(cast);
 

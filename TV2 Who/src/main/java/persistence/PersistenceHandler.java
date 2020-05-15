@@ -386,7 +386,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 int productionId = generatedKeys.getInt(1);
                 production.setId(productionId);
 
-                saveCastMembers(production.getCast());
+                saveCastMembers(production.getCastList());
 
             } else {
                 // Update
@@ -404,7 +404,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
                 updateProductionStmt.execute();
 
-                saveCastMembers(production.getCast());
+                saveCastMembers(production.getCastList());
             }
 
         } catch (SQLException ex) {

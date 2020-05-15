@@ -1,11 +1,20 @@
 package domain;
 
+import domain.persistenceInterfaces.IPersistenceCast;
+import domain.producer.Producer;
+import persistence.CastMembersHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CastCatalog {
 
+
+    //private ITV2WhoUI tv2 = TV2Who.getInstance();
+
+    private IPersistenceCast persistenceCast = new CastMembersHandler();
     private static CastCatalog instance;
+
     // Temporary until the persistence layer is implemented. We always want the newest data from the persistence layer.
     private List<Cast> cast = new ArrayList<>();
 
@@ -49,5 +58,15 @@ public class CastCatalog {
      */
     public void createCastMember(String firstName, String lastName, String email) {
         cast.add(new Cast(-1, firstName, lastName, email));
+    }
+
+    //TODO Implement correct exception type
+    public void addRole (String roleName, Cast castMember, Production production) {
+        // TODO Implement database insertion
+        persistenceCast.addRole(roleName, castMember, production);
+    }
+
+    public List<Cast> getAllCastMembers (Production production) {
+        return persistenceCast.getAllCastMembers(production);
     }
 }

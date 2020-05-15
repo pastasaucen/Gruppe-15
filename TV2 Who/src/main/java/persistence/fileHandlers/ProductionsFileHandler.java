@@ -218,11 +218,11 @@ public class ProductionsFileHandler implements IPersistenceProduction {
             production.setId(newId);
 
             String castMemberIds = "";
-            for (int i = 0; i < production.getCast().size(); i++) {
+            for (int i = 0; i < production.getCastList().size(); i++) {
                 if (i == 0) {
-                    castMemberIds += String.valueOf(saveCastMember(production.getCast().get(i), newId));
+                    castMemberIds += String.valueOf(saveCastMember(production.getCastList().get(i), newId));
                 } else {
-                    castMemberIds += "," + saveCastMember(production.getCast().get(i), newId);
+                    castMemberIds += "," + saveCastMember(production.getCastList().get(i), newId);
                 }
             }
 

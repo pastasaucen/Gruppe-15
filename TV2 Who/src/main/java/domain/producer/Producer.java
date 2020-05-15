@@ -76,6 +76,10 @@ public class Producer extends User implements IProducer {
 		production.addRole(roleName, castMember);
 	}
 
+	public Production getProduction() {
+		return production;
+	}
+
 	public void submitProduction() {
 		production.setAssociatedProducerEmail(email);
 		ProductionCatalog.getInstance().addProduction(production);

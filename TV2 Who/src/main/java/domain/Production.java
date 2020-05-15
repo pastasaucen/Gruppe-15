@@ -1,8 +1,11 @@
 package domain;
 
+import domain.producer.Producer;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Production {
 
@@ -16,7 +19,9 @@ public class Production {
 
 	private String associatedProducerEmail;
 
-	private List<Cast> cast = new ArrayList<>();
+
+
+	private List<Cast> castList = new ArrayList<>();
 
 	/**
 	 * Creates a production instance.
@@ -41,21 +46,24 @@ public class Production {
 		this.releaseDate = releaseDate;
 		this.state = state;
 		this.associatedProducerEmail = associatedProducerEmail;
+		this.castList = CastCatalog.getInstance().getAllCastMembers(this);
 	}
 
 	public void addCastMember(Cast castMember) {
-		cast.add(castMember);
+		castList.add(castMember);
 }
 
+	//Returns updated list, after adding a role to a cast.
 	public void addRole(String roleName, Cast castMember) {
-		// Iterates through every cast member in this production
-		for (int castNum = 0; castNum < cast.size(); castNum++) {
-			// If the cast member is the same as the given cast member, then add the role to that one.
-			if (castMember.equals(cast.get(castNum))) {
-				cast.get(castNum).addRole(roleName, this);
-				return;
-			}
+		//If castmember exists on the production.
+		if (castList.contains(castMember)) {
+			// castMember exists
+			// TODO Ask if they want to continue here in GUI
 		}
+		//Try database insertion of role, catch SQL exceptions
+		//Updaterer midlertidige liste til gui
+		int index = castList.indexOf(castMember);
+		castList.get(index).addRole(roleName, this);
 	}
 
 	public String getName() {
@@ -82,16 +90,16 @@ public class Production {
 		return associatedProducerEmail;
 	}
 
-	public List<Cast> getCast() {
-		return cast;
+	public List<Cast> getCastList() {
+		return castList;
 	}
 
 	@Override
 	public String toString() {
 		String castString = "";
 
-		for (int i = 0; i < cast.size(); i++) {
-			castString += '\t' + (cast.get(i).toString() + '\n');
+		for (int i = 0; i < castList.size(); i++) {
+			castString += '\t' + (castList.get(i).toString() + '\n');
 		}
 
 		return "Production:\n" +

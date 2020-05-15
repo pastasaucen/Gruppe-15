@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.FrameController">
+<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.FrameController">
    <top>
       <HBox prefHeight="64.0" prefWidth="900.0" style="-fx-background-color: #303030;" BorderPane.alignment="CENTER">
          <children>
@@ -22,6 +14,7 @@
                <items>
                   <ImageView fx:id="frameImage" fitHeight="58.0" fitWidth="160.0" onMouseClicked="#centerWelcome" pickOnBounds="true">
                      <image>
+                        <Image url="@Pictures/TV2 Mini.png" />
                      </image></ImageView>
                </items></SplitPane>
             <SplitPane prefHeight="64.0" prefWidth="532.0" style="-fx-background-color: #303030;">
@@ -29,7 +22,7 @@
                   <HBox fx:id="frameHBox" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #303030; -fx-border-color: #303030;">
                      <children>
                         <Label alignment="CENTER" onMouseClicked="#productionScene" prefHeight="65.0" prefWidth="231.0" style="-fx-text-fill: #f0f0f0; -fx-border-color: transparent;" text="PRODUKTIONER" />
-                        <Label alignment="CENTER" ellipsisString="" prefHeight="74.0" prefWidth="264.0" style="-fx-text-fill: #f0f0f0;" text="MEDVIRKENDE" />
+                        <Label alignment="CENTER" ellipsisString="" onMouseClicked="#centerCastMouse" prefHeight="74.0" prefWidth="264.0" style="-fx-text-fill: #f0f0f0;" text="MEDVIRKENDE" />
 
                      </children>
                   </HBox>
@@ -43,7 +36,7 @@
                         <Font size="10.0" />
                      </font></RadioButton>
                   <Text fill="WHITE" layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SØG" />
-                  <RadioButton fx:id="roleRadioButton" layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="MEDVIRKENDE" textFill="WHITE">
+                  <RadioButton fx:id="castRadioButton" layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="MEDVIRKENDE" textFill="WHITE">
                      <font>
                         <Font size="10.0" />
                      </font></RadioButton>

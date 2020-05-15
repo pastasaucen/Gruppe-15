@@ -26,7 +26,7 @@ public class ProductionController extends BorderPane {
     @FXML
     ListView<String> searchedProductionsList; //List of productions that matches the search
     @FXML
-    BorderPane productionBorderPane, centerBorderPane;//boarderpane for production.fxml and borderpain for the borderpain
+    BorderPane productionBorderPane; //BorderPane for production.fxml scene
     @FXML
     Text header, center; //used for centerBorderPane
 
@@ -97,9 +97,8 @@ public class ProductionController extends BorderPane {
         header = new Text(headerText);
         header.setTextAlignment(TextAlignment.CENTER);
         header.setFont(Font.font(30));
-        centerBorderPane.setCenter(header);
-        centerBorderPane.setPrefHeight(50);
-        productionBorderPane.setTop(centerBorderPane);
+        productionBorderPane.setTop(header);
+        productionBorderPane.setAlignment(header,Pos.CENTER);
     }
 
     /**

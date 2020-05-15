@@ -23,7 +23,6 @@
                      <children>
                         <Label alignment="CENTER" onMouseClicked="#productionScene" prefHeight="65.0" prefWidth="231.0" style="-fx-text-fill: #f0f0f0; -fx-border-color: transparent;" text="PRODUKTIONER" />
                         <Label alignment="CENTER" ellipsisString="" onMouseClicked="#centerCastMouse" prefHeight="74.0" prefWidth="264.0" style="-fx-text-fill: #f0f0f0;" text="MEDVIRKENDE" />
-
                      </children>
                   </HBox>
                </items>

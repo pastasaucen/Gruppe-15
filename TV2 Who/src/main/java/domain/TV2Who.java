@@ -1,5 +1,6 @@
 package domain;
 
+import java.sql.Date;
 import java.util.List;
 
 
@@ -48,4 +49,20 @@ public class TV2Who implements ITV2WhoUI {
         return CastCatalog.getInstance().searchForCast(firstName, lastName);
     }
 
+    /**
+     * Creates production but does not save in persistanse
+     * @param name
+     * @param releaseDate
+     * @return
+     */
+    @Override
+    public Production createProduction(String name, Date releaseDate) {
+        Production production = new Production(name, releaseDate);
+        return production;
+    }
+
+    @Override
+    public void saveProduction(Production production) {
+        productionCatalog.addProduction(production);
+    }
 }

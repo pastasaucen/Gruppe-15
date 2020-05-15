@@ -1,6 +1,11 @@
 package presentation;
 
 import domain.*;
+import domain.Cast;
+import domain.ITV2WhoUI;
+import domain.Production;
+import domain.TV2Who;
+import domain.persistenceInterfaces.IPersistenceProduction;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -79,7 +84,7 @@ public class FrameController implements Initializable {
         if(productionRadioButton.isSelected() && !searchWord.equals("")){
 //Todo næste linje fjerne kommentar
             //næste linje fjerne kommentar
-            //List<Production> productionList = persistenceProduction.getProductions(searchWord);
+            //List<Production> productionList = tv2Who.prepareProductionSearchList(searchWord);
 //TODO Herfra til næste to do skal slettes
             List<Production> productionList = new ArrayList<>();
             Production name = new Production(1, "name", new Date(2014,02,11));
@@ -141,5 +146,13 @@ public class FrameController implements Initializable {
     private void productionScene(){
         productionController.productionNotFound();
         centerProduction();
+    }
+
+    /**
+     * This should be deleted when createProduction has been tested
+     * @param mouseEvent
+     */
+    public void createProductionScene(javafx.scene.input.MouseEvent mouseEvent){
+        productionController.createProduction();
     }
 }

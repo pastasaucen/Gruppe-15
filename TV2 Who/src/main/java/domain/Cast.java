@@ -13,15 +13,19 @@ public class Cast {
 
 	private String email;
 
-	public Cast(int id, String firstName, String lastName, String email) {
+	private String bio;
+
+	public Cast(int id, String firstName, String lastName, String email, String bio) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.bio = bio;
+
 	}
 
-	public void addRole(String roleName, Production production) {
-		roles.add(new Role(roleName, production));
+	public void addRole(int id, String roleName, Production production) {
+		roles.add(new Role(id, roleName, production));
 	}
 
 	public String getFirstName() {
@@ -36,8 +40,16 @@ public class Cast {
 		return id;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getEmail() {
 		return email;
+	}
+
+	public String getBio() {
+		return bio;
 	}
 
 	public List<Role> getRoles() {
@@ -68,7 +80,8 @@ public class Cast {
 
 	@Override
 	public String toString() {
-		return "name=" + firstName + ' ' + lastName + '\n' +
-				"\troles=" + roles;
+		return  firstName + ' ' + lastName + '\n' +
+				" * Bio: " + bio + '\n' +
+				" * Roles: " + roles;
 	}
 }

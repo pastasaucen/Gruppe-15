@@ -69,7 +69,7 @@ public class SystemAdministrator extends User implements IProducer, IEditor, IRD
 	 * 
 	 *  
 	 */
-	public void createCastMember(String firstName, String lastName, String email) {
+	public void createCastMember(String firstName, String lastName, String email, String bio) {
 
 	}
 

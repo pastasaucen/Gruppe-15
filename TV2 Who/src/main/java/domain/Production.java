@@ -49,7 +49,7 @@ public class Production {
 		for (int castNum = 0; castNum < cast.size(); castNum++) {
 			// If the cast member is the same as the given cast member, then add the role to that one.
 			if (castMember.equals(cast.get(castNum))) {
-				cast.get(castNum).addRole(roleName, this);
+				cast.get(castNum).addRole(-1, roleName, this);
 				return;
 			}
 		}
@@ -95,16 +95,16 @@ public class Production {
 	public String toString() {
 		String castString = "";
 
-		for (int i = 0; i < cast.size(); i++) {
-			castString += '\t' + (cast.get(i).toString() + '\n');
+		for (Cast value : cast) {
+			castString += "- " +(value.toString() + '\n');
 		}
 
-		return "Production:\n" +
-				"id=" + id + '\n' +
-				"name ='" + name + '\'' + '\n' +
-				"releaseDate =" + releaseDate + '\n' +
-				"state =" + state + '\n' +
-				"associatedProducerEmail ='" + associatedProducerEmail + '\'' + '\n' +
-				"cast =" + "\n" + castString;
+		return  "Production:\n" +
+				"ID: " + id + '\n' +
+				"Name: '" + name + '\'' + '\n' +
+				"Release Date: " + releaseDate + '\n' +
+				"State: " + state + '\n' +
+				"Associated Producer: '" + associatedProducerEmail + '\'' + '\n' +
+				"Cast: " + "\n" + castString;
 	}
 }

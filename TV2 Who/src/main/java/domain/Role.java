@@ -6,9 +6,21 @@ public class Role {
 
 	private Production production;
 
-	public Role(String roleName, Production production) {
+	private int id;
+
+	public Role(int id, String roleName, Production production) {
 		this.roleName = roleName;
 		this.production = production;
+		this.id = id;
+
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Production getProduction() {
@@ -21,9 +33,7 @@ public class Role {
 
 	@Override
 	public String toString() {
-		return "Role{" +
-				"roleName='" + roleName + '\'' +
-				", production=" + production.getName() +
-				'}';
+		return "Role Name: '" + roleName + '\'' +
+				", Production: " + production.getName();
 	}
 }

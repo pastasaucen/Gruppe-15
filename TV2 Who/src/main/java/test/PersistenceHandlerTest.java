@@ -1,9 +1,6 @@
 package test;
 
-import domain.Production;
-import domain.State;
-import domain.User;
-import domain.UserType;
+import domain.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,6 +9,7 @@ import persistence.PersistenceHandler;
 
 import java.sql.Date;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -31,10 +29,38 @@ public class PersistenceHandlerTest {
 
     @Test
     public void getCastMembers() {
+        String searchString = "Lone";
+        List<Cast> castList = persistenceHandler.getCastMembers(searchString);
+        System.out.println(castList);
     }
 
     @Test
     public void saveCastMembers() {
+        List<Cast> castList = new ArrayList<>();
+        Cast cast = new Cast(-1,
+                "Jeppe",
+                "Stenstrup",
+                "js@mail.dk",
+                "Mit navn er Jeppe og jeg er sej");
+        castList.add(cast);
+        cast.addRole(-1,"Chihuahua", new Production(2,"test", new Date(System.currentTimeMillis())));
+        persistenceHandler.saveCastMembers(castList);
+        System.out.println(castList);
+        Assert.assertNotEquals(-1, cast.getId());
+
+        Cast cast1 = new Cast(cast.getId(),
+                "Christian",
+                "Bodeval",
+                "cb@mail.dk",
+                "Mit navn var altså Christian, ikke Jeppe");
+        cast1.addRole(-1,"Bulldog", new Production(2,"test", new Date(System.currentTimeMillis())));
+        castList.clear();
+        castList.add(cast1);
+        persistenceHandler.saveCastMembers(castList);
+        List<Cast> alteredCast = persistenceHandler.getCastMembers(cast1.getEmail());
+        System.out.println(alteredCast);
+        Assert.assertEquals("Christian", alteredCast.get(0).getFirstName());
+
 
     }
 

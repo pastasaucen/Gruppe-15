@@ -44,11 +44,168 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
     @Override
     public List<Cast> getCastMembers(String searchString) {
-        return null;
+        List<Cast> castList = new ArrayList<>();
+
+        try {
+            PreparedStatement getCastMembersStmt = connection.prepareStatement(
+                    "SELECT id, first_name, last_name, email, bio " +
+                            "FROM cast_members " +
+                            "WHERE first_name LIKE ? OR last_name LIKE ? OR email = ?");
+
+            getCastMembersStmt.setString(1, '%'+searchString+'%');
+            getCastMembersStmt.setString(2, '%'+searchString+'%');
+            getCastMembersStmt.setString(3, searchString);
+
+            ResultSet castMemberRs = getCastMembersStmt.executeQuery();
+
+            while (castMemberRs.next()){
+                Cast castMember = new Cast(
+                        castMemberRs.getInt("id"),
+                        castMemberRs.getString("first_name"),
+                        castMemberRs.getString("last_name"),
+                        castMemberRs.getString("email"),
+                        castMemberRs.getString("bio")
+                );
+                getRoles(castMember);
+
+                castList.add(castMember);
+
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return castList;
     }
 
+    /**
+     * This method is used to get the Roles of the cast members that has been searched for.
+     * @param castMember
+     */
+    private void getRoles(Cast castMember){
+        try {
+            PreparedStatement getRolesStmt = connection.prepareStatement(
+                    "SELECT roles.id AS id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
+                            "WHERE roles.id = role_id " +
+                            "AND productions.id = production_id " +
+                            "AND cast_id = ?");
+
+            getRolesStmt.setInt(1, castMember.getId());
+
+            ResultSet rolesRs = getRolesStmt.executeQuery();
+
+            while (rolesRs.next()) {
+                Production production = new Production(rolesRs.getString("name"),
+                        rolesRs.getDate("release_date"));
+
+                castMember.addRole(rolesRs.getInt("id"), rolesRs.getString("role_name"), production);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Existing roles are not updated using this method.
+     * @param castMembers the cast member to be saved.
+     */
     @Override
     public void saveCastMembers(List<Cast> castMembers) {
+        List<Cast> newMembers = new ArrayList<>();
+        List<Cast> existingMembers = new ArrayList<>();
+
+        // Sorts the list of cast members into categories, existing and new members.
+        for (int i = 0; i < castMembers.size(); i++) {
+            if (castMembers.get(i).getId() == -1) {
+                newMembers.add(castMembers.get(i));
+            } else {
+                existingMembers.add(castMembers.get(i));
+            }
+        }
+
+        try {
+            //Existing cast members gets updated in the database.
+            PreparedStatement updateCastMemberStmt = connection.prepareStatement(
+                    "UPDATE cast_members " +
+                    "SET first_name = ?, last_name = ?, email = ?, bio = ? " +
+                    "WHERE id = ?");
+
+            PreparedStatement insertRoleStmt = connection.prepareStatement(
+                    "INSERT INTO roles (role_name, production_id) " +
+                        "VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
+
+            PreparedStatement insertCtoRStmt = connection.prepareStatement(
+                    "INSERT INTO cast_to_roles (cast_id, role_id) " +
+                        "VALUES (?,?)");
+
+            for (int i = 0; i < existingMembers.size(); i++) {
+                updateCastMemberStmt.setString(1, existingMembers.get(i).getFirstName());
+                updateCastMemberStmt.setString(2, existingMembers.get(i).getLastName());
+                updateCastMemberStmt.setString(3, existingMembers.get(i).getEmail());
+                updateCastMemberStmt.setString(4, existingMembers.get(i).getBio());
+                updateCastMemberStmt.setInt(5, existingMembers.get(i).getId());
+
+                updateCastMemberStmt.execute();
+
+                List<Role> roles = existingMembers.get(i).getRoles();
+
+                for (int j = 0; j < roles.size(); j++) {
+                    if (roles.get(j).getId() == -1) {
+                        insertRoleStmt.setString(1, roles.get(j).getRoleName());
+                        insertRoleStmt.setInt(2, roles.get(j).getProduction().getId());
+                        insertRoleStmt.execute();
+                        ResultSet key = insertRoleStmt.getGeneratedKeys();
+                        key.next();
+
+                        insertCtoRStmt.setInt(1, existingMembers.get(i).getId());
+                        insertCtoRStmt.setInt(2, key.getInt(1));
+                        insertCtoRStmt.execute();
+
+                        roles.get(j).setId(key.getInt(1));
+                    }
+                }
+            }
+            //Inserting new cast members into the database.
+            PreparedStatement insertMemberStmt = connection.prepareStatement(
+                    "INSERT INTO cast_members (first_name, last_name, email, bio) " +
+                        "VALUES (?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
+
+            for (int i = 0; i < newMembers.size(); i++) {
+                insertMemberStmt.setString(1, newMembers.get(i).getFirstName());
+                insertMemberStmt.setString(2, newMembers.get(i).getLastName());
+                insertMemberStmt.setString(3, newMembers.get(i).getEmail());
+                insertMemberStmt.setString(4, newMembers.get(i).getBio());
+                insertMemberStmt.execute();
+
+                ResultSet generatedKeys = insertMemberStmt.getGeneratedKeys();
+                generatedKeys.next();
+
+                newMembers.get(i).setId(generatedKeys.getInt(1));
+
+                List<Role> roles = newMembers.get(i).getRoles();
+
+                for (int j = 0; j < roles.size(); j++) {
+                    if (roles.get(j).getId() == -1) {
+                        insertRoleStmt.setString(1, roles.get(j).getRoleName());
+                        insertRoleStmt.setInt(2, roles.get(j).getProduction().getId());
+                        insertRoleStmt.execute();
+                        ResultSet key = insertRoleStmt.getGeneratedKeys();
+                        key.next();
+
+                        insertCtoRStmt.setInt(1, newMembers.get(i).getId());
+                        insertCtoRStmt.setInt(2, key.getInt(1));
+                        insertCtoRStmt.execute();
+
+                        roles.get(j).setId(key.getInt(1));
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -109,9 +266,9 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
         try {
             PreparedStatement getProductionsStmt = connection.prepareStatement(
-                    "SELECT productions.id AS id, productions.name AS name, release_date, state, tv_code, associated_producer " +
-                    "FROM productions " +
-                    "WHERE tv_code = ? OR productions.name LIKE ?");
+                "SELECT productions.id AS id, productions.name AS name, release_date, state, tv_code, associated_producer " +
+                "FROM productions " +
+                "WHERE tv_code = ? OR productions.name LIKE ?");
 
             getProductionsStmt.setString(1, searchString);
             getProductionsStmt.setString(2, '%'+searchString+'%');
@@ -120,12 +277,12 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
             while (productionsRs.next()) {
                 Production production = new Production(
-                        productionsRs.getInt("id"),
-                        productionsRs.getString("name"),
-                        productionsRs.getDate("release_date"),
-                        State.valueOf(productionsRs.getString("state")),
-                        productionsRs.getString("tv_code"),
-                        productionsRs.getString("associated_producer")
+                    productionsRs.getInt("id"),
+                    productionsRs.getString("name"),
+                    productionsRs.getDate("release_date"),
+                    State.valueOf(productionsRs.getString("state")),
+                    productionsRs.getString("tv_code"),
+                    productionsRs.getString("associated_producer")
                 );
 
                 // Adds the cast members to the production
@@ -169,10 +326,11 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                         castMembersRs.getInt("id"),
                         castMembersRs.getString("first_name"),
                         castMembersRs.getString("last_name"),
-                        castMembersRs.getString("email")
+                        castMembersRs.getString("email"),
+                        "" // empty bio
                 );
 
-                List<Role> roles = getRolesForProduction(castMember, production);
+                getRolesForProduction(castMember, production);
 
                 castList.add(castMember);
             }
@@ -184,12 +342,11 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         return castList;
     }
 
-    private List<Role> getRolesForProduction(Cast castMember, Production production) {
-        List<Role> roles = new ArrayList<>();
+    private void getRolesForProduction(Cast castMember, Production production) {
 
         try {
             PreparedStatement getRolesStmt = connection.prepareStatement(
-                    "SELECT role_name FROM roles, cast_to_roles " +
+                    "SELECT roles.id AS id, role_name FROM roles, cast_to_roles " +
                             "WHERE roles.id = role_id AND cast_id = ?" +
                             "AND production_id = ?");
 
@@ -198,14 +355,12 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
             ResultSet rolesRs = getRolesStmt.executeQuery();
             while (rolesRs.next()) {
-                castMember.addRole(rolesRs.getString("role_name"), production);
+                castMember.addRole(rolesRs.getInt("id"), rolesRs.getString("role_name"), production);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return roles;
     }
 
     @Override
@@ -248,6 +403,8 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 updateProductionStmt.setInt(6, production.getId());
 
                 updateProductionStmt.execute();
+
+                saveCastMembers(production.getCast());
             }
 
         } catch (SQLException ex) {

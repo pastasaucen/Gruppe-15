@@ -53,7 +53,7 @@ public class Producer extends User implements IProducer {
 		String lastName = names[names.length-1];
 
 		// Retrieves the relevant castMembers with the given names
-		List<Cast> relevantCastMembers = CastCatalog.getInstance().searchForCast(firstName, lastName);
+		List<Cast> relevantCastMembers = CastCatalog.getInstance().searchForCast(name);
 
 		if (relevantCastMembers.size() > 1) {
 			// TODO We have not decided what to do here!!!
@@ -92,13 +92,13 @@ public class Producer extends User implements IProducer {
 	 * @param lastName
 	 * @param email
 	 */
-	public void createCastMember(String firstName, String lastName, String email) {
+	public void createCastMember(String firstName, String lastName, String email, String bio) {
 		// TODO does it need to search for the cast members email?
-		List<Cast> castList = castCatalog.searchForCast(firstName, lastName);
+		List<Cast> castList = castCatalog.searchForCast(email);
 
 		// Checks whether the retrieved cast list is null (empty). If so then no duplicates were found.
 		if (castList == null) {
-			createCastAndConfirms(firstName, lastName, email);	// Creates the new cast member
+			createCastAndConfirms(firstName, lastName, email, bio);	// Creates the new cast member
 		} else {
 			System.out.println("The cast you want to create might already exist");
 
@@ -113,7 +113,7 @@ public class Producer extends User implements IProducer {
 
 			Scanner scanner = new Scanner(System.in);
 			if (scanner.next().equalsIgnoreCase("yes")) {
-				createCastAndConfirms(firstName, lastName, email);
+				createCastAndConfirms(firstName, lastName, email, bio);
 			} else {
 				System.out.println("You have chosen not to create the cast");
 			}
@@ -126,8 +126,8 @@ public class Producer extends User implements IProducer {
 	 * @param lastName
 	 * @param email
 	 */
-	private void createCastAndConfirms(String firstName, String lastName, String email){
-		castCatalog.createCastMember(firstName, lastName, email);
+	private void createCastAndConfirms(String firstName, String lastName, String email, String bio){
+		castCatalog.createCastMember(firstName, lastName, email, bio);
 		System.out.println("The cast member:\"" + firstName + " " + lastName + " : " + email + "\" has been created");
 	}
 

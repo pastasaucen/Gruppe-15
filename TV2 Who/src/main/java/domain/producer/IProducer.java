@@ -14,6 +14,6 @@ public interface IProducer {
 
 	void submitProduction();
 
-	void createCastMember(String firstName, String lastName, String email);
+	void createCastMember(String firstName, String lastName, String email, String bio);
 
 }

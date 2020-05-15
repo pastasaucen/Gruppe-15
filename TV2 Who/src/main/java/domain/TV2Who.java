@@ -68,7 +68,11 @@ public class TV2Who implements ITV2WhoUI {
      */
     @Override
     public List<Cast> prepareCastSearchList(String firstName, String lastName) {
-        return CastCatalog.getInstance().searchForCast(firstName, lastName);
+        return CastCatalog.getInstance().searchForCast(firstName + ' ' + lastName);
+        // TODO: Is this correct?
     }
 
+    public User getCurrentUser() {
+        return currentUser;
+    }
 }

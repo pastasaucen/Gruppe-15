@@ -19,8 +19,10 @@ CREATE TABLE cast_members (
     id serial primary key,
     first_name varchar(60) not null,
     last_name varchar(30) not null,
-    email varchar(30) unique not null
+    email varchar(30) unique not null,
+    bio varchar(500)
 );
+
 
 CREATE TABLE production_to_cast (
     id serial primary key,

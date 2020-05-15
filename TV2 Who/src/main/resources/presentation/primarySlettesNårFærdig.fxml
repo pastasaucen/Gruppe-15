@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.DemoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.DemoControllerSlettesNårFærdig">
    <children>
       <Button fx:id="castButton" layoutX="37.0" layoutY="145.0" mnemonicParsing="false" onAction="#setCastCategory" prefHeight="50.0" prefWidth="175.0" text="Medvirkende" />
       <Button fx:id="productionButton" layoutX="37.0" layoutY="220.0" mnemonicParsing="false" onAction="#setProductionCategory" prefHeight="50.0" prefWidth="175.0" text="Produktioner" />

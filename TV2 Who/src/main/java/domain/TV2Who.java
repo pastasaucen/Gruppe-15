@@ -2,7 +2,7 @@ package domain;
 
 import domain.persistenceInterfaces.IPersistenceLogIn;
 import persistence.PersistenceHandler;
-
+import java.sql.Date;
 import java.util.List;
 
 
@@ -70,6 +70,23 @@ public class TV2Who implements ITV2WhoUI {
     public List<Cast> prepareCastSearchList(String firstName, String lastName) {
         return CastCatalog.getInstance().searchForCast(firstName + ' ' + lastName);
         // TODO: Is this correct?
+    }
+
+    /**
+     * Creates production but does not save in persistanse
+     * @param name
+     * @param releaseDate
+     * @return
+     */
+    @Override
+    public Production createProduction(String name, Date releaseDate) {
+        Production production = new Production(name, releaseDate);
+        return production;
+    }
+
+    @Override
+    public void saveProduction(Production production) {
+        productionCatalog.addProduction(production);
     }
 
     public User getCurrentUser() {

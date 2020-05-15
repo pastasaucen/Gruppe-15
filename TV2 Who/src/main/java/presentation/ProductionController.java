@@ -168,52 +168,56 @@ public class ProductionController extends BorderPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 //Gets the clicked item
-                Production prodUsing = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
+                try {
+                    Production prodUsing = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
 
-                setHeader(prodUsing.getName());
-                //Sets the left part for information about release date
-                Label label = new Label("  RELEASE DATE :" );
-                label.setFont(Font.font(15));
-                Label label2 = new Label("   " + prodUsing.getReleaseDate().toString());
-                label2.setFont(Font.font(12));
+                    setHeader(prodUsing.getName());
+                    //Sets the left part for information about release date
+                    Label label = new Label("  RELEASE DATE :");
+                    label.setFont(Font.font(15));
+                    Label label2 = new Label("   " + prodUsing.getReleaseDate().toString());
+                    label2.setFont(Font.font(12));
 
-                VBox vbox = new VBox(10);
-                vbox.setPrefWidth(120);
-                vbox.setAlignment(Pos.TOP_LEFT);
-                vbox.getChildren().addAll(label,label2);
+                    VBox vbox = new VBox(10);
+                    vbox.setPrefWidth(120);
+                    vbox.setAlignment(Pos.TOP_LEFT);
+                    vbox.getChildren().addAll(label, label2);
 
-                BorderPane left = new BorderPane();
-                Label space = new Label("");
-                label.setMinWidth(20);
-                left.setLeft(space);
-                left.setCenter(vbox);
-                productionBorderPane.setLeft(left);
+                    BorderPane left = new BorderPane();
+                    Label space = new Label("");
+                    label.setMinWidth(20);
+                    left.setLeft(space);
+                    left.setCenter(vbox);
+                    productionBorderPane.setLeft(left);
 
-                //Makes listview with all the roles in the production
-                ArrayList<String> castList = new ArrayList<>();
-                for(Cast cast: prodUsing.getCast()){
-                    String roles = "";
-                    ArrayList<String> roleListString = new ArrayList<>();
+                    //Makes listview with all the roles in the production
+                    ArrayList<String> castList = new ArrayList<>();
+                    for (Cast cast : prodUsing.getCast()) {
+                        String roles = "";
+                        ArrayList<String> roleListString = new ArrayList<>();
 
-                    for(Role r: cast.getRoles()){
-                        if(r.getProduction().equals(prodUsing)){
-                            roleListString.add(r.getRoleName());
+                        for (Role r : cast.getRoles()) {
+                            if (r.getProduction().equals(prodUsing)) {
+                                roleListString.add(r.getRoleName());
+                            }
                         }
-                    }
-                    for(int i = 0; i < roleListString.size(); i++){
-                        if( roleListString.size() == i-1){
-                            roles = roles + roleListString.get(i);
-                        } else {
-                            roles = roles + roleListString + ", ";
+                        for (int i = 0; i < roleListString.size(); i++) {
+                            if (roleListString.size() == i - 1) {
+                                roles = roles + roleListString.get(i);
+                            } else {
+                                roles = roles + roleListString + ", ";
+                            }
                         }
+                        castList.add(cast.getFirstName() + " " + cast.getLastName() + "\n" + roles);
                     }
-                    castList.add(cast.getFirstName() + " " + cast.getLastName() +"\n" + roles );
+                    ObservableList<String> list = FXCollections.observableArrayList(castList);
+
+                    castView = new ListView<>(list);
+                    clickingOnCastList(prodUsing.getCast());
+                    productionBorderPane.setCenter(castView);
+                } catch (IndexOutOfBoundsException e){
+
                 }
-                ObservableList<String> list = FXCollections.observableArrayList(castList);
-
-                castView = new ListView<>(list);
-                clickingOnCastList(prodUsing.getCast());
-                productionBorderPane.setCenter(castView);
 
             }
         });
@@ -232,7 +236,7 @@ public class ProductionController extends BorderPane {
                     Cast castUsing = casts.get(castView.getSelectionModel().getSelectedIndex());
                     createProfile(castUsing);
                 }catch (IndexOutOfBoundsException e){
-                    
+
                 }
 
 

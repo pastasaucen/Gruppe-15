@@ -118,6 +118,10 @@ public class FrameController implements Initializable {
             testCastList.add(dummy1);
             testCastList.add(dummy2);
             castController.showCastList(searchWord,testCastList);
+        } else if(castRadioButton.isSelected() && searchWord.equals("")){
+            centerCast();
+        } else {
+            centerWelcome();
         }
 
     }

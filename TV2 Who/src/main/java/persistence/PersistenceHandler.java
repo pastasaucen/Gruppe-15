@@ -8,7 +8,6 @@ import domain.persistenceInterfaces.IPersistenceProduction;
 import domain.persistenceInterfaces.IPersistenceUser;
 import domain.producer.Producer;
 import domain.rDUser.RDUser;
-import javafx.scene.control.SpinnerValueFactory;
 
 import java.sql.*;
 import java.util.ArrayList;

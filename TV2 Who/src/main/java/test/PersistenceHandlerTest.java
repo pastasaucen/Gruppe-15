@@ -55,12 +55,14 @@ public class PersistenceHandlerTest {
 
     @Test
     public void getProductions() {
+        // Tests the method by using the name
         String searchStringName = "Badehotellet";
         List<Production> productionListName = persistenceHandler.getProductions(searchStringName);
         System.out.println("From the name:");
         System.out.println(productionListName);
         Assert.assertEquals("Badehotellet", productionListName.get(0).getName());
 
+        // Tests the method by using the TV-code
         String searchStringTVCode = "0001";
         List<Production> productionListTVCode = persistenceHandler.getProductions(searchStringTVCode);
         System.out.println("From the TV-code:");
@@ -71,6 +73,7 @@ public class PersistenceHandlerTest {
 
     @Test
     public void saveProduction() {
+        // Creates a new
         String name = String.valueOf((int) (Math.random()*1000));
         Production newProduction = new Production(-1,
                 name,

@@ -118,7 +118,6 @@ public class Producer extends User implements IProducer {
 				System.out.println("You have chosen not to create the cast");
 			}
 		}
-
 	}
 
 	/**

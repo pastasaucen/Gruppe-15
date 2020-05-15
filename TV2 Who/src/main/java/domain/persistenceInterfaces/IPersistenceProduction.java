@@ -8,7 +8,7 @@ public interface IPersistenceProduction {
 
     /**
      * Retrieves a list of relevant productions from a search string.
-     * @param searchString The name of the production or its ID.
+     * @param searchString The name of the production or its TV-code.
      * @return a list of relevant productions.
      */
     List<Production> getProductions(String searchString);

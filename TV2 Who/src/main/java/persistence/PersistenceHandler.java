@@ -42,6 +42,18 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         }
     }
 
+    /**
+     * Retrieves the cast members that either has a first name or last name which is similar to the search string or an
+     * email which is exactly like the search string.
+     *
+     * Roles from cast members where the production is DECLINED or PENDING is only showed to system admins or editors.
+     * Producers can see roles which are from theirs productions or ACCEPTED. Regular users can only see roles from
+     * ACCEPTED productions.
+     *
+     * @param searchString a first name and/or last name, or email.
+     * @param currentUser the current user session.
+     * @return a list of relevant cast members
+     */
     @Override
     public List<Cast> getCastMembers(String searchString, User currentUser) {
         List<Cast> castList = new ArrayList<>();
@@ -52,13 +64,15 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                             "FROM cast_members " +
                             "WHERE first_name LIKE ? OR last_name LIKE ? OR email = ?");
 
-            getCastMembersStmt.setString(1, '%'+searchString+'%');
-            getCastMembersStmt.setString(2, '%'+searchString+'%');
-            getCastMembersStmt.setString(3, searchString);
+            getCastMembersStmt.setString(1, '%'+searchString+'%');  // first name
+            getCastMembersStmt.setString(2, '%'+searchString+'%');  // last name
+            getCastMembersStmt.setString(3, searchString);             // email (exact, not like)
 
-            ResultSet castMemberRs = getCastMembersStmt.executeQuery();
+            ResultSet castMemberRs = getCastMembersStmt.executeQuery();     // Executes the query
 
-            while (castMemberRs.next()){
+            // Iterates through every result in the result set, which is relevant cast members
+            while (castMemberRs.next()) {
+                // The cast members is created
                 Cast castMember = new Cast(
                         castMemberRs.getInt("id"),
                         castMemberRs.getString("first_name"),
@@ -66,10 +80,9 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                         castMemberRs.getString("email"),
                         castMemberRs.getString("bio")
                 );
-                getRoles(castMember, currentUser);
+                getRoles(castMember, currentUser);  // The roles are assigned
 
-                castList.add(castMember);
-
+                castList.add(castMember);   // The cast members is added to the list
             }
 
         } catch (SQLException e){
@@ -79,19 +92,23 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
     }
 
     /**
-     * This method is used to get the Roles of the cast members that has been searched for.
-     * @param castMember
+     * Assigns relevant roles to the cast member. The user determines whether or not roles from DECLINED or PENDING
+     * productions are assigned. For more see the getCastMembers-method above.
+     *
+     * @param castMember determines which cast member to get roles for.
+     * @param currentUser the user from the current user session.
      */
     private void getRoles(Cast castMember, User currentUser){
         try {
             PreparedStatement getRolesStmt;
 
+            /* Determines the range of roles to assign from the given user type */
             // If the user is null, then it acts like an RDuser. They have the same rights using this method.
             if (currentUser == null) {
                 currentUser = new RDUser("", "");
             }
 
-            // Uses a different query for
+            // Uses a different query for different user types
             switch (currentUser.getUserType()) {
                 case SYSTEMADMINISTRATOR:
                 case EDITOR:
@@ -122,14 +139,18 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
             }
 
             getRolesStmt.setInt(1, castMember.getId());
-
             ResultSet rolesRs = getRolesStmt.executeQuery();
 
+            // Iterates through every production
             while (rolesRs.next()) {
+                // Make a production for the role to reference to. This production is a light weight version to help performance
                 Production production = new Production(rolesRs.getString("name"),
                         rolesRs.getDate("release_date"));
 
-                castMember.addRole(rolesRs.getInt("id"), rolesRs.getString("role_name"), production);
+                // Adds the role to the cast member
+                castMember.addRole(rolesRs.getInt("id"),
+                        rolesRs.getString("role_name"),
+                        production);
             }
 
         } catch (SQLException e) {
@@ -138,7 +159,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
     }
 
     /**
-     * Existing roles are not updated using this method.
+     * Saves the cast member. Existing roles are not updated using this method.
      * @param castMembers the cast member to be saved.
      */
     @Override
@@ -147,103 +168,105 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         List<Cast> existingMembers = new ArrayList<>();
 
         // Sorts the list of cast members into categories, existing and new members.
-        for (int i = 0; i < castMembers.size(); i++) {
-            if (castMembers.get(i).getId() == -1) {
-                newMembers.add(castMembers.get(i));
+        for (Cast castMember : castMembers) {
+            if (castMember.getId() == -1) {     // Cast members with an id of -1 are new
+                newMembers.add(castMember);
             } else {
-                existingMembers.add(castMembers.get(i));
+                existingMembers.add(castMember);
             }
         }
 
         try {
-            //Existing cast members gets updated in the database.
+            // Existing cast members gets updated in the database.
             PreparedStatement updateCastMemberStmt = connection.prepareStatement(
                     "UPDATE cast_members " +
                     "SET first_name = ?, last_name = ?, email = ?, bio = ? " +
                     "WHERE id = ?");
 
+            // Inserts a new role
             PreparedStatement insertRoleStmt = connection.prepareStatement(
                     "INSERT INTO roles (role_name, production_id) " +
                         "VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
 
+            // Inserts a reference to the role and the cast member
             PreparedStatement insertCtoRStmt = connection.prepareStatement(
                     "INSERT INTO cast_to_roles (cast_id, role_id) " +
                         "VALUES (?,?)");
 
-            for (int i = 0; i < existingMembers.size(); i++) {
-                updateCastMemberStmt.setString(1, existingMembers.get(i).getFirstName());
-                updateCastMemberStmt.setString(2, existingMembers.get(i).getLastName());
-                updateCastMemberStmt.setString(3, existingMembers.get(i).getEmail());
-                updateCastMemberStmt.setString(4, existingMembers.get(i).getBio());
-                updateCastMemberStmt.setInt(5, existingMembers.get(i).getId());
+            // Updates every cast member and inserts
+            for (Cast curCast : existingMembers) {
+                updateCastMemberStmt.setString(1, curCast.getFirstName());
+                updateCastMemberStmt.setString(2, curCast.getLastName());
+                updateCastMemberStmt.setString(3, curCast.getEmail());
+                updateCastMemberStmt.setString(4, curCast.getBio());
+                updateCastMemberStmt.setInt(5, curCast.getId());
 
                 updateCastMemberStmt.execute();
 
-                List<Role> roles = existingMembers.get(i).getRoles();
-
-                for (int j = 0; j < roles.size(); j++) {
-                    if (roles.get(j).getId() == -1) {
-                        insertRoleStmt.setString(1, roles.get(j).getRoleName());
-                        insertRoleStmt.setInt(2, roles.get(j).getProduction().getId());
-                        insertRoleStmt.execute();
-                        ResultSet key = insertRoleStmt.getGeneratedKeys();
-                        key.next();
-
-                        insertCtoRStmt.setInt(1, existingMembers.get(i).getId());
-                        insertCtoRStmt.setInt(2, key.getInt(1));
-                        insertCtoRStmt.execute();
-
-                        roles.get(j).setId(key.getInt(1));
-                    }
-                }
+                insertRoles(insertRoleStmt, insertCtoRStmt, curCast);   // The roles are inserted as well
             }
+
             //Inserting new cast members into the database.
             PreparedStatement insertMemberStmt = connection.prepareStatement(
                     "INSERT INTO cast_members (first_name, last_name, email, bio) " +
                         "VALUES (?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
 
-            for (int i = 0; i < newMembers.size(); i++) {
-                insertMemberStmt.setString(1, newMembers.get(i).getFirstName());
-                insertMemberStmt.setString(2, newMembers.get(i).getLastName());
-                insertMemberStmt.setString(3, newMembers.get(i).getEmail());
-                insertMemberStmt.setString(4, newMembers.get(i).getBio());
+            // Inserts new cast members into the database
+            for (Cast curCast : newMembers) {
+                insertMemberStmt.setString(1, curCast.getFirstName());
+                insertMemberStmt.setString(2, curCast.getLastName());
+                insertMemberStmt.setString(3, curCast.getEmail());
+                insertMemberStmt.setString(4, curCast.getBio());
                 insertMemberStmt.execute();
 
+                // The new cast members id is saved.
                 ResultSet generatedKeys = insertMemberStmt.getGeneratedKeys();
                 generatedKeys.next();
 
-                newMembers.get(i).setId(generatedKeys.getInt(1));
+                // The id is set on the cast member from the domain layer
+                curCast.setId(generatedKeys.getInt(1));
 
-                List<Role> roles = newMembers.get(i).getRoles();
-
-                for (int j = 0; j < roles.size(); j++) {
-                    if (roles.get(j).getId() == -1) {
-                        insertRoleStmt.setString(1, roles.get(j).getRoleName());
-                        insertRoleStmt.setInt(2, roles.get(j).getProduction().getId());
-                        insertRoleStmt.execute();
-                        ResultSet key = insertRoleStmt.getGeneratedKeys();
-                        key.next();
-
-                        insertCtoRStmt.setInt(1, newMembers.get(i).getId());
-                        insertCtoRStmt.setInt(2, key.getInt(1));
-                        insertCtoRStmt.execute();
-
-                        roles.get(j).setId(key.getInt(1));
-                    }
-                }
+                insertRoles(insertRoleStmt, insertCtoRStmt, curCast);   // The roles are inserted as well
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * Inserts the roles with an id of -1 (that indicates they are not present in the database) into the database.
+     * @param insertRoleStmt
+     * @param insertCtoRStmt
+     * @param curCast
+     * @throws SQLException An SQL exception
+     */
+    private void insertRoles(PreparedStatement insertRoleStmt, PreparedStatement insertCtoRStmt, Cast curCast) throws SQLException {
+        List<Role> roles = curCast.getRoles();
 
+        // Iterates through every role
+        for (Role role : roles) {
+            // If the role is new (ie. has an id of -1), then insert it.
+            if (role.getId() == -1) {
+                insertRoleStmt.setString(1, role.getRoleName());
+                insertRoleStmt.setInt(2, role.getProduction().getId());
+                insertRoleStmt.execute();
+                ResultSet key = insertRoleStmt.getGeneratedKeys();
+                key.next();
+
+                insertCtoRStmt.setInt(1, curCast.getId());
+                insertCtoRStmt.setInt(2, key.getInt(1));
+                insertCtoRStmt.execute();
+
+                role.setId(key.getInt(1));
+            }
+        }
     }
 
     /**
      * Retrieves a user from the database from the given email and password.
-     * @param email
-     * @param password
+     * @param email The given email from the user.
+     * @param password the given password from the user.
      * @return returns the user with the given email and password. Returns null if no user was found.
      */
     @Override
@@ -266,6 +289,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 // Gets the user type of the user
                 UserType userType = UserType.valueOf(usersResultSet.getString("user_type"));
 
+                // Returns a new instance of an user of the correct type.
                 switch (userType.toString()) {
                     case "SYSTEMADMINISTRATOR":
                         return new SystemAdministrator(name, email);
@@ -290,6 +314,17 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         return null;
     }
 
+    /**
+     * Retrieves the relevant productions from either the production name or the TV-code.
+     *
+     * The currentUser determines whether or not PENDING or DECLINED productions are included. System admins and editors
+     * can see every production, producers can see ACCEPTED and their own productions, and regular users and RDusers can
+     * see only ACCEPTED productions.
+     *
+     * @param searchString The name of the production or its TV-code.
+     * @param currentUser The current user session.
+     * @return a relevant list of productions.
+     */
     @Override
     public List<Production> getProductions(String searchString, User currentUser) {
 
@@ -303,7 +338,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 currentUser = new RDUser("", "");
             }
 
-            // Uses a different query for
+            // Uses a different query for different kinds of users...
             switch (currentUser.getUserType()) {
                 case SYSTEMADMINISTRATOR:
                 case EDITOR:
@@ -332,11 +367,12 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
             }
 
-            getProductionsStmt.setString(1, searchString);
-            getProductionsStmt.setString(2, '%'+searchString+'%');
+            getProductionsStmt.setString(1, searchString);              // TV-code
+            getProductionsStmt.setString(2, '%'+searchString+'%');   // Production name
 
             ResultSet productionsRs = getProductionsStmt.executeQuery();
 
+            // For every found row, create a production from the cells.
             while (productionsRs.next()) {
                 Production production = new Production(
                     productionsRs.getInt("id"),
@@ -347,11 +383,12 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                     productionsRs.getString("associated_producer")
                 );
 
-                // Adds the cast members to the production
+                // Gets the cast members from the given production
                 List<Cast> castList = getCastMembers(production);
 
-                for (int i = 0; i < castList.size(); i++) {
-                    production.addCastMember(castList.get(i));
+                // Assigns the cast to the new production instance.
+                for (Cast cast : castList) {
+                    production.addCastMember(cast);
                 }
 
                 productions.add(production);
@@ -366,8 +403,10 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
     /**
      * Returns a list of cast members from the given production.
+     * Note that the cast members will only contain roles from this production.
+     *
      * @param production the production to find cast members for.
-     * @return
+     * @return a list of cast members from the given production.
      */
     private List<Cast> getCastMembers(Production production) {
         List<Cast> castList = new ArrayList<>();
@@ -383,15 +422,18 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
             ResultSet castMembersRs = getCastMembersStmt.executeQuery();
 
+            // Iterates through every row in the result set
             while (castMembersRs.next()) {
+                // Instantiates a new cast member with information from the cells in the row.
                 Cast castMember = new Cast(
                         castMembersRs.getInt("id"),
                         castMembersRs.getString("first_name"),
                         castMembersRs.getString("last_name"),
                         castMembersRs.getString("email"),
-                        "" // empty bio
+                        "" // The bio is kept empty, because it isn't relevant, when searching for a production.
                 );
 
+                // Assigns the roles to the cast member.
                 getRolesForProduction(castMember, production);
 
                 castList.add(castMember);
@@ -404,6 +446,11 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         return castList;
     }
 
+    /**
+     * Retrieves the roles only relevant to the given cast member and production.
+     * @param castMember The cast member the roles should be assigned to.
+     * @param production The production in which the roles should be from.
+     */
     private void getRolesForProduction(Cast castMember, Production production) {
 
         try {
@@ -416,6 +463,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
             getRolesStmt.setInt(2, production.getId());
 
             ResultSet rolesRs = getRolesStmt.executeQuery();
+            // Adds the roles to the cast member.
             while (rolesRs.next()) {
                 castMember.addRole(rolesRs.getInt("id"), rolesRs.getString("role_name"), production);
             }
@@ -425,6 +473,12 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         }
     }
 
+    /**
+     * Saves a production to the database. If the production is new (has an id of -1) then it is inserted into the
+     * database. If it already exists, then the the database is updated.
+     * The cast members and their roles are also saved.
+     * @param production The production which needs to be saved.
+     */
     @Override
     public void saveProduction(Production production) {
 
@@ -443,10 +497,9 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 insertProductionStmt.setString(5, production.getAssociatedProducerEmail());
 
                 insertProductionStmt.execute();
-                ResultSet generatedKeys = insertProductionStmt.getGeneratedKeys();
+                ResultSet generatedKeys = insertProductionStmt.getGeneratedKeys();  // The primary key (PK) is saved
                 generatedKeys.next();
-                int productionId = generatedKeys.getInt(1);
-                production.setId(productionId);
+                production.setId(generatedKeys.getInt(1));  // The id is set to the PK
 
                 saveCastMembers(production.getCastList());
 
@@ -466,15 +519,18 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
                 updateProductionStmt.execute();
 
-                saveCastMembers(production.getCastList());
+                saveCastMembers(production.getCastList());  // The cast members are also saved
             }
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
     }
 
+    /**
+     * Inserts a new user into the database. The password is hashed using md5.
+     * @param newUser the user that needs to be saved.
+     * @param password the users password.
+     */
     @Override
     public void createUser(User newUser, String password) {
 
@@ -492,6 +548,5 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }

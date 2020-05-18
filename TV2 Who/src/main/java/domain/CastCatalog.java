@@ -45,6 +45,8 @@ public class CastCatalog {
      * @param email
      */
     public void createCastMember(String firstName, String lastName, String email, String bio) {
-        cast.add(new Cast(-1, firstName, lastName, email, bio));
+        List<Cast> castList = new ArrayList<>();
+        castList.add(new Cast(-1, firstName, lastName, email, bio));
+        persistenceCast.saveCastMembers(castList);
     }
 }

@@ -15,9 +15,6 @@ public class CastCatalog {
     private IPersistenceCast persistenceCast = PersistenceHandler.getInstance();
     private static CastCatalog instance;
 
-    // Temporary until the persistence layer is implemented. We always want the newest data from the persistence layer.
-    private List<Cast> cast = new ArrayList<>();
-
     private CastCatalog() {
     }
 

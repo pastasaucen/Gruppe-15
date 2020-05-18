@@ -49,7 +49,6 @@ public class TV2Who implements ITV2WhoUI {
     public boolean createUserSession(String email, String password) {
         User newUser = iPersistenceLogIn.logInValidation(email, password);
         if (newUser == null) {
-            System.out.println("Invalid email or password");
             return false;
         }
 

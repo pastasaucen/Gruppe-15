@@ -7,23 +7,25 @@ import domain.Production;
 import domain.TV2Who;
 import domain.persistenceInterfaces.IPersistenceProduction;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class FrameController implements Initializable {
+public class FrameController extends BorderPane implements Initializable {
     @FXML
     BorderPane mainBorderPane;
     @FXML
@@ -37,12 +39,31 @@ public class FrameController implements Initializable {
     @FXML
     HBox frameHBox;
 
+
+
     private ProductionController productionController = new ProductionController();
     private CastController castController = new CastController();
     private WelcomeController welcomeController = new WelcomeController();
+    private LoginController loginController = new LoginController();
     private ITV2WhoUI tv2Who = TV2Who.getInstance();
 
-    public FrameController(){}
+
+    public FrameController() {
+        FXMLLoader frameFxmlLoader = new FXMLLoader(getClass().getResource("frame.fxml"));
+
+        frameFxmlLoader.setRoot(this);
+        frameFxmlLoader.setController(this);
+
+        try {
+            frameFxmlLoader.load();
+        } catch (
+                IOException e) {
+            System.out.println("Failed to load cast.fxml");
+        }
+
+    }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,6 +76,19 @@ public class FrameController implements Initializable {
         castRadioButton.setToggleGroup(searchParameters);
 
     }
+
+    public void trying(){
+        System.out.println("Trying");
+    }
+    /**
+     * Sets center borderpain to welcome.fxml
+     */
+    public void centerLogin(){
+        welcomeController.setPrefHeight(450);
+        mainBorderPane.setCenter(loginController);
+    }
+
+    public void centerLoginMouse(javafx.scene.input.MouseEvent mouseEvent){ centerLogin();}
 
     /**
      * Sets center borderpain to welcome.fxml

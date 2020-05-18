@@ -30,16 +30,6 @@ public class TV2Who implements ITV2WhoUI {
     }
 
     /**
-     * Searches for productions through productionCatalog by name or ID.
-     *
-     * @param nameOrId
-     */
-    @Override
-    public List<Production> prepareProductionSearchList(String nameOrId) {
-        return productionCatalog.getProduction(nameOrId, currentUser);
-    }
-
-    /**
      * Attempts to create a user session, if the requested email and password is valid. Prints an error message if the
      * email or password is incorrect.
      * @param email
@@ -66,11 +56,20 @@ public class TV2Who implements ITV2WhoUI {
     @Override
     public List<Cast> prepareCastSearchList(String name) {
         return CastCatalog.getInstance().searchForCast(name, currentUser);
-        // TODO: Is this correct?
     }
 
     /**
-     * Creates production but does not save in persistanse
+     * Searches for productions through productionCatalog by name or ID.
+     *
+     * @param searchString
+     */
+    @Override
+    public List<Production> prepareProductionSearchList(String searchString) {
+        return productionCatalog.getProduction(searchString, currentUser);
+    }
+
+    /**
+     * Creates production but does not save in persistence
      * @param name
      * @param releaseDate
      * @return

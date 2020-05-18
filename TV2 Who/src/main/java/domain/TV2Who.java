@@ -36,7 +36,7 @@ public class TV2Who implements ITV2WhoUI {
      */
     @Override
     public List<Production> prepareProductionSearchList(String nameOrId) {
-        return productionCatalog.getProduction(nameOrId);
+        return productionCatalog.getProduction(nameOrId, currentUser);
     }
 
     /**
@@ -65,7 +65,7 @@ public class TV2Who implements ITV2WhoUI {
      */
     @Override
     public List<Cast> prepareCastSearchList(String name) {
-        return CastCatalog.getInstance().searchForCast(name);
+        return CastCatalog.getInstance().searchForCast(name, currentUser);
         // TODO: Is this correct?
     }
 

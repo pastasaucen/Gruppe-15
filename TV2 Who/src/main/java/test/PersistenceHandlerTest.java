@@ -1,6 +1,7 @@
 package test;
 
 import domain.*;
+import domain.producer.Producer;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,10 +18,12 @@ import static org.junit.Assert.*;
 public class PersistenceHandlerTest {
 
     PersistenceHandler persistenceHandler;
+    User systemAdministrator;
 
     @Before
     public void setUp() throws Exception {
         persistenceHandler = PersistenceHandler.getInstance();
+        systemAdministrator = new SystemAdministrator("Andreas", "andreas@edal.dk");
     }
 
     @After
@@ -29,8 +32,20 @@ public class PersistenceHandlerTest {
 
     @Test
     public void getCastMembers() {
+        // Tests as a system admin
+        // There should be two roles
         String searchString = "Lone";
-        List<Cast> castList = persistenceHandler.getCastMembers(searchString);
+        List<Cast> castList = persistenceHandler.getCastMembers(searchString, systemAdministrator);
+        System.out.println(castList);
+
+        // Tests as a producer
+        //There should be two roles
+        castList = persistenceHandler.getCastMembers(searchString, new Producer("William", "w.bolding@outlook.com"));
+        System.out.println(castList);
+
+        // Tests as a regular user who's not logged in
+        // There should be one role
+        castList = persistenceHandler.getCastMembers(searchString, null);
         System.out.println(castList);
     }
 
@@ -57,7 +72,7 @@ public class PersistenceHandlerTest {
         castList.clear();
         castList.add(cast1);
         persistenceHandler.saveCastMembers(castList);
-        List<Cast> alteredCast = persistenceHandler.getCastMembers(cast1.getEmail());
+        List<Cast> alteredCast = persistenceHandler.getCastMembers(cast1.getEmail(), systemAdministrator);
         System.out.println(alteredCast);
         Assert.assertEquals("Christian", alteredCast.get(0).getFirstName());
 
@@ -81,20 +96,35 @@ public class PersistenceHandlerTest {
 
     @Test
     public void getProductions() {
-        // Tests the method by using the name
+
+        // Tests the method by using the name: We also test the privileges of an system admin
         String searchStringName = "Badehotellet";
-        List<Production> productionListName = persistenceHandler.getProductions(searchStringName);
+        List<Production> productionListName = persistenceHandler.getProductions(searchStringName, systemAdministrator);
         System.out.println("From the name:");
         System.out.println(productionListName);
         Assert.assertEquals("Badehotellet", productionListName.get(0).getName());
 
         // Tests the method by using the TV-code
         String searchStringTVCode = "0001";
-        List<Production> productionListTVCode = persistenceHandler.getProductions(searchStringTVCode);
+        List<Production> productionListTVCode = persistenceHandler.getProductions(searchStringTVCode, systemAdministrator);
         System.out.println("From the TV-code:");
         System.out.println(productionListTVCode);
         Assert.assertEquals("Batman", productionListTVCode.get(0).getName());
 
+        // Tests for different privileges
+            // Producer
+        List<Production> productions = persistenceHandler.getProductions("0001", new Producer("Andreas", "andreas@edal.dk"));
+        System.out.println(productions);
+        Assert.assertEquals("Batman", productions.get(0).getName());
+            // Should return an empty list
+        productions = persistenceHandler.getProductions("0001", new Producer("William", "w.bolding@outlook.com"));
+        System.out.println(productions);
+        Assert.assertEquals(0, productions.size());
+
+            // Null (not logged in)
+        productions = persistenceHandler.getProductions("0002", null);
+        System.out.println(productions);
+        Assert.assertEquals("Fast and Furious", productions.get(0).getName());
     }
 
     @Test
@@ -124,13 +154,20 @@ public class PersistenceHandlerTest {
         );
         persistenceHandler.saveProduction(alteredProduction);
 
-        List<Production> productions = persistenceHandler.getProductions(newName);
+        List<Production> productions = persistenceHandler.getProductions(newName, systemAdministrator);
         Assert.assertEquals(newEmail, productions.get(0).getAssociatedProducerEmail());
         System.out.println(productions);
     }
 
     @Test
     public void createUser() {
-        
+        User user = new SystemAdministrator("Jeppe Stenstrup", "jelau19@student.sdu.dk");
+        String password = "admin";
+
+        persistenceHandler.createUser(user, password);
+
+        User userSession = persistenceHandler.logInValidation(user.getEmail(), password);
+        System.out.println(userSession);
+        Assert.assertEquals(user.getEmail(), userSession.getEmail());
     }
 }

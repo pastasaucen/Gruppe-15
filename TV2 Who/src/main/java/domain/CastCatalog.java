@@ -34,8 +34,8 @@ public class CastCatalog {
      * @param searchString
      * @return a list of cast members with the given names
      */
-    public List<Cast> searchForCast(String searchString) {
-        return persistenceCast.getCastMembers(searchString);
+    public List<Cast> searchForCast(String searchString, User currentUser) {
+        return persistenceCast.getCastMembers(searchString, currentUser);
     }
 
     /**

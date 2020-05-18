@@ -53,7 +53,7 @@ public class Producer extends User implements IProducer {
 		String lastName = names[names.length-1];
 
 		// Retrieves the relevant castMembers with the given names
-		List<Cast> relevantCastMembers = CastCatalog.getInstance().searchForCast(name);
+		List<Cast> relevantCastMembers = CastCatalog.getInstance().searchForCast(name, this);
 
 		if (relevantCastMembers.size() > 1) {
 			// TODO We have not decided what to do here!!!
@@ -97,7 +97,7 @@ public class Producer extends User implements IProducer {
 	 */
 	public void createCastMember(String firstName, String lastName, String email, String bio) {
 		// TODO does it need to search for the cast members email?
-		List<Cast> castList = castCatalog.searchForCast(email);
+		List<Cast> castList = castCatalog.searchForCast(email, this);
 
 		// Checks whether the retrieved cast list is null (empty). If so then no duplicates were found.
 		if (castList == null) {

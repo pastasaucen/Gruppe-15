@@ -43,7 +43,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
     }
 
     @Override
-    public List<Cast> getCastMembers(String searchString) {
+    public List<Cast> getCastMembers(String searchString, User currentUser) {
         List<Cast> castList = new ArrayList<>();
 
         try {
@@ -66,7 +66,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                         castMemberRs.getString("email"),
                         castMemberRs.getString("bio")
                 );
-                getRoles(castMember);
+                getRoles(castMember, currentUser);
 
                 castList.add(castMember);
 
@@ -82,13 +82,44 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
      * This method is used to get the Roles of the cast members that has been searched for.
      * @param castMember
      */
-    private void getRoles(Cast castMember){
+    private void getRoles(Cast castMember, User currentUser){
         try {
-            PreparedStatement getRolesStmt = connection.prepareStatement(
-                    "SELECT roles.id AS id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
-                            "WHERE roles.id = role_id " +
-                            "AND productions.id = production_id " +
-                            "AND cast_id = ?");
+            PreparedStatement getRolesStmt;
+
+            // If the user is null, then it acts like an RDuser. They have the same rights using this method.
+            if (currentUser == null) {
+                currentUser = new RDUser("", "");
+            }
+
+            // Uses a different query for
+            switch (currentUser.getUserType()) {
+                case SYSTEMADMINISTRATOR:
+                case EDITOR:
+                    //System Admin and Editor query
+                    getRolesStmt = connection.prepareStatement(
+                            "SELECT roles.id AS id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
+                                    "WHERE roles.id = role_id " +
+                                    "AND productions.id = production_id " +
+                                    "AND cast_id = ?");
+                    break;
+                case PRODUCER:
+                    //Producer query
+                    getRolesStmt = connection.prepareStatement(
+                            "SELECT roles.id AS id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
+                                    "WHERE roles.id = role_id " +
+                                    "AND productions.id = production_id " +
+                                    "AND cast_id = ? AND (state = 'ACCEPTED' OR associated_producer = ?)");
+                    getRolesStmt.setString(2, currentUser.getEmail());
+                    break;
+                default:
+                    // Not logged in or as an RDuser
+                    getRolesStmt = connection.prepareStatement(
+                            "SELECT roles.id AS id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
+                                    "WHERE roles.id = role_id " +
+                                    "AND productions.id = production_id " +
+                                    "AND cast_id = ? AND state = 'ACCEPTED'");
+
+            }
 
             getRolesStmt.setInt(1, castMember.getId());
 
@@ -260,15 +291,46 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
     }
 
     @Override
-    public List<Production> getProductions(String searchString) {
+    public List<Production> getProductions(String searchString, User currentUser) {
 
         List<Production> productions = new ArrayList<>();
 
         try {
-            PreparedStatement getProductionsStmt = connection.prepareStatement(
-                "SELECT productions.id AS id, productions.name AS name, release_date, state, tv_code, associated_producer " +
-                "FROM productions " +
-                "WHERE tv_code = ? OR productions.name LIKE ?");
+            PreparedStatement getProductionsStmt;
+
+            // If the user is null, then it acts like an RDuser. They have the same rights using this method.
+            if (currentUser == null) {
+                currentUser = new RDUser("", "");
+            }
+
+            // Uses a different query for
+            switch (currentUser.getUserType()) {
+                case SYSTEMADMINISTRATOR:
+                case EDITOR:
+                    //System Admin and Editor query
+                    getProductionsStmt = connection.prepareStatement(
+                            "SELECT productions.id AS id, productions.name AS name, release_date, state, tv_code, associated_producer " +
+                                    "FROM productions " +
+                                    "WHERE tv_code = ? OR productions.name LIKE ?");
+                    break;
+                case PRODUCER:
+                    //Producer query
+                    getProductionsStmt = connection.prepareStatement(
+                            "SELECT productions.id AS id, productions.name AS name, release_date, state, tv_code, associated_producer " +
+                                    "FROM productions " +
+                                    "WHERE (tv_code = ? OR productions.name LIKE ?) " +
+                                        "AND (state = 'ACCEPTED' OR associated_producer = ?)");
+                    getProductionsStmt.setString(3, currentUser.getEmail());
+                    break;
+                default:
+                    // Not logged in or as an RDuser
+                    getProductionsStmt = connection.prepareStatement(
+                            "SELECT productions.id AS id, productions.name AS name, release_date, state, tv_code, associated_producer " +
+                                    "FROM productions " +
+                                    "WHERE (tv_code = ? OR productions.name LIKE ?) " +
+                                        "AND state = 'ACCEPTED'");
+
+            }
 
             getProductionsStmt.setString(1, searchString);
             getProductionsStmt.setString(2, '%'+searchString+'%');
@@ -415,6 +477,21 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
     @Override
     public void createUser(User newUser, String password) {
+
+        try {
+            PreparedStatement insertUserStmt = connection.prepareStatement(
+                    "INSERT INTO users (name, email, password, user_type) VALUES (?, ?, md5(?), ?);");
+
+            insertUserStmt.setString(1, newUser.getName());
+            insertUserStmt.setString(2, newUser.getEmail());
+            insertUserStmt.setString(3, password);
+            insertUserStmt.setString(4, newUser.getUserType().toString());
+
+            insertUserStmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 }

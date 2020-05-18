@@ -2,6 +2,7 @@ package domain.persistenceInterfaces;
 
 import domain.Cast;
 import domain.Production;
+import domain.User;
 import domain.producer.Producer;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface IPersistenceCast {
      * @param searchString a first name and/or last name, or email.
      * @return a list of relevant cast member instances.
      */
-    List<Cast> getCastMembers(String searchString);
+    List<Cast> getCastMembers(String searchString, User currentUser);
 
     /**
      * Saves the given cast members to the persistence layer.

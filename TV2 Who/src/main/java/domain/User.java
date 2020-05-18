@@ -11,6 +11,10 @@ public abstract class User {
 		this.userType = userType;
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	public UserType getUserType() {
 		return userType;
 	}

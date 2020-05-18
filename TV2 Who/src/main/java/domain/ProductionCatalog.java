@@ -40,9 +40,9 @@ public class ProductionCatalog {
      * @param searchString Searches for the input. Can either be id or name
      * @return
      */
-    public List<Production> getProduction(String searchString) {
+    public List<Production> getProduction(String searchString, User currentUser) {
         // Searches for the productions in the persistence layer
-        productions = persistenceProduction.getProductions(searchString);
+        productions = persistenceProduction.getProductions(searchString, currentUser);
 
         // Checks whether no result were found
         if (productions == null) {

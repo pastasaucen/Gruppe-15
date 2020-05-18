@@ -1,6 +1,7 @@
 package domain.persistenceInterfaces;
 
 import domain.Production;
+import domain.User;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface IPersistenceProduction {
      * @param searchString The name of the production or its TV-code.
      * @return a list of relevant productions.
      */
-    List<Production> getProductions(String searchString);
+    List<Production> getProductions(String searchString, User currentUser);
 
     /**
      * Saves the production in the persistence layer.

@@ -1,5 +1,6 @@
 package domain;
 
+import domain.persistenceInterfaces.IPersistenceCast;
 import domain.persistenceInterfaces.IPersistenceLogIn;
 import persistence.PersistenceHandler;
 import java.sql.Date;
@@ -12,6 +13,7 @@ public class TV2Who implements ITV2WhoUI {
     private static TV2Who instance = null;
     private User currentUser;
     private IPersistenceLogIn iPersistenceLogIn = PersistenceHandler.getInstance();
+    private IPersistenceCast iPersistenceCast = PersistenceHandler.getInstance();
 
     private TV2Who() {
         this.productionCatalog = ProductionCatalog.getInstance();
@@ -82,8 +84,18 @@ public class TV2Who implements ITV2WhoUI {
     }
 
     @Override
+    public Cast createCast(String firstName, String lastName, String email, String bio) {
+        return new Cast(-1,firstName,lastName,email,bio);
+    }
+
+    @Override
     public void saveProduction(Production production) {
         productionCatalog.addProduction(production);
+    }
+
+    @Override
+    public void saveCastMembers(List<Cast> castList){
+        iPersistenceCast.saveCastMembers(castList);
     }
 
     public User getCurrentUser() {

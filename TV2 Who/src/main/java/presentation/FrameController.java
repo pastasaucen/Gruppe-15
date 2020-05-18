@@ -142,4 +142,9 @@ public class FrameController implements Initializable {
     public void createProductionScene(javafx.scene.input.MouseEvent mouseEvent){
         productionController.createProduction();
     }
+
+    public void createCastScene(){
+        mainBorderPane.setCenter(castController);
+        castController.createCastScene();
+    }
 }

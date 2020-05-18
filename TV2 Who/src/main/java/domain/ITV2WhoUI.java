@@ -17,5 +17,9 @@ public interface ITV2WhoUI {
 
     public Production createProduction(String name, Date releaseDate);
 
+    public Cast createCast(String firstName,String lastName,String email,String bio);
+
+    public void saveCastMembers(List<Cast> castList);
+
     public void saveProduction(Production production);
 }

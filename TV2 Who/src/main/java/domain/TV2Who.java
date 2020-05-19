@@ -74,28 +74,6 @@ public class TV2Who implements ITV2WhoUI {
         return productionCatalog.getProduction(searchString, currentUser);
     }
 
-    /**
-     * Creates production but does not save in persistence
-     * @param name
-     * @param releaseDate
-     * @return
-     */
-    @Override
-    public Production createProduction(String name, Date releaseDate) {
-        Production production = new Production(name, releaseDate);
-        return production;
-    }
-
-    @Override
-    public void saveProduction(Production production) {
-        productionCatalog.addProduction(production);
-    }
-
-    @Override
-    public void saveCastMembers(List<Cast> castList){
-        iPersistenceCast.saveCastMembers(castList);
-    }
-
     @Override
     public User getCurrentUser() {
         return currentUser;

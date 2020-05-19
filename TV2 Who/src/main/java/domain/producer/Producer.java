@@ -76,6 +76,11 @@ public class Producer extends User implements IProducer {
 				" is added to the production \""+production.getName()+"\"");
 	}
 
+	/**
+	 * Used to add a cast member to an existing production.
+	 * @param cast
+	 * @param production
+	 */
 	public void addCastMember(Cast cast, Production production) {
 		production.addCastMember(cast);
 		ProductionCatalog.getInstance().addProduction(production);
@@ -92,10 +97,6 @@ public class Producer extends User implements IProducer {
 		production.setAssociatedProducerEmail(email);
 		ProductionCatalog.getInstance().addProduction(production);
 		production = null;
-	}
-
-	public Production getProduction() {
-		return production;
 	}
 
 	/**
@@ -126,6 +127,10 @@ public class Producer extends User implements IProducer {
 	private void createCastAndConfirms(String firstName, String lastName, String email, String bio){
 		castCatalog.createCastMember(firstName, lastName, email, bio);
 		System.out.println("The cast member:\"" + firstName + " " + lastName + " : " + email + "\" has been created");
+	}
+
+	public Production getProduction() {
+		return production;
 	}
 
 }

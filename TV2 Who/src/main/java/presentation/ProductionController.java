@@ -615,7 +615,7 @@ public class ProductionController extends BorderPane {
     private void addCastScene(String pName, Date pReleaseDate) {
         IProducer producer = (IProducer) tv2Who.getCurrentUser();
 
-        // TODO Den skal følge brugsmønstret (og derved Producer klassens metoder)
+        // TODO Den skal følge brugsmønstret (og derved IProducer interfacet metoder)
         Production production = new Production(pName, pReleaseDate); // DENNE SKAL SLETTES!!!
         producer.createProduction(pName, pReleaseDate);
 

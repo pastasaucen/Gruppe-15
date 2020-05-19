@@ -303,4 +303,9 @@ public class FrameController extends BorderPane {
 
 
 
+
+    public void createCastScene(){
+        mainBorderPane.setCenter(castController);
+        castController.createCastScene();
+    }
 }

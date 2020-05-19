@@ -826,6 +826,10 @@ public class ProductionController extends BorderPane {
         });
     }
 
+    /**
+     * This method changes the ProductionPane to the administrative GUI scene in which admins can assign roles to
+     * cast members for the production from which the scene is accessed.
+     */
     private void assignCastScene() {
         clearProductionBorderPane();
 
@@ -896,11 +900,9 @@ public class ProductionController extends BorderPane {
         addToListButton.setOnAction((event) -> {
             if (roleNameField.getText().equals("")) {
                 observAddedCastList.add(observChoosenCast.get(0));
-                observChoosenCast.clear();
-                roleNameField.clear();
             }else {
+                observChoosenCast.get(0).addRole(-1,roleNameField.getText(),currentProduction);
                 observAddedCastList.add(observChoosenCast.get(0));
-                IProducer producer = (IProducer) tv2Who.getCurrentUser();
                 observChoosenCast.clear();
                 roleNameField.clear();
             }
@@ -915,6 +917,17 @@ public class ProductionController extends BorderPane {
                 System.out.println("Empty element clicked");
             }
         });
+
+        //Commit button sends elements of "observAddedCastList" to database
+        commitButton.setOnAction((event) -> {
+            IProducer producer = (IProducer)tv2Who.getCurrentUser();
+            for(Cast currCast : observAddedCastList){
+                System.out.println(currCast.getFirstName() + " added to production " + currentProduction.getName());
+                producer.addCastMember(currCast,currentProduction);
+            }
+            observAddedCastList.clear();
+        });
     }
+
 
 }

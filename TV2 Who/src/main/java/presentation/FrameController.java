@@ -2,17 +2,15 @@ package presentation;
 
 
 import domain.*;
-import domain.producer.IProducer;
-import domain.producer.Producer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -21,9 +19,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class FrameController extends BorderPane {
+public class FrameController extends BorderPane{
     @FXML
     BorderPane mainBorderPane;
     @FXML
@@ -41,8 +41,8 @@ public class FrameController extends BorderPane {
     @FXML
     ImageView loginImage, frameImage;
 
-    VBox optionsVBox = new VBox();
-    Label userLabel, createProduction, createUser, createCast;
+    VBox optionsVBox = new VBox(); //Menu when logget in
+    Label userLabel, createProduction, createUser, createCast; //Labels for logget in
 
     private ProductionController productionController = new ProductionController();
     private CastController castController = new CastController();
@@ -76,7 +76,9 @@ public class FrameController extends BorderPane {
         return instance;
     }
 
-
+    /**
+     * Used instead of initialize
+     */
     public void setUp(){
         WelcomeController welcomeController = new WelcomeController();
         loginController = new LoginController();
@@ -86,19 +88,23 @@ public class FrameController extends BorderPane {
         ToggleGroup searchParameters = new ToggleGroup();
         productionRadioButton.setToggleGroup(searchParameters);
         castRadioButton.setToggleGroup(searchParameters);
-
-
     }
 
     /**
-     * Sets center borderpain to welcome.fxml
+     * Sets center borderpain to login.fxml
      */
     public void centerLogin(){
         welcomeController.setPrefHeight(450);
         mainBorderPane.setCenter(loginController);
     }
 
-    public void centerLoginMouse(javafx.scene.input.MouseEvent mouseEvent){ centerLogin();}
+    /**
+     * Sets center borderpane to login.fxml
+     * @param mouseEvent
+     */
+    public void centerLoginMouse(javafx.scene.input.MouseEvent mouseEvent){
+        centerLogin();
+    }
 
     /**
      * Sets center borderpain to welcome.fxml
@@ -121,24 +127,21 @@ public class FrameController extends BorderPane {
 
     /**
      * CHanges the scene depending on what gets searched
-     * TODO skal kunne reagere på om der søges på skuespillere
-     * TODO Funktionalitet for søg efter medvirkedne her
      * @param mouseEvent
      */
     public void search(javafx.scene.input.MouseEvent mouseEvent) {
         String searchWord = searchTextField.getText();
         if(productionRadioButton.isSelected() && !searchWord.equals("")){
-//Todo næste linje fjerne kommentar
+
             List<Production> productionList = tv2Who.prepareProductionSearchList(searchWord);
 
             centerProduction();
 
-            productionController.productionList(searchWord, productionList); //Den her skal fikses
+            productionController.productionList(searchWord, productionList);
         } else if(productionRadioButton.isSelected() && searchWord.equals("")){
             productionScene();
         } else if(castRadioButton.isSelected() && !searchWord.equals("")){
             centerCast();
-            //TODO: Næste linje virker først når IPersistence også virker!
             castController.showCastList(searchWord,tv2Who.prepareCastSearchList(searchWord));
         } else if(castRadioButton.isSelected() && searchWord.equals("")){
             centerCast();
@@ -156,6 +159,9 @@ public class FrameController extends BorderPane {
         mainBorderPane.setCenter(productionController);
     }
 
+    /**
+     * center to cast
+     */
     public void centerCast(){
         castController.setPrefHeight(450);
         mainBorderPane.setCenter(castController);
@@ -180,7 +186,7 @@ public class FrameController extends BorderPane {
     }
 
     /**
-     * This should be deleted when createProduction has been tested
+     *
      * @param mouseEvent
      */
     public void createProductionScene(javafx.scene.input.MouseEvent mouseEvent){
@@ -188,6 +194,9 @@ public class FrameController extends BorderPane {
         productionController.createProduction();
     }
 
+    /**
+     *Sets setting when logget in --> Frame, menu and logout
+     */
     public void loggedInFrame(){
     centerWelcome();
     currentUser = tv2Who.getCurrentUser();
@@ -203,7 +212,7 @@ public class FrameController extends BorderPane {
     Text userEmailText = new Text(tv2Who.getCurrentUser().getEmail());
     Text typeText = new Text("BRUGER TYPE");
     typeText.setFont(Font.font(15));
-    Text userTypeText = new Text(tv2Who.getCurrentUser().getUserType().toString());
+    Text userTypeText = new Text(currentUser.getUserType().toString());
     optionsVBox = new VBox();
 
     menuVBox.getChildren().addAll(emailText, userEmailText, typeText, userTypeText, optionsVBox);
@@ -220,6 +229,10 @@ public class FrameController extends BorderPane {
 
     }
 
+    /**
+     * Action when logget in depending on userType
+     * can logOut when loggetin
+     */
     public void loggedin(){
         loginImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -243,6 +256,8 @@ public class FrameController extends BorderPane {
                 loggedinUser();
                 break;
             case PRODUCER:
+                loggedinProduction();
+                loggedinCast();
                 break;
             case EDITOR:
                 break;
@@ -250,6 +265,9 @@ public class FrameController extends BorderPane {
         }
     }
 
+    /**
+     * Sets action for logOutButton and returns everything to original after pushed
+     */
     public void logOut(){
         mainBorderPane.setCenter(null);
         Button logOut = new Button("LOG UD");
@@ -295,6 +313,9 @@ public class FrameController extends BorderPane {
         });
     }
 
+    /**
+     * sets functionality for when logged in and have acces for productions
+     */
     private void loggedinProduction(){
 
         productionLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -318,8 +339,10 @@ public class FrameController extends BorderPane {
         });
     }
 
+    /**
+     * sets functionality for when logged in and have acces for cast
+     */
     private void loggedinCast(){
-
         castLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -339,6 +362,9 @@ public class FrameController extends BorderPane {
         });
     }
 
+    /**
+     * sets functionality for when logged in and have acces for user
+     */
     private void loggedinUser(){
 
         userLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -363,6 +389,10 @@ public class FrameController extends BorderPane {
 
     }
 
+    /**
+     * setup for labels in menu
+     * @param label
+     */
     private void createOptionLabel(Label label){
         label.setPrefHeight(100);
         label.setAlignment(Pos.CENTER);
@@ -375,9 +405,6 @@ public class FrameController extends BorderPane {
         userController.setPrefHeight(450);
         mainBorderPane.setCenter(userController);
     }
-
-
-
 
 
     public void createCastScene(){

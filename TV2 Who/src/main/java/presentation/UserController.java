@@ -47,6 +47,9 @@ public class UserController extends BorderPane {
         }
     }
 
+    /**
+     * layout and action for create user
+     */
     public void createUser(){
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(0,0,0,50));
@@ -88,6 +91,8 @@ public class UserController extends BorderPane {
         HBox ed = new HBox();
         ed.getChildren().addAll(editor, edText);
         Button create = new Button ("Opret Bruger");
+        VBox type = new VBox();
+        type.getChildren().addAll(sA, pr, rDU, ed);
 
         ToggleGroup radios = new ToggleGroup();
         systemAdministrator.setToggleGroup(radios);
@@ -103,10 +108,7 @@ public class UserController extends BorderPane {
         grid.add(codeword,1,3);
         grid.add(create,1,4);
         grid.add(warning,1,5);
-        grid.add(sA,3,1);
-        grid.add(pr,3,2);
-        grid.add(rDU,3,3);
-        grid.add(ed,3,4);
+        grid.add(type, 3,2);
 
         setHeader("OPRET LOGIN");
         borderPane.setCenter(grid);
@@ -171,6 +173,10 @@ public class UserController extends BorderPane {
 
     }
 
+    /**
+     * Header for user.fxml
+     * @param string
+     */
     private void setHeader(String string){
         header = new Text(string);
         header.setTextAlignment(TextAlignment.CENTER);

@@ -82,4 +82,8 @@ public class SystemAdministrator extends User implements IProducer, IEditor, IRD
 
 	}
 
+	@Override
+	public Production getProduction() {
+		return null;
+	}
 }

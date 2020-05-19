@@ -131,8 +131,12 @@ public class CastController extends BorderPane {
      */
     public void clickOnCastList(List<Cast> castList) {
         searchView.setOnMouseClicked(MouseEvent -> {
-            int index = searchView.getSelectionModel().getSelectedIndex();
-            createProfile(castList.get(index));
+            try {
+                int index = searchView.getSelectionModel().getSelectedIndex();
+                createProfile(castList.get(index));
+            } catch (IndexOutOfBoundsException e){
+
+            }
         });
     }
 

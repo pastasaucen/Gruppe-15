@@ -1,8 +1,6 @@
 package presentation;
 
 import domain.Cast;
-import domain.Production;
-import domain.TV2Who;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,10 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,7 +18,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,12 +33,12 @@ public class CastController extends BorderPane {
     Text header, centerText; //The header of the castBorderPane and a text field to fill the center of the Pane if needed
 
     public CastController() {
-        FXMLLoader roleFxmlLoader = new FXMLLoader(getClass().getResource("cast.fxml"));
-        roleFxmlLoader.setRoot(this);
-        roleFxmlLoader.setController(this);
+        FXMLLoader castFxmlLoader = new FXMLLoader(getClass().getResource("cast.fxml"));
+        castFxmlLoader.setRoot(this);
+        castFxmlLoader.setController(this);
 
         try {
-            roleFxmlLoader.load();
+            castFxmlLoader.load();
         } catch (IOException e) {
             System.out.println("Failed to load cast.fxml");
         }

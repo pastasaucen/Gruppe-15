@@ -2,10 +2,11 @@ package presentation;
 
 import domain.TV2Who;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
@@ -13,8 +14,7 @@ import java.io.IOException;
 
 public class LoginController extends BorderPane {
 
-    @FXML
-    Button loginButton;
+
     @FXML
     Text warningText, emailText, codewordText, headerText;
     @FXML
@@ -24,31 +24,41 @@ public class LoginController extends BorderPane {
 
     private TV2Who tv2Who = TV2Who.getInstance();
 
-    public LoginController(){
-        FXMLLoader roleFxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
+    FrameController frameController = null;
 
-        roleFxmlLoader.setRoot(this);
-        roleFxmlLoader.setController(this);
+    public LoginController(){
+        FXMLLoader loginFxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
+
+        loginFxmlLoader.setRoot(this);
+        loginFxmlLoader.setController(this);
 
         try {
-            roleFxmlLoader.load();
+            loginFxmlLoader.load();
         } catch (
                 IOException e) {
-            System.out.println("Failed to load cast.fxml");
+            System.out.println("Failed to load login.fxml");
         }
+
+        frameController = FrameController.getInstance();
     }
 
-    public void checkLogin(ActionEvent e){
+
+
+    public void setUp(){
+
+    }
+
+
+
+    public void login(ActionEvent e){
         boolean exists = tv2Who.createUserSession(emailField.getText(), codewordField.getText());
 
-        if(!exists){
+        if(exists == false){
             warningText.setText("Email eller kodeord forkert \nprøv igen");
         } else{
             warningText.setText("");
             clearBorderPane();
-
-            Text text = new Text(" du er nu logget ind som \n" + tv2Who.getCurrentUser().getUserType());
-            borderPane.setCenter(text);
+            frameController.loggedInFrame();
         }
 
     }

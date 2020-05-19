@@ -18,4 +18,8 @@ public interface ITV2WhoUI {
     public Production createProduction(String name, Date releaseDate);
 
     public void saveProduction(Production production);
+
+    public User getCurrentUser();
+
+    public void createUser(String name, String email, UserType userType, String pasword);
 }

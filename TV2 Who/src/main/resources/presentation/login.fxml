@@ -36,7 +36,7 @@
                   </TextField>
                   <Text fx:id="codewordText" strokeType="OUTSIDE" strokeWidth="0.0" text="Kodeord" />
                   <TextField fx:id="codewordField" promptText="kodeord" />
-                  <Button fx:id="loginButton" mnemonicParsing="false" onAction="#centerWelcome" text="log på">
+                  <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" text="log på">
                      <VBox.margin>
                         <Insets top="50.0" />
                      </VBox.margin>

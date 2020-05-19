@@ -3,6 +3,7 @@ package domain.producer;
 import domain.*;
 
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -86,8 +87,15 @@ public class Producer extends User implements IProducer {
 		ProductionCatalog.getInstance().addProduction(production);
 	}
 
+	// Adds role to castMember on TEMPORARY production
 	public void addRole(String roleName, Cast castMember) {
 		production.addRole(roleName, castMember);
+	}
+
+	// Adds role to castMember on SPECIFIC production
+	public void addRole(String roleName, Cast castMember, Production production) {
+		production.addRole(roleName, castMember);
+		castCatalog.saveCastMembers(Arrays.asList(castMember));
 	}
 
 	/**

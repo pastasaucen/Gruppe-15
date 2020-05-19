@@ -47,19 +47,15 @@ public class Production {
 		castList.add(castMember);
 }
 
-	//Returns updated list, after adding a role to a cast.
+	// Returns updated list, after adding a role to a cast.
 	public void addRole(String roleName, Cast castMember) {
-		// Iterates through every cast member in this production
-		for (int castNum = 0; castNum < castList.size(); castNum++) {
-			// If the cast member is the same as the given cast member, then add the role to that one.
-			if (castMember.equals(castList.get(castNum))) {
-				castList.get(castNum).addRole(-1, roleName, this);
-				return;
-			}
-		}
-
 		castMember.addRole(-1, roleName, this);
 	}
+
+	// Parses values to be updated to Cast
+	/*public void updateRole(String roleName, int roleID, Cast castMember) {
+		castMember.updateRole(roleName, roleID);
+	}*/
 
 	public String getName() {
 		return name;

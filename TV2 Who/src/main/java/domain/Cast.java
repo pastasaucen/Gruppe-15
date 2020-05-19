@@ -28,6 +28,13 @@ public class Cast {
 		roles.add(new Role(id, roleName, production));
 	}
 
+	// Runs update method to persistence-layer, with specific values
+	// SQL-draft: UPDATE roleTable SET role = roleName WHERE id = roleID AND production = prodution.getID();
+	/*public void updateRole(String roleName, int roleID) {
+		Production production = roles.get(roleID).getProduction();
+		roles.set(roleID, new Role(roleID, roleName, production));
+	}*/
+
 	public String getFirstName() {
 		return firstName;
 	}

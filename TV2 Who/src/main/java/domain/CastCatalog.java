@@ -49,4 +49,8 @@ public class CastCatalog {
         castList.add(new Cast(-1, firstName, lastName, email, bio));
         persistenceCast.saveCastMembers(castList);
     }
+
+    public void saveCastMembers(List<Cast> castList) {
+        persistenceCast.saveCastMembers(castList);
+    }
 }

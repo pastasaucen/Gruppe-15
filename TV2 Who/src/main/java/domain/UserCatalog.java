@@ -4,12 +4,13 @@ import domain.editor.Editor;
 import domain.persistenceInterfaces.IPersistenceUser;
 import domain.producer.Producer;
 import domain.rDUser.RDUser;
+import persistence.PersistenceHandler;
 
 public class UserCatalog {
 
     private static UserCatalog instance;
 
-    private IPersistenceUser persistenceUser;
+    private IPersistenceUser persistenceUser = PersistenceHandler.getInstance();
 
     public static UserCatalog getInstance(){
         if( instance == null){

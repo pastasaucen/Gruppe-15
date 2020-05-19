@@ -1,52 +1,83 @@
 package presentation;
 
-import domain.*;
-import domain.Cast;
+
 import domain.ITV2WhoUI;
 import domain.Production;
 import domain.TV2Who;
-import domain.persistenceInterfaces.IPersistenceProduction;
+import domain.User;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
-import java.net.URL;
-import java.sql.Date;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class FrameController implements Initializable {
+public class FrameController extends BorderPane {
     @FXML
     BorderPane mainBorderPane;
     @FXML
-    ImageView searchImage;
-    @FXML
     TextField searchTextField;
     @FXML
-    RadioButton productionRadioButton, castRadioButton;
+    RadioButton productionRadioButton;
     @FXML
-    Label productionLabel, roleLabel;
+    RadioButton castRadioButton;
     @FXML
     HBox frameHBox;
+    @FXML
+    Label productionLabel;
+    @FXML
+    Label castLabel;
+
+    VBox optionsVBox = new VBox();
+    Label userLabel, createProduction, createUser;
+
+
 
     private ProductionController productionController = new ProductionController();
     private CastController castController = new CastController();
     private WelcomeController welcomeController = new WelcomeController();
     private ITV2WhoUI tv2Who = TV2Who.getInstance();
+    private LoginController loginController = null;
+    private UserController userController = new UserController();
 
-    public FrameController(){}
+    private static FrameController instance = null;
+    private User currentUser = null;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    private FrameController() {
+        FXMLLoader frameFxmlLoader = new FXMLLoader(getClass().getResource("frame.fxml"));
+
+        frameFxmlLoader.setRoot(this);
+        frameFxmlLoader.setController(this);
+
+        try {
+            frameFxmlLoader.load();
+        } catch (IOException e) {
+            System.out.println("Failed to load frame.fxml");
+        }
+    }
+
+    public static FrameController getInstance(){
+        if (instance == null){
+            instance = new FrameController();
+            instance.setUp();
+        }
+        return instance;
+    }
+
+
+    public void setUp(){
         WelcomeController welcomeController = new WelcomeController();
+        loginController = new LoginController();
         mainBorderPane.setCenter(welcomeController);
 
         //Sets radiobuttons together for searching
@@ -54,13 +85,25 @@ public class FrameController implements Initializable {
         productionRadioButton.setToggleGroup(searchParameters);
         castRadioButton.setToggleGroup(searchParameters);
 
+
     }
+
+    /**
+     * Sets center borderpain to welcome.fxml
+     */
+    public void centerLogin(){
+        welcomeController.setPrefHeight(450);
+        mainBorderPane.setCenter(loginController);
+    }
+
+    public void centerLoginMouse(javafx.scene.input.MouseEvent mouseEvent){ centerLogin();}
 
     /**
      * Sets center borderpain to welcome.fxml
      */
     public void centerWelcome(){
         welcomeController.setPrefHeight(450);
+        mainBorderPane.setCenter(null);
         mainBorderPane.setCenter(welcomeController);
     }
 
@@ -140,6 +183,129 @@ public class FrameController implements Initializable {
      * @param mouseEvent
      */
     public void createProductionScene(javafx.scene.input.MouseEvent mouseEvent){
+        centerProduction();
         productionController.createProduction();
+    }
+
+    public void loggedInFrame(){
+    centerWelcome();
+    currentUser = tv2Who.getCurrentUser();
+
+    VBox menuVBox = new VBox();
+    menuVBox.prefWidth(100);
+    menuVBox.setAlignment(Pos.TOP_LEFT);
+    menuVBox.setPadding(new Insets(10, 20,20,20));
+    menuVBox.setStyle("-fx-background-color: #9b9b9b");
+
+    Text emailText = new Text("EMAIL");
+    emailText.setFont(Font.font(15));
+    Text userEmailText = new Text(tv2Who.getCurrentUser().getEmail());
+    Text typeText = new Text("BRUGER TYPE");
+    typeText.setFont(Font.font(15));
+    Text userTypeText = new Text(tv2Who.getCurrentUser().getUserType().toString());
+    optionsVBox = new VBox();
+
+    menuVBox.getChildren().addAll(emailText, userEmailText, typeText, userTypeText, optionsVBox);
+    mainBorderPane.setLeft(menuVBox);
+
+    userLabel = new Label("BRUGER");
+    userLabel.setTextFill(Color.WHITE);
+    userLabel.setAlignment(Pos.CENTER);
+    userLabel.setPrefWidth(200);
+    userLabel.setPrefHeight(60);
+    frameHBox.getChildren().add(userLabel);
+
+    loggedin();
+
+    }
+
+    public void loggedin(){
+        switch (currentUser.getUserType()){
+            case SYSTEMADMINISTRATOR:
+                loggedinProduction();
+                loggedinCast();
+                loggedinUser();
+                break;
+            case PRODUCER:
+                break;
+            case EDITOR:
+                break;
+            case RDUSER:
+        }
+    }
+
+    private void loggedinProduction(){
+
+        productionLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                createProduction = new Label("OPRET PRODUKTION");
+                optionsVBox.getChildren().clear();
+                createOptionLabel(createProduction);
+                optionsVBox.getChildren().add(createProduction);
+                createProduction.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        centerProduction();
+                        productionController.createProduction();
+                    }
+                });
+            }
+        });
+    }
+
+    private void loggedinCast(){
+
+        castLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                optionsVBox.getChildren().clear();
+            }
+        });
+    }
+
+    private void loggedinUser(){
+
+        userLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                createUser = new Label("CREATE USER");
+                optionsVBox.getChildren().clear();
+                createOptionLabel(createUser);
+                optionsVBox.getChildren().add(createUser);
+
+                createUser.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        centerUser();
+                        userController.createUser();
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    private void createOptionLabel(Label label){
+        label.setPrefHeight(100);
+        label.setAlignment(Pos.CENTER);
+        label.setTextFill(Color.WHITE);
+        label.setStyle("-fx-font-size: 15");
+
+    }
+
+    public void centerUser(){
+        userController.setPrefHeight(450);
+        mainBorderPane.setCenter(userController);
+    }
+
+
+
+
+
+    public void createCastScene(){
+        mainBorderPane.setCenter(castController);
+        castController.createCastScene();
     }
 }

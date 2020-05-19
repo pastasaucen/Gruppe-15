@@ -22,4 +22,5 @@ public interface IPersistenceCast {
      * @param castMembers the cast member to be saved.
      */
     void saveCastMembers(List<Cast> castMembers);
+
 }

@@ -18,9 +18,9 @@ public class App extends Application {
     private static Parent root;
 
   @Override
-  public void start(Stage stage){
+  public void start(Stage stage) {
       try {
-          root = FXMLLoader.load(getClass().getResource("frame.fxml"));
+          root = FXMLLoader.load(getClass().getResource("main.fxml"));
           stage.setTitle("TV2 WHO");
 
           Image stageLogo = new Image("/presentation/pictures/stageLogo.png");
@@ -38,6 +38,7 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
+
 
 
 

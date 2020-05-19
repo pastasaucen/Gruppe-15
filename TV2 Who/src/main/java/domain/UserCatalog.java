@@ -25,10 +25,9 @@ public class UserCatalog {
      * @param name
      * @param email
      * @param userType Enum
-     * @param password pasword is deleted after sending to Database
+     * @param password password is deleted after sending to Database
      */
     public void createUser(String name, String email, UserType userType, String password){
-
         switch(userType){
             case SYSTEMADMINISTRATOR:
                 persistenceUser.createUser(new SystemAdministrator(name, email), password);
@@ -38,6 +37,7 @@ public class UserCatalog {
                 break;
             case RDUSER:
                 persistenceUser.createUser(new RDUser(name, email), password);
+                break;
             case EDITOR:
                 persistenceUser.createUser(new Editor(name, email), password);
         }

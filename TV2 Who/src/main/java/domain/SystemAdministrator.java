@@ -7,17 +7,20 @@ import domain.UserType;
 import domain.editor.IEditor;
 import domain.persistenceInterfaces.IPersistenceUser;
 import domain.producer.IProducer;
+import domain.producer.Producer;
 import domain.rDUser.IRDUser;
 
 import java.sql.Date;
 
 public class SystemAdministrator extends User implements IProducer, IEditor, IRDUser {
-	IPersistenceUser persistenceUser;
+
 	UserCatalog userCatalog;
+	IProducer producerRole;
 
 	public SystemAdministrator(String name, String email) {
 		super(name, email, UserType.SYSTEMADMINISTRATOR);
 		userCatalog = UserCatalog.getInstance();
+		producerRole = new Producer(super.name, super.email);
 	}
 
 
@@ -32,54 +35,40 @@ public class SystemAdministrator extends User implements IProducer, IEditor, IRD
 		userCatalog.createUser(name, email, userType, password);
 	}
 
-	/**
-	 */
-	public void createProduction(String name, Date date)  {
+	@Override
 
+	public void createProduction(String name, Date date)  {
+		producerRole.createProduction(name, date);
 	}
 
-	/**
-	 * 
-	 *  
-	 */
+	@Override
 	public void addCastMember(String name) {
-
+		producerRole.addCastMember(name);
 	}
 
 	@Override
 	public void addCastMember(Cast cast, Production production) {
-
+		producerRole.addCastMember(cast, production);
 	}
 
-	/**
-	 * 
-	 *  
-	 */
+	@Override
 	public void addRole(String roleName, Cast castMember) {
-
+		producerRole.addRole(roleName, castMember);
 	}
 
 	@Override
 	public void addRole(String roleName, Cast castMember, Production production) {
-
+		producerRole.addRole(roleName, castMember, production);
 	}
 
-
-	/**
-	 * 
-	 *  
-	 */
+	@Override
 	public void submitProduction() {
-
+		producerRole.submitProduction();
 	}
 
-
-	/**
-	 * 
-	 *  
-	 */
+	@Override
 	public void createCastMember(String firstName, String lastName, String email, String bio) {
-
+		producerRole.createCastMember(firstName, lastName, email, bio);
 	}
 
 }

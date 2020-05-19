@@ -135,7 +135,7 @@ public class PersistenceHandlerTest {
                 name,
                 new Date(System.currentTimeMillis()),
                 State.ACCEPTED,
-                "NULL",
+                "9999",
                 "andreas@edal.dk"
             );
 
@@ -149,7 +149,7 @@ public class PersistenceHandlerTest {
                 newName,
                 new Date(2001-1900, 0,1),
                 State.DECLINED,
-                "LLUN",
+                "9999",
                 newEmail
         );
         persistenceHandler.saveProduction(alteredProduction);

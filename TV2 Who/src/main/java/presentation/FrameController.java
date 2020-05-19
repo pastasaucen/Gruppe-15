@@ -1,10 +1,9 @@
 package presentation;
 
 
-import domain.ITV2WhoUI;
-import domain.Production;
-import domain.TV2Who;
-import domain.User;
+import domain.*;
+import domain.producer.IProducer;
+import domain.producer.Producer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,8 +38,6 @@ public class FrameController extends BorderPane {
 
     VBox optionsVBox = new VBox();
     Label userLabel, createProduction, createUser;
-
-
 
     private ProductionController productionController = new ProductionController();
     private CastController castController = new CastController();

@@ -1,6 +1,7 @@
 package presentation;
 
 import domain.*;
+import domain.producer.IProducer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -34,6 +35,7 @@ public class CastController extends BorderPane {
     Text header, centerText; //The header of the castBorderPane and a text field to fill the center of the Pane if needed
 
     ITV2WhoUI tv2Who = TV2Who.getInstance();
+    IProducer producer;
 
     public CastController() {
         FXMLLoader castFxmlLoader = new FXMLLoader(getClass().getResource("cast.fxml"));
@@ -286,7 +288,7 @@ public class CastController extends BorderPane {
                 addToListButton.setText("Tilføj til liste");
                 addToListButton.setStyle("-fx-text-fill: #000000");
                 try {
-                    Cast tempCast = tv2Who.createCast(firstNameField.getText(), lastNameField.getText(), emailField.getText(), bioArea.getText());
+                    Cast tempCast = new Cast(-1, firstNameField.getText(), lastNameField.getText(), emailField.getText(), bioArea.getText());
                     observCastList.add(tempCast);
                     firstNameField.clear();
                     lastNameField.clear();
@@ -300,8 +302,9 @@ public class CastController extends BorderPane {
 
         //Commit Button checks elements from
         commitButton.setOnAction((event) -> {
-            List<Cast> commitList = new ArrayList<>();
-            commitList.clear();
+
+            producer = (IProducer) tv2Who.getCurrentUser();
+
             for (Cast curCast : observCastList) {
                 List<Cast> tempList = tv2Who.prepareCastSearchList(curCast.getEmail());
                 if (tempList.size() > 0) {
@@ -314,16 +317,13 @@ public class CastController extends BorderPane {
                     ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
                     alert.showAndWait();
                 } else {
-                    commitList.add(curCast);
-                    System.out.println(commitList);
+                    producer.createCastMember(curCast.getFirstName(),
+                            curCast.getLastName(),
+                            curCast.getEmail(),
+                            curCast.getBio());
                 }
             }
-            if (commitList.size() > 0){
-                tv2Who.saveCastMembers(commitList);
-                commitList.clear();
-                observCastList.clear();
-                System.out.println("Elements commited to database");
-            }
+            observCastList.clear();
         });
 
         //Removal of element in the create cast ListView

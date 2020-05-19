@@ -1,6 +1,7 @@
 package presentation;
 
 import domain.ITV2WhoUI;
+import domain.SystemAdministrator;
 import domain.TV2Who;
 import domain.UserType;
 import javafx.event.ActionEvent;
@@ -132,7 +133,9 @@ public class UserController extends BorderPane {
                     warning.setText("Vælg en bruger type");
                     return;
                 }
-                tv2Who.createUser(name, email, userType, codeword);
+
+                SystemAdministrator administrator = (SystemAdministrator) tv2Who.getCurrentUser();
+                administrator.createUser(name, email, userType, codeword);
 
                 Stage stage = new Stage();
                 stage.setResizable(false);

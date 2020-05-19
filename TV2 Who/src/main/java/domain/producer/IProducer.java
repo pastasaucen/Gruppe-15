@@ -11,6 +11,8 @@ public interface IProducer {
 
 	void addCastMember(String name);
 
+	void addCastMember(Cast cast, Production production);
+
 	void addRole(String roleName, Cast castMember);
 
 	void addRole(String roleName, Cast castMember, Production production);

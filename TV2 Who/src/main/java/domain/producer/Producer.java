@@ -118,11 +118,8 @@ public class Producer extends User implements IProducer {
 		List<Cast> castList = castCatalog.searchForCast(email, this);
 
 		// Checks whether the retrieved cast list is null (empty). If so then no duplicates were found.
-		if (castList == null) {
+		if (castList.size() == 0) {
 			createCastAndConfirms(firstName, lastName, email, bio);	// Creates the new cast member
-		} else {
-			// TODO The presentation layer needs to ask the user whether or not to create a cast who might already exist.
-			//  Use the createCastAndConfirms to do this!
 		}
 	}
 
@@ -132,9 +129,9 @@ public class Producer extends User implements IProducer {
 	 * @param lastName
 	 * @param email
 	 */
-	private void createCastAndConfirms(String firstName, String lastName, String email, String bio){
-		castCatalog.createCastMember(firstName, lastName, email, bio);
+	private void createCastAndConfirms(String firstName, String lastName, String email, String bio) {
 		System.out.println("The cast member:\"" + firstName + " " + lastName + " : " + email + "\" has been created");
+		castCatalog.createCastMember(firstName, lastName, email, bio);
 	}
 
 	public Production getProduction() {

@@ -46,12 +46,21 @@ public class SystemAdministrator extends User implements IProducer, IEditor, IRD
 
 	}
 
+	@Override
+	public void addCastMember(Cast cast, Production production) {
+
+	}
 
 	/**
 	 * 
 	 *  
 	 */
 	public void addRole(String roleName, Cast castMember) {
+
+	}
+
+	@Override
+	public void addRole(String roleName, Cast castMember, Production production) {
 
 	}
 

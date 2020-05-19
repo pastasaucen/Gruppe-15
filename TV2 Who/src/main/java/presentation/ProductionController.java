@@ -613,10 +613,14 @@ public class ProductionController extends BorderPane {
      * @param pReleaseDate
      */
     private void addCastScene(String pName, Date pReleaseDate) {
-        Production production = tv2Who.createProduction(pName, pReleaseDate);
+        IProducer producer = (IProducer) tv2Who.getCurrentUser();
+
+        // TODO Den skal følge brugsmønstret (og derved Producer klassens metoder)
+        Production production = new Production(pName, pReleaseDate); // DENNE SKAL SLETTES!!!
+        producer.createProduction(pName, pReleaseDate);
+
         roleString = new ArrayList<>();
 
-        //production.setAssociatedProducerEmail(); //ToDo tilføje skaberen, hvor finder jeg den henne
         List<String> roleListString = new ArrayList<>();
 
         clearProductionBorderPane();
@@ -740,7 +744,8 @@ public class ProductionController extends BorderPane {
             @Override
             public void handle(ActionEvent actionEvent) {
                 createProduction();
-                tv2Who.saveProduction(production);
+
+                producer.submitProduction();
 
                 Stage stage = new Stage();
                 stage.setResizable(false);

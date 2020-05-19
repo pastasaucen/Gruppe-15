@@ -43,10 +43,8 @@ public class TV2Who implements ITV2WhoUI {
      */
     @Override
     public boolean createUserSession(String email, String password) {
-        //TODO fix commentation
         User newUser = iPersistenceLogIn.logInValidation(email, password);
-        //User newUser = new SystemAdministrator("SD","SD");
-        //User newUser = null;
+
         if (newUser == null) {
             return false;
         }
@@ -89,11 +87,6 @@ public class TV2Who implements ITV2WhoUI {
     }
 
     @Override
-    public Cast createCast(String firstName, String lastName, String email, String bio) {
-        return new Cast(-1,firstName,lastName,email,bio);
-    }
-
-    @Override
     public void saveProduction(Production production) {
         productionCatalog.addProduction(production);
     }
@@ -106,10 +99,5 @@ public class TV2Who implements ITV2WhoUI {
     @Override
     public User getCurrentUser() {
         return currentUser;
-    }
-
-    @Override
-    public void createUser(String name, String email, UserType userType, String pasword) {
-        userCatalog.createUser(name, email, userType, pasword);
     }
 }

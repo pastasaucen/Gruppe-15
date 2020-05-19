@@ -2,7 +2,10 @@ package domain;
 
 import domain.persistenceInterfaces.IPersistenceCast;
 import domain.persistenceInterfaces.IPersistenceLogIn;
+import domain.producer.IProducer;
+import domain.producer.Producer;
 import persistence.PersistenceHandler;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -100,6 +103,7 @@ public class TV2Who implements ITV2WhoUI {
         iPersistenceCast.saveCastMembers(castList);
     }
 
+    @Override
     public User getCurrentUser() {
         return currentUser;
     }

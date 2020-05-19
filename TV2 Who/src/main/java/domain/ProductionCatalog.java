@@ -3,7 +3,6 @@ package domain;
 import domain.persistenceInterfaces.IPersistenceProduction;
 import persistence.PersistenceHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductionCatalog {
@@ -11,11 +10,7 @@ public class ProductionCatalog {
     private static ProductionCatalog instance;
     private IPersistenceProduction persistenceProduction = PersistenceHandler.getInstance();
 
-    //  Gets overridden every time to search in the persistence layer
-    private List<Production> productions;
-
     private ProductionCatalog() {
-        productions = new ArrayList<>();
     }
 
     public static ProductionCatalog getInstance() {
@@ -26,7 +21,7 @@ public class ProductionCatalog {
     }
 
     /**
-     * Adds a production to the catalogue
+     * Saves a production to the catalogue.
      * @param newProduction
      */
     public void addProduction(Production newProduction) {
@@ -42,14 +37,6 @@ public class ProductionCatalog {
      */
     public List<Production> getProduction(String searchString, User currentUser) {
         // Searches for the productions in the persistence layer
-        productions = persistenceProduction.getProductions(searchString, currentUser);
-
-        // Checks whether no result were found
-        if (productions == null) {
-            // TODO Send a message to the presentation layer that no results were found
-            return null;
-        } else {
-            return productions;     // Returns the found productions
-        }
+        return persistenceProduction.getProductions(searchString, currentUser);
     }
 }

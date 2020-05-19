@@ -32,11 +32,15 @@ public class Producer extends User implements IProducer {
 		production = new Production(-1, name, date);
 	}
 
+	/**
+	 * This method is used during the creation of a new production.
+	 * @param name
+	 */
 	public void addCastMember(String name) {
 		// We assume that the user will search in one string. I.e. want to separate this string into to names.
 		// TODO: What about names like "Marie Louise Pedersen"? Or "Robert De Niro"?
 
-		String[] names = name.split(" ");		// Divides the given name into separate names as an array
+		String[] names = name.split(" ");	// Divides the given name into separate names as an array
 		String firstName = "";
 
 		// Minus one to leave the last name as the last name.
@@ -72,6 +76,16 @@ public class Producer extends User implements IProducer {
 				" is added to the production \""+production.getName()+"\"");
 	}
 
+	/**
+	 * Used to add a cast member to an existing production.
+	 * @param cast
+	 * @param production
+	 */
+	public void addCastMember(Cast cast, Production production) {
+		production.addCastMember(cast);
+		ProductionCatalog.getInstance().addProduction(production);
+	}
+
 	public void addRole(String roleName, Cast castMember) {
 		production.addRole(roleName, castMember);
 	}
@@ -83,10 +97,6 @@ public class Producer extends User implements IProducer {
 		production.setAssociatedProducerEmail(email);
 		ProductionCatalog.getInstance().addProduction(production);
 		production = null;
-	}
-
-	public Production getProduction() {
-		return production;
 	}
 
 	/**
@@ -103,23 +113,8 @@ public class Producer extends User implements IProducer {
 		if (castList == null) {
 			createCastAndConfirms(firstName, lastName, email, bio);	// Creates the new cast member
 		} else {
-			System.out.println("The cast you want to create might already exist");
-
-			// TODO The functionality with multiple cast members is not addressed using the presentation layer.
-			//  This needs further development where the decision making from the actors point of view is not implemented.
-			for (Cast cast : castList) {
-				System.out.println( cast.getFirstName() + " " + cast.getLastName() + " \n email: " + cast.getEmail()
-				+ "\n roles:" + cast.getRoles().toString());
-			}
-
-			System.out.println("Do you still want to create a new cast, type 'yes' or 'no' : ");
-
-			Scanner scanner = new Scanner(System.in);
-			if (scanner.next().equalsIgnoreCase("yes")) {
-				createCastAndConfirms(firstName, lastName, email, bio);
-			} else {
-				System.out.println("You have chosen not to create the cast");
-			}
+			// TODO The presentation layer needs to ask the user whether or not to create a cast who might already exist.
+			//  Use the createCastAndConfirms to do this!
 		}
 	}
 
@@ -132,6 +127,10 @@ public class Producer extends User implements IProducer {
 	private void createCastAndConfirms(String firstName, String lastName, String email, String bio){
 		castCatalog.createCastMember(firstName, lastName, email, bio);
 		System.out.println("The cast member:\"" + firstName + " " + lastName + " : " + email + "\" has been created");
+	}
+
+	public Production getProduction() {
+		return production;
 	}
 
 }

@@ -21,6 +21,8 @@ public interface ITV2WhoUI {
 
     public void saveCastMembers(List<Cast> castList);
 
+    public User getCurrentUser();
+
     public void saveProduction(Production production);
 
     public User getCurrentUser();

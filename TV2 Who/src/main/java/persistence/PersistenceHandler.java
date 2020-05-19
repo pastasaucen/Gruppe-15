@@ -58,11 +58,13 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
     public List<Cast> getCastMembers(String searchString, User currentUser) {
         List<Cast> castList = new ArrayList<>();
 
+        searchString = searchString.toLowerCase();
+
         try {
             PreparedStatement getCastMembersStmt = connection.prepareStatement(
                     "SELECT id, first_name, last_name, email, bio " +
                             "FROM cast_members " +
-                            "WHERE first_name LIKE ? OR last_name LIKE ? OR email = ?");
+                            "WHERE LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ? OR LOWER(email) = ?");
 
             getCastMembersStmt.setString(1, '%'+searchString+'%');  // first name
             getCastMembersStmt.setString(2, '%'+searchString+'%');  // last name
@@ -328,6 +330,8 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
     @Override
     public List<Production> getProductions(String searchString, User currentUser) {
 
+        searchString = searchString.toLowerCase();
+
         List<Production> productions = new ArrayList<>();
 
         try {
@@ -346,14 +350,14 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                     getProductionsStmt = connection.prepareStatement(
                             "SELECT productions.id AS id, productions.name AS name, release_date, state, tv_code, associated_producer " +
                                     "FROM productions " +
-                                    "WHERE tv_code = ? OR productions.name LIKE ?");
+                                    "WHERE tv_code = ? OR LOWER(productions.name) LIKE ?");
                     break;
                 case PRODUCER:
                     //Producer query
                     getProductionsStmt = connection.prepareStatement(
                             "SELECT productions.id AS id, productions.name AS name, release_date, state, tv_code, associated_producer " +
                                     "FROM productions " +
-                                    "WHERE (tv_code = ? OR productions.name LIKE ?) " +
+                                    "WHERE (tv_code = ? OR LOWER(productions.name) LIKE ?) " +
                                         "AND (state = 'ACCEPTED' OR associated_producer = ?)");
                     getProductionsStmt.setString(3, currentUser.getEmail());
                     break;
@@ -362,7 +366,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                     getProductionsStmt = connection.prepareStatement(
                             "SELECT productions.id AS id, productions.name AS name, release_date, state, tv_code, associated_producer " +
                                     "FROM productions " +
-                                    "WHERE (tv_code = ? OR productions.name LIKE ?) " +
+                                    "WHERE (tv_code = ? OR LOWER(productions.name) LIKE ?) " +
                                         "AND state = 'ACCEPTED'");
 
             }

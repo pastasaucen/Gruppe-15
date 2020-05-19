@@ -44,11 +44,6 @@ public class LoginController extends BorderPane {
 
 
 
-    public void setUp(){
-
-    }
-
-
 
     public void login(ActionEvent e){
         boolean exists = tv2Who.createUserSession(emailField.getText(), codewordField.getText());
@@ -57,16 +52,13 @@ public class LoginController extends BorderPane {
             warningText.setText("Email eller kodeord forkert \nprøv igen");
         } else{
             warningText.setText("");
-            clearBorderPane();
+            emailField.clear();
+            codewordField.clear();
             frameController.loggedInFrame();
         }
 
     }
 
-    private void clearBorderPane(){
-        headerText.setText("");
-        borderPane.setCenter(null);
-    }
 
 
 

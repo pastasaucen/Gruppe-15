@@ -4,6 +4,7 @@ package presentation;
 import domain.*;
 import domain.producer.IProducer;
 import domain.producer.Producer;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -35,9 +38,11 @@ public class FrameController extends BorderPane {
     Label productionLabel;
     @FXML
     Label castLabel;
+    @FXML
+    ImageView loginImage, frameImage;
 
     VBox optionsVBox = new VBox();
-    Label userLabel, createProduction, createUser;
+    Label userLabel, createProduction, createUser, createCast;
 
     private ProductionController productionController = new ProductionController();
     private CastController castController = new CastController();
@@ -135,7 +140,6 @@ public class FrameController extends BorderPane {
             centerCast();
             //TODO: Næste linje virker først når IPersistence også virker!
             castController.showCastList(searchWord,tv2Who.prepareCastSearchList(searchWord));
-
         } else if(castRadioButton.isSelected() && searchWord.equals("")){
             centerCast();
         } else {
@@ -147,7 +151,7 @@ public class FrameController extends BorderPane {
     /**
      * Sets center to production.fxml with right size
      */
-    private void centerProduction(){
+    public void centerProduction(){
         productionController.setPrefHeight(450);
         mainBorderPane.setCenter(productionController);
     }
@@ -217,6 +221,21 @@ public class FrameController extends BorderPane {
     }
 
     public void loggedin(){
+        loginImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                logOut();
+            }
+        });
+
+        frameImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                centerWelcome();
+                optionsVBox.getChildren().clear();
+            }
+        });
+
         switch (currentUser.getUserType()){
             case SYSTEMADMINISTRATOR:
                 loggedinProduction();
@@ -231,15 +250,62 @@ public class FrameController extends BorderPane {
         }
     }
 
+    public void logOut(){
+        mainBorderPane.setCenter(null);
+        Button logOut = new Button("LOG UD");
+        mainBorderPane.setCenter(logOut);
+
+        logOut.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                mainBorderPane.setLeft(null);
+                userLabel = null;
+                frameHBox.getChildren().remove(2);
+                centerWelcome();
+
+                productionLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        productionScene(mouseEvent);
+                    }
+                });
+
+                castLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        centerCastMouse(mouseEvent);
+                    }
+                });
+
+                loginImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        centerLoginMouse(mouseEvent);
+                    }
+                });
+
+                frameImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        centerWelcomeMouse(mouseEvent);
+                    }
+                });
+
+            }
+        });
+    }
+
     private void loggedinProduction(){
 
         productionLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                productionScene();
                 createProduction = new Label("OPRET PRODUKTION");
                 optionsVBox.getChildren().clear();
                 createOptionLabel(createProduction);
-                optionsVBox.getChildren().add(createProduction);
+                optionsVBox.getChildren().addAll(createProduction);
+
                 createProduction.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
@@ -247,6 +313,7 @@ public class FrameController extends BorderPane {
                         productionController.createProduction();
                     }
                 });
+
             }
         });
     }
@@ -256,7 +323,18 @@ public class FrameController extends BorderPane {
         castLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                centerCast();
                 optionsVBox.getChildren().clear();
+                createCast = new Label("OPRET MEDVIRKENDE");
+                createOptionLabel(createCast);
+                optionsVBox.getChildren().add(createCast);
+
+                createCast.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        createCastScene();
+                    }
+                });
             }
         });
     }
@@ -266,6 +344,7 @@ public class FrameController extends BorderPane {
         userLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                centerUser();
                 createUser = new Label("CREATE USER");
                 optionsVBox.getChildren().clear();
                 createOptionLabel(createUser);

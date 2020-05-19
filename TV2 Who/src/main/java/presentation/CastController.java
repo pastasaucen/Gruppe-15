@@ -36,6 +36,8 @@ public class CastController extends BorderPane {
 
     ITV2WhoUI tv2Who = TV2Who.getInstance();
     IProducer producer;
+    //FrameController frameController = null;
+    //ProductionController productionController = null;
 
     public CastController() {
         FXMLLoader castFxmlLoader = new FXMLLoader(getClass().getResource("cast.fxml"));
@@ -48,6 +50,9 @@ public class CastController extends BorderPane {
             System.out.println("Failed to load cast.fxml");
         }
         setCastHeader("MEDVIRKENDE");
+
+        //frameController = FrameController.getInstance();
+       // productionController = new ProductionController();
     }
 
     /**
@@ -190,8 +195,10 @@ public class CastController extends BorderPane {
 
     //TODO: Denne metode er ikke endelig. Der skal i virkeligheden skiftes scene
     public void createProductionProfile(Production prodUsing) {
-        clearCastPane();
-        setCastHeader(prodUsing.getName());
+       /* frameController.centerProduction();
+        ArrayList<Production> productionList = new ArrayList<>();
+        productionList.add(prodUsing);
+        productionController.clickingOnproductionList(productionList);*/
 
     }
 

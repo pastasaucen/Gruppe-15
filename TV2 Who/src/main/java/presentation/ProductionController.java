@@ -49,8 +49,6 @@ public class ProductionController extends BorderPane {
     ArrayList<String> roleString; //List for update rollList
 
     ITV2WhoUI tv2Who = TV2Who.getInstance();
-    CastController castController = new CastController();
-    // FrameController frameController = new FrameController();
     private Production currentProduction;
 
 
@@ -826,7 +824,7 @@ public class ProductionController extends BorderPane {
         });
     }
 
-    private void assignCastScene() {
+    public void assignCastScene() {
         clearProductionBorderPane();
 
         //Setup elements of the scene

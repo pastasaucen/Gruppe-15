@@ -17,5 +17,7 @@ public interface ITV2WhoUI {
 
     public Production createProduction(String name, Date releaseDate);
 
+    public User getCurrentUser();
+
     public void saveProduction(Production production);
 }

@@ -1,6 +1,8 @@
 package domain;
 
 import domain.persistenceInterfaces.IPersistenceLogIn;
+import domain.producer.IProducer;
+import domain.producer.Producer;
 import persistence.PersistenceHandler;
 
 import java.sql.Date;
@@ -86,6 +88,7 @@ public class TV2Who implements ITV2WhoUI {
         productionCatalog.addProduction(production);
     }
 
+    @Override
     public User getCurrentUser() {
         return currentUser;
     }

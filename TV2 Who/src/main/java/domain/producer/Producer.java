@@ -44,7 +44,6 @@ public class Producer extends User implements IProducer {
 	 */
 	public void addCastMember(String name) {
 		// We assume that the user will search in one string. I.e. want to separate this string into to names.
-		// TODO: What about names like "Marie Louise Pedersen"? Or "Robert De Niro"?
 
 		String[] names = name.split(" ");	// Divides the given name into separate names as an array
 		String firstName = "";

@@ -42,9 +42,12 @@ public class Producer extends User implements IProducer {
 	 * @param castMember
 	 */
 	public void addCastMember(Cast castMember) {
-		tempProduction.addCastMember(castMember);	// Adds the only cast member to the new production.
-		System.out.println("The cast member named \""+castMember.getFirstName() +" "+ castMember.getLastName()+"\"" +
-				" is added to the production \""+ tempProduction.getName()+"\"");
+
+		if (!getTempProduction().getCastList().contains(castMember)) {
+			tempProduction.addCastMember(castMember);	// Adds the only cast member to the new production.
+			System.out.println("The cast member named \""+castMember.getFirstName() +" "+ castMember.getLastName()+"\"" +
+					" is added to the production \""+ tempProduction.getName()+"\"");
+		}
 	}
 
 	/**

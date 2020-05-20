@@ -39,13 +39,13 @@ public class FrameController extends BorderPane{
     @FXML
     Label castLabel;
     @FXML
-    ImageView loginImage, frameImage;
+    ImageView loginImage, frameImage, searchImage;
 
     VBox optionsVBox = new VBox(); //Menu when logget in
-    Label userLabel, createProduction, createUser, createCast; //Labels for logget in
+    Label userLabel, createProduction, createUser, createCast, myProductions, assignRole, assignCast; //Labels for logget in
 
-    private ProductionController productionController = new ProductionController();
-    private CastController castController = new CastController();
+    private ProductionController productionController = null;
+    private CastController castController = null;
     private WelcomeController welcomeController = new WelcomeController();
     private ITV2WhoUI tv2Who = TV2Who.getInstance();
     private LoginController loginController = null;
@@ -66,6 +66,8 @@ public class FrameController extends BorderPane{
         } catch (IOException e) {
             System.out.println("Failed to load frame.fxml");
         }
+
+
     }
 
     public static FrameController getInstance(){
@@ -76,12 +78,24 @@ public class FrameController extends BorderPane{
         return instance;
     }
 
+    public CastController getCastController(){
+        return castController;
+    }
+
+    public ProductionController getProductionController(){
+        return productionController;
+    }
+
     /**
      * Used instead of initialize
      */
     public void setUp(){
         WelcomeController welcomeController = new WelcomeController();
+        productionController = new ProductionController();
         loginController = new LoginController();
+        castController = new CastController();
+        castController.setUp();
+        productionController.setUp();
         mainBorderPane.setCenter(welcomeController);
 
         //Sets radiobuttons together for searching
@@ -249,6 +263,14 @@ public class FrameController extends BorderPane{
             }
         });
 
+        searchImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                optionsVBox.getChildren().clear();
+                search(mouseEvent);
+            }
+        });
+
         switch (currentUser.getUserType()){
             case SYSTEMADMINISTRATOR:
                 loggedinProduction();
@@ -309,6 +331,13 @@ public class FrameController extends BorderPane{
                     }
                 });
 
+                searchImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        search(mouseEvent);
+                    }
+                });
+
             }
         });
     }
@@ -322,10 +351,14 @@ public class FrameController extends BorderPane{
             @Override
             public void handle(MouseEvent mouseEvent) {
                 productionScene();
-                createProduction = new Label("OPRET PRODUKTION");
                 optionsVBox.getChildren().clear();
+                createProduction = new Label("OPRET PRODUKTION");
                 createOptionLabel(createProduction);
-                optionsVBox.getChildren().addAll(createProduction);
+
+                myProductions = new Label("MINE PRODUKTIONER");
+                createOptionLabel(myProductions);
+
+                optionsVBox.getChildren().addAll(createProduction, myProductions);
 
                 createProduction.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
@@ -334,6 +367,15 @@ public class FrameController extends BorderPane{
                         productionController.createProduction();
                     }
                 });
+
+                myProductions.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        //TODO SKOV FUNKTIONALITET --> inden i den skal kaldes på metode myProductionsChosen
+
+                    }
+                });
+
 
             }
         });
@@ -389,6 +431,32 @@ public class FrameController extends BorderPane{
 
     }
 
+    public void setMyProductionsChosen(){
+        assignCast = new Label("TILDEL MEDVIRKENDE");
+        createOptionLabelUnder(assignCast);
+        assignRole = new Label("TILDEL ROLLE");
+        createOptionLabelUnder(assignRole);
+
+        VBox myProductionsVBox = new VBox();
+        myProductionsVBox.getChildren().addAll(assignCast,assignRole);
+        optionsVBox.getChildren().add(myProductionsVBox);
+
+        assignCast.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                //TODO SKOV FUNKTIONALITET
+            }
+        });
+
+        assignRole.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                //TODO SKOV FUNKTIONALITET
+            }
+        });
+
+    }
+
     /**
      * setup for labels in menu
      * @param label
@@ -399,6 +467,13 @@ public class FrameController extends BorderPane{
         label.setTextFill(Color.WHITE);
         label.setStyle("-fx-font-size: 15");
 
+    }
+
+    private void createOptionLabelUnder(Label label){
+        createOptionLabel(label);
+        label.setStyle("-fx-font-size: 10");
+        label.setTextFill(Color.PURPLE);
+        label.setAlignment(Pos.CENTER_RIGHT);
     }
 
     public void centerUser(){

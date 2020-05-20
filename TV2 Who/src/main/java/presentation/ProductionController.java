@@ -47,6 +47,8 @@ public class ProductionController extends BorderPane {
     ArrayList<String> roleString; //List for update rollList
 
     ITV2WhoUI tv2Who = TV2Who.getInstance();
+    FrameController frameController = null;
+    CastController castController = null;
     private Production currentProduction;
 
 
@@ -65,6 +67,13 @@ public class ProductionController extends BorderPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    public void setUp(){
+        frameController = FrameController.getInstance();
+        castController = frameController.getCastController();
     }
 
 
@@ -173,72 +182,90 @@ public class ProductionController extends BorderPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 //Gets the clicked item
-                try {
-                    Production prodUsing = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
-                    currentProduction = prodUsing;
-
-                    setHeader(prodUsing.getName());
-                    //Sets the left part for information about release date
-                    Label label = new Label("  RELEASE DATE :");
-                    label.setFont(Font.font(15));
-                    Label label2 = new Label("   " + prodUsing.getReleaseDate().toString());
-                    label2.setFont(Font.font(12));
-
-                    VBox vbox = new VBox(10);
-                    vbox.setPrefWidth(120);
-                    vbox.setAlignment(Pos.TOP_LEFT);
-                    vbox.getChildren().addAll(label, label2);
-
-                    //Assign cast button setup
-                    //TODO: Følgende knap skal rykkes - DEBUG brugsmønster "Tilknyt medvirkende"
-                    assignCastButton = new Button();
-                    assignCastButton.setText("Tilknyt medvirkende");
-                    assignCastButton.setMinWidth(150);
-                    vbox.getChildren().add(assignCastButton);
-                    assignCastButton.setOnAction((event) -> {
-                        System.out.println("Add to list clicked");
-                        assignCastScene();
-                    });
-
-                    //Makes listview with all the roles in the production
-                    ArrayList<String> castList = new ArrayList<>();
-                    for (Cast cast : prodUsing.getCastList()) {
-                        String roles = "";
-                        ArrayList<String> roleListString = new ArrayList<>();
-
-                        for (Role r : cast.getRoles()) {
-                            if (r.getProduction().equals(prodUsing)) {
-                                roleListString.add(r.getRoleName());
-                            }
-                        }
-                        for (int i = 0; i < roleListString.size(); i++) {
-                            if (roleListString.size() == i - 1) {
-                                roles = roles + roleListString.get(i);
-                            } else {
-                                roles = roles + roleListString + ", ";
-                            }
-                        }
-                        castList.add(cast.getFirstName() + " " + cast.getLastName() + "\n" + roles);
-                    }
-                    ObservableList<String> list = FXCollections.observableArrayList(castList);
-
-                    castView = new ListView<>(list);
-                    clickingOnCastList(prodUsing.getCastList());
-
-                    castView.setMinWidth(400);
-                    HBox hbox = new HBox();
-                    hbox.getChildren().addAll(vbox,castView);
-                    hbox.setPadding(new Insets(0,0,0,100));
-                    hbox.setSpacing(20);
-                    productionBorderPane.setCenter(hbox);
-
-                    //productionBorderPane.setCenter(castView);
-                } catch (IndexOutOfBoundsException e) {
-
-                }
-
-            }
+                Production production = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
+                productionProfile(production);
+        }
         });
+    }
+
+    /**
+     * Profile for production so can be used elsewhere also
+     * @param production
+     */
+    public void productionProfile(Production production){
+        try {
+            Production prodUsing = production;
+            currentProduction = prodUsing;
+
+            if(prodUsing.getAssociatedProducerEmail() == null){
+                prodUsing.setAssociatedProducerEmail("INGEN PRODUCER");
+            }
+
+            setHeader(prodUsing.getName());
+            //Sets the left part for information about release date
+            Label label = new Label("RELEASE DATE :");
+            label.setFont(Font.font(15));
+            Label label2 = new Label( prodUsing.getReleaseDate().toString());
+            label2.setFont(Font.font(12));
+            Label tvCodeTitel = new Label("TV KODE");
+            tvCodeTitel.setFont(Font.font(15));
+            Label tvCodeInfo = new Label ( prodUsing.getTvCode());
+            tvCodeInfo.setFont(Font.font(12));
+
+            VBox vbox = new VBox(10);
+            vbox.setPrefWidth(120);
+            vbox.setAlignment(Pos.TOP_LEFT);
+            vbox.getChildren().addAll(label, label2, tvCodeTitel, tvCodeInfo);
+
+            //Assign cast button setup
+            //TODO: Følgende knap skal rykkes - DEBUG brugsmønster "Tilknyt medvirkende"
+            assignCastButton = new Button();
+            assignCastButton.setText("Tilknyt medvirkende");
+            assignCastButton.setMinWidth(150);
+            vbox.getChildren().add(assignCastButton);
+            assignCastButton.setOnAction((event) -> {
+                System.out.println("Add to list clicked");
+                assignCastScene();
+            });
+
+            //Makes listview with all the roles in the production
+            ArrayList<String> castList = new ArrayList<>();
+            for (Cast cast : prodUsing.getCastList()) {
+                String roles = "";
+                ArrayList<String> roleListString = new ArrayList<>();
+
+                for (Role r : cast.getRoles()) {
+                    if (r.getProduction().equals(prodUsing)) {
+                        roleListString.add(r.getRoleName());
+                    }
+                }
+                for (int i = 0; i < roleListString.size(); i++) {
+                    if (roleListString.size() == i - 1) {
+                        roles = roles + roleListString.get(i);
+                    } else {
+                        roles = roles + roleListString + ", ";
+                    }
+                }
+                castList.add(cast.getFirstName() + " " + cast.getLastName() + "\n" + roles);
+            }
+            ObservableList<String> list = FXCollections.observableArrayList(castList);
+
+            castView = new ListView<>(list);
+            clickingOnCastList(prodUsing.getCastList());
+
+            castView.setMinWidth(500);
+            HBox hbox = new HBox();
+            hbox.getChildren().addAll(vbox,castView);
+            hbox.setPadding(new Insets(0,0,0,100));
+            hbox.setSpacing(20);
+            clearProductionBorderPane();
+            productionBorderPane.setCenter(hbox);
+
+            //productionBorderPane.setCenter(castView);
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+
     }
 
     /**
@@ -266,40 +293,8 @@ public class ProductionController extends BorderPane {
      * @param cast
      */
     public void createProfile(Cast cast) {
-        clearProductionBorderPane();
-        String lastName = cast.getLastName();
-        String firstName = cast.getFirstName();
-
-        //The setup elements of a cast profile
-        VBox vertical1 = new VBox();
-        VBox vertical2 = new VBox();
-        HBox horizontal = new HBox();
-        horizontal.getChildren().addAll(vertical1, vertical2);
-        horizontal.setPadding(new Insets(5, 5, 5, 5));
-        vertical1.setPadding(new Insets(10, 20, 20, 20));
-        vertical2.setPadding(new Insets(20, 20, 20, 20));
-
-        //Profile left side setup
-        Label castNameLabel = new Label(firstName + " " + lastName);
-        castNameLabel.setFont(Font.font(25));
-        castNameLabel.setAlignment(Pos.CENTER);
-        //castNameLabel.setPrefHeight(400);
-        TextArea profileText = new TextArea(cast.getBio());
-        profileText.setPrefHeight(400);
-        profileText.setWrapText(true);
-        profileText.setEditable(false);
-        vertical1.getChildren().addAll(castNameLabel, profileText);
-
-
-        //Profile right side setup
-        ListView<String> roleView = new ListView<>();
-        roleView.setPrefHeight(500);
-        roleView.setPrefWidth(350);
-        Label roleLabel = new Label("Medvirker i: ");
-        roleLabel.setFont(Font.font(14));
-        vertical2.getChildren().addAll(roleLabel, roleView);
-
-        productionBorderPane.setCenter(horizontal);
+        frameController.centerCast();
+        castController.createProfile(cast);
     }
 
 

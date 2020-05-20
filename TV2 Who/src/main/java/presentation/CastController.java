@@ -36,8 +36,8 @@ public class CastController extends BorderPane {
 
     ITV2WhoUI tv2Who = TV2Who.getInstance();
     IProducer producer;
-    //FrameController frameController = null;
-    //ProductionController productionController = null;
+    FrameController frameController = null;
+    ProductionController productionController = null;
 
     public CastController() {
         FXMLLoader castFxmlLoader = new FXMLLoader(getClass().getResource("cast.fxml"));
@@ -51,8 +51,12 @@ public class CastController extends BorderPane {
         }
         setCastHeader("MEDVIRKENDE");
 
-        //frameController = FrameController.getInstance();
-       // productionController = new ProductionController();
+
+    }
+
+    public void setUp(){
+        frameController = FrameController.getInstance();
+        productionController = frameController.getProductionController();
     }
 
     /**
@@ -75,7 +79,7 @@ public class CastController extends BorderPane {
         header = new Text();
         header.setText(text);
         header.setTextAlignment(TextAlignment.CENTER);
-        header.setFont(Font.font(30));
+        header.setFont(Font.font(25));
         castBorderPane.setTop(header);
         castBorderPane.setAlignment(header, Pos.CENTER);
     }
@@ -108,7 +112,10 @@ public class CastController extends BorderPane {
         setCastHeader(
                 "Der er " + castList.size() + " produktionsmedvirkende der matcher din søgning " + "'" + searchWord + "'");
 
-        castBorderPane.setCenter(searchView);
+        VBox vBox = new VBox();
+        vBox.getChildren().add(searchView);
+        vBox.setPadding(new Insets(0,0,0,100));
+        castBorderPane.setCenter(vBox);
     }
 
     /**
@@ -194,15 +201,14 @@ public class CastController extends BorderPane {
         roleView.getSelectionModel().getSelectedItem();
         clickOnRoleList(cast.getRoles());
 
+
         castBorderPane.setCenter(horizontal);
     }
 
     //TODO: Denne metode er ikke endelig. Der skal i virkeligheden skiftes scene
     public void createProductionProfile(Production prodUsing) {
-       /* frameController.centerProduction();
-        ArrayList<Production> productionList = new ArrayList<>();
-        productionList.add(prodUsing);
-        productionController.clickingOnproductionList(productionList);*/
+        frameController.centerProduction();
+        productionController.productionProfile(prodUsing);
 
     }
 

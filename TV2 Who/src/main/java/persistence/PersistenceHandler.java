@@ -207,12 +207,6 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         }
 
         try {
-            // Existing cast members gets updated in the database.
-            PreparedStatement updateCastMemberStmt = connection.prepareStatement(
-                    "UPDATE cast_members " +
-                            "SET first_name = ?, last_name = ?, email = ?, bio = ? " +
-                            "WHERE id = ?");
-
             // Inserts a new role
             PreparedStatement insertRoleStmt = connection.prepareStatement(
                     "INSERT INTO roles (role_name, production_id) " +
@@ -225,16 +219,6 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
             // Updates every cast member and inserts
             for (Cast curCast : existingMembers) {
-                updateCastMemberStmt.setString(1, curCast.getFirstName());
-                updateCastMemberStmt.setString(2, curCast.getLastName());
-                updateCastMemberStmt.setString(3, curCast.getEmail());
-                updateCastMemberStmt.setString(4, curCast.getBio());
-                updateCastMemberStmt.setInt(5, curCast.getId());
-
-                updateCastMemberStmt.execute();
-
-                // Make reference from the production to the cast member
-
                 insertRoles(insertRoleStmt, insertCtoRStmt, curCast);   // The roles are inserted as well
             }
 

@@ -104,16 +104,18 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
             getCastMemberStmt.setInt(1, id);
 
             ResultSet castRs = getCastMemberStmt.executeQuery();
-            castRs.next();
+            if (castRs.next()) {
+                cast = new Cast(
+                        castRs.getInt("id"),
+                        castRs.getString("first_name"),
+                        castRs.getString("last_name"),
+                        castRs.getString("email"),
+                        castRs.getString("bio")
+                );
+                getRoles(cast, currentUser);  // The roles are assigned
+            }
 
-            cast = new Cast(
-                    castRs.getInt("id"),
-                    castRs.getString("first_name"),
-                    castRs.getString("last_name"),
-                    castRs.getString("email"),
-                    castRs.getString("bio")
-            );
-            getRoles(cast, currentUser);  // The roles are assigned
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -451,23 +453,24 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
             getProductionFromIDstmt.setInt(1,id);
 
             ResultSet productionRs = getProductionFromIDstmt.executeQuery();
-            productionRs.next();
+            if (productionRs.next()) {
+                production = new Production(
+                        productionRs.getInt("id"),
+                        productionRs.getString("name"),
+                        productionRs.getDate("release_date"),
+                        State.valueOf(productionRs.getString("state")),
+                        productionRs.getString("tv_code"),
+                        productionRs.getString("associated_producer"));
 
-            production = new Production(
-                    productionRs.getInt("id"),
-                    productionRs.getString("name"),
-                    productionRs.getDate("release_date"),
-                    State.valueOf(productionRs.getString("state")),
-                    productionRs.getString("tv_code"),
-                    productionRs.getString("associated_producer"));
+                // Gets the cast members from the given production
+                List<Cast> castList = getCastMembers(production);
 
-            // Gets the cast members from the given production
-            List<Cast> castList = getCastMembers(production);
-
-            // Assigns the cast to the new production instance.
-            for (Cast cast : castList) {
-                production.addCastMember(cast);
+                // Assigns the cast to the new production instance.
+                for (Cast cast : castList) {
+                    production.addCastMember(cast);
+                }
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package presentation;
 
 import domain.*;
 import domain.producer.IProducer;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,7 +41,7 @@ public class ProductionController extends BorderPane {
     Text header, center; //used for centerBorderPane
 
     @FXML
-    Button assignCastButton;
+    Button assignCastButton, assignRoleButton;
 
     String headerText, centerText; //used for Text header and center
     List<Cast> castList; //Used for searchedCastList
@@ -211,6 +212,24 @@ public class ProductionController extends BorderPane {
             tvCodeTitel.setFont(Font.font(15));
             Label tvCodeInfo = new Label ( prodUsing.getTvCode());
             tvCodeInfo.setFont(Font.font(12));
+            
+            //Testknapper
+                    //Assign cast button setup
+                    //TODO: Følgende knap skal rykkes - DEBUG brugsmønster "Tilknyt medvirkende"
+                    assignCastButton = new Button();
+                    assignCastButton.setText("Tilknyt medvirkende");
+                    vbox.getChildren().add(assignCastButton);
+                    assignCastButton.setOnAction((event) -> {
+                        System.out.println("Add to list clicked");
+                        assignCastScene();
+                    });
+                    //TODO: Også en test knap...
+                    assignRoleButton = new Button();
+                    assignRoleButton.setText("Tilknyt roller");
+                    vbox.getChildren().add(assignRoleButton);
+                    assignRoleButton.setOnAction((event) -> {
+                        assignRoleScene();
+                    });
 
             VBox vbox = new VBox(10);
             vbox.setPrefWidth(120);
@@ -348,7 +367,7 @@ public class ProductionController extends BorderPane {
 
         Button createProductionButton = new Button("Opret Produktion");
         grid.add(createProductionButton, 2, 11);
-        grid.add(warningText,2,12);
+        grid.add(warningText, 2, 12);
         productionBorderPane.setCenter(grid);
 
         //Action for createProductionButton
@@ -670,6 +689,28 @@ public class ProductionController extends BorderPane {
         });
     }
 
+    //TODO: virker ikke! Afhænger af metode som skal laves i persistence handleren..
+    public void chooseProductionScene() {
+        clearProductionBorderPane();
+
+        //Scene elements setup
+        VBox vertical1 = new VBox();
+        vertical1.setPadding(new Insets(5, 5, 5, 100));
+        ListView<Production> productionListView = new ListView<>();
+        setHeader("Vælg produktion");
+
+        IProducer producer = (IProducer) tv2Who.getCurrentUser();
+        ObservableList<Production> observProductionList = FXCollections.observableArrayList();
+        observProductionList.setAll(tv2Who.prepareProductionSearchList("b"));
+        productionListView.setItems(observProductionList);
+
+        vertical1.getChildren().add(productionListView);
+    }
+
+    /**
+     * This method changes the ProductionPane to the administrative GUI scene in which admins can assign roles to
+     * cast members for the production from which the scene is accessed.
+     */
     public void assignCastScene() {
         clearProductionBorderPane();
 
@@ -678,7 +719,7 @@ public class ProductionController extends BorderPane {
         VBox vertical2 = new VBox();
         HBox horizontal = new HBox();
         horizontal.getChildren().addAll(vertical1, vertical2);
-        horizontal.setPadding(new Insets(5, 5, 5, 5));
+        horizontal.setPadding(new Insets(5, 5, 5, 100));
         vertical1.setPadding(new Insets(20, 20, 20, 20));
         vertical1.setSpacing(10);
         vertical2.setPadding(new Insets(20, 20, 20, 20));
@@ -691,9 +732,9 @@ public class ProductionController extends BorderPane {
         Label overheadSearchLabel = new Label("");
         ObservableList<Cast> observSearchCastList = FXCollections.observableArrayList();
         ListView searchListView = new ListView(observSearchCastList);
-        searchListView.setPrefWidth(450);
+        searchListView.setPrefWidth(300);
         TextField castSearchField = new TextField();
-        castSearchField.setPrefWidth(300);
+        castSearchField.setPrefWidth(280);
         castSearchField.setPromptText("Indtast navn på medvirkende her");
         Button searchButton = new Button();
         searchButton.setText("Søg");
@@ -713,7 +754,7 @@ public class ProductionController extends BorderPane {
         //Right side setup
         ObservableList<Cast> observAddedCastList = FXCollections.observableArrayList();
         ListView addedCastView = new ListView(observAddedCastList);
-        addedCastView.setPrefWidth(360);
+        addedCastView.setPrefWidth(250);
         Button commitButton = new Button();
         commitButton.setText("Tilføj valgte til produktion");
         vertical2.getChildren().addAll(addedCastView, commitButton);
@@ -740,11 +781,9 @@ public class ProductionController extends BorderPane {
         addToListButton.setOnAction((event) -> {
             if (roleNameField.getText().equals("")) {
                 observAddedCastList.add(observChoosenCast.get(0));
-                observChoosenCast.clear();
-                roleNameField.clear();
-            }else {
+            } else {
+                observChoosenCast.get(0).addRole(-1, roleNameField.getText(), currentProduction);
                 observAddedCastList.add(observChoosenCast.get(0));
-                IProducer producer = (IProducer) tv2Who.getCurrentUser();
                 observChoosenCast.clear();
                 roleNameField.clear();
             }
@@ -757,6 +796,67 @@ public class ProductionController extends BorderPane {
                 observAddedCastList.remove(index);
             } catch (Exception e) {
                 System.out.println("Empty element clicked");
+            }
+        });
+
+        //Commit button sends elements of "observAddedCastList" to database
+        commitButton.setOnAction((event) -> {
+            IProducer producer = (IProducer) tv2Who.getCurrentUser();
+            for (Cast currCast : observAddedCastList) {
+                System.out.println(currCast.getFirstName() + " added to production " + currentProduction.getName());
+                producer.addCastMember(currCast, currentProduction);
+            }
+            observAddedCastList.clear();
+        });
+    }
+
+    public void assignRoleScene() {
+        clearProductionBorderPane();
+
+        //Scene elements setup
+        setHeader("Tildel roller for produktionen " + currentProduction.getName());
+        VBox vertical1 = new VBox();
+        vertical1.setPadding(new Insets(5, 80, 5, 100));
+        productionBorderPane.setCenter(vertical1);
+
+        //List of cast members currently associated with the current production
+        ObservableList<Cast> observCastList = FXCollections.observableArrayList(currentProduction.getCastList());
+        ListView<Cast> castListView = new ListView<>(observCastList);
+
+        //When a cast member has been chosen from the cast list, the object will appear here
+        ObservableList<Cast> choosenCastMember = FXCollections.observableArrayList();
+        ListView<Cast> choosenCastView = new ListView<>(choosenCastMember);
+        choosenCastView.setPrefHeight(180);
+
+        TextField roleNameField = new TextField();
+        roleNameField.setPromptText("Indtast rollenavn her");
+
+        Button commitButton = new Button();
+        commitButton.setText("Tildel rolle til medvirkende");
+
+        //Add to Vbox
+        vertical1.getChildren().addAll(castListView,choosenCastView,roleNameField,commitButton);
+
+        castListView.setOnMouseClicked((MouseEvent) -> {
+            int index = castListView.getSelectionModel().getSelectedIndex();
+            choosenCastMember.clear();
+            choosenCastMember.add(castListView.getSelectionModel().getSelectedItem());
+        });
+
+        choosenCastView.setOnMouseClicked((MouseEvent) -> {
+            choosenCastMember.clear();
+        });
+
+        commitButton.setOnAction((event) -> {
+            if (choosenCastMember.size() == 0 || roleNameField.getText().equals("")){
+                System.out.println("No elements in list or role field empty");
+            }else{
+                IProducer producer = (IProducer)tv2Who.getCurrentUser();
+                producer.addRole(roleNameField.getText(),choosenCastMember.get(0),currentProduction);
+                System.out.println(choosenCastMember);
+                System.out.println(currentProduction);
+                choosenCastMember.clear();
+                roleNameField.clear();
             }
         });
     }

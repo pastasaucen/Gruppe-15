@@ -581,7 +581,13 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 insertProductionStmt.setString(1, production.getName());
                 insertProductionStmt.setDate(2, production.getReleaseDate());
                 insertProductionStmt.setString(3, production.getState().toString());
-                insertProductionStmt.setString(4, production.getTvCode());
+
+                // Generates and updates the TV-code
+                String newTVCode = TVCodeGenerator.incrementTVCode(getHighestTVCode());
+                updateHighestTVCode(newTVCode);
+                production.setTvCode(newTVCode);
+                insertProductionStmt.setString(4, newTVCode);
+
                 insertProductionStmt.setString(5, production.getAssociatedProducerEmail());
 
                 insertProductionStmt.execute();
@@ -595,15 +601,14 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 // Update
                 PreparedStatement updateProductionStmt = connection.prepareStatement(
                         "UPDATE productions " +
-                                "SET name = ?, release_date = ?, state = ?, tv_code = ?, associated_producer = ? " +
+                                "SET name = ?, release_date = ?, state = ?, associated_producer = ? " +
                                 "WHERE id = ?");
 
                 updateProductionStmt.setString(1, production.getName());
                 updateProductionStmt.setDate(2, production.getReleaseDate());
                 updateProductionStmt.setString(3, production.getState().toString());
-                updateProductionStmt.setString(4, production.getTvCode());
-                updateProductionStmt.setString(5, production.getAssociatedProducerEmail());
-                updateProductionStmt.setInt(6, production.getId());
+                updateProductionStmt.setString(4, production.getAssociatedProducerEmail());
+                updateProductionStmt.setInt(5, production.getId());
 
                 updateProductionStmt.execute();
 
@@ -632,6 +637,38 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
             insertUserStmt.setString(4, newUser.getUserType().toString());
 
             insertUserStmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getHighestTVCode() {
+
+        try {
+            PreparedStatement getHighestTVCodeStmt = connection.prepareStatement(
+                    "SELECT highest_tv_code FROM highest_tv_code_table WHERE id = 1");
+
+            ResultSet tvCodeRs = getHighestTVCodeStmt.executeQuery();
+            tvCodeRs.next();
+
+            return tvCodeRs.getString("highest_tv_code");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void updateHighestTVCode(String tvCode) {
+        try {
+            PreparedStatement updateHighestTVCodeStmt = connection.prepareStatement(
+                    "UPDATE highest_tv_code_table SET highest_tv_code = ? WHERE id = 1");
+
+            updateHighestTVCodeStmt.setString(1, tvCode);
+
+            updateHighestTVCodeStmt.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -93,6 +93,10 @@ public class Production {
 		return tvCode;
 	}
 
+	public void setTvCode(String tvCode) {
+		this.tvCode = tvCode;
+	}
+
 	@Override
 	public String toString() {
 		String castString = "";
@@ -103,6 +107,7 @@ public class Production {
 
 		return  "Production:\n" +
 				"ID: " + id + '\n' +
+				"TV-code: " + tvCode + '\n' +
 				"Name: '" + name + '\'' + '\n' +
 				"Release Date: " + releaseDate + '\n' +
 				"State: " + state + '\n' +

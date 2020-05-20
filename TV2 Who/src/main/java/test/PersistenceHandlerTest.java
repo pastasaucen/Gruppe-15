@@ -135,7 +135,7 @@ public class PersistenceHandlerTest {
                 name,
                 new Date(System.currentTimeMillis()),
                 State.ACCEPTED,
-                "9999",
+                "",
                 "andreas@edal.dk"
             );
 
@@ -149,7 +149,7 @@ public class PersistenceHandlerTest {
                 newName,
                 new Date(2001-1900, 0,1),
                 State.DECLINED,
-                "9999",
+                "",
                 newEmail
         );
         persistenceHandler.saveProduction(alteredProduction);
@@ -181,5 +181,10 @@ public class PersistenceHandlerTest {
         User userSession = persistenceHandler.logInValidation(user.getEmail(), password);
         System.out.println(userSession);
         Assert.assertEquals(user.getEmail(), userSession.getEmail());
+    }
+
+    @Test
+    public void getHighestTVCode() {
+        System.out.println(persistenceHandler.getHighestTVCode());
     }
 }

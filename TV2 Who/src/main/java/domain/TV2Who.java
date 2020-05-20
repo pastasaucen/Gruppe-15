@@ -12,15 +12,15 @@ import java.util.List;
 
 public class TV2Who implements ITV2WhoUI {
 
-    ProductionCatalog productionCatalog;
+    private ProductionCatalog productionCatalog;
     private static TV2Who instance = null;
     private User currentUser;
     private IPersistenceLogIn iPersistenceLogIn = PersistenceHandler.getInstance();
-    private IPersistenceCast iPersistenceCast = PersistenceHandler.getInstance();
-    private UserCatalog userCatalog = new UserCatalog();
+    private CastCatalog castCatalog;
 
     private TV2Who() {
         this.productionCatalog = ProductionCatalog.getInstance();
+        this.castCatalog = CastCatalog.getInstance();
     }
 
     /**
@@ -33,6 +33,16 @@ public class TV2Who implements ITV2WhoUI {
             instance = new TV2Who();
         }
         return instance;
+    }
+
+    @Override
+    public Cast getCastMember(int id) {
+        return castCatalog.getCastMember(id, currentUser);
+    }
+
+    @Override
+    public Production getProduction(int id) {
+        return productionCatalog.getProduction(id);
     }
 
     /**
@@ -61,7 +71,7 @@ public class TV2Who implements ITV2WhoUI {
      */
     @Override
     public List<Cast> prepareCastSearchList(String name) {
-        return CastCatalog.getInstance().searchForCast(name, currentUser);
+        return castCatalog.searchForCast(name, currentUser);
     }
 
     /**

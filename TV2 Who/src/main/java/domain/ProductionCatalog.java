@@ -44,4 +44,8 @@ public class ProductionCatalog {
     public List<Production> getProductions(Producer producer) {
         return persistenceProduction.getProductions(producer);
     }
+
+    public Production getProduction(int id) {
+        return persistenceProduction.getProduction(id);
+    }
 }

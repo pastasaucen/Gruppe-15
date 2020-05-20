@@ -162,9 +162,13 @@ public class PersistenceHandlerTest {
     @Test
     public void getAssociatedProductions(){
         System.out.println(persistenceHandler.getProductions(systemAdministrator));
-
-
     }
+
+    @Test
+    public void getCastMember() {
+        System.out.println(persistenceHandler.getCastMember(1,systemAdministrator));
+    }
+
 
 
     @Test

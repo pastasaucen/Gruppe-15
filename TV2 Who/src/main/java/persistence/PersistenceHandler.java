@@ -94,8 +94,31 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
     }
 
     @Override
-    public Cast getCastMember(int id) {
-        return null;
+    public Cast getCastMember(int id, User currentUser) {
+        Cast cast = null;
+
+        try {
+            PreparedStatement getCastMemberStmt = connection.prepareStatement(
+                    "SELECT * FROM cast_members WHERE id = ?");
+
+            getCastMemberStmt.setInt(1, id);
+
+            ResultSet castRs = getCastMemberStmt.executeQuery();
+            castRs.next();
+
+            cast = new Cast(
+                    castRs.getInt("id"),
+                    castRs.getString("first_name"),
+                    castRs.getString("last_name"),
+                    castRs.getString("email"),
+                    castRs.getString("bio")
+            );
+            getRoles(cast, currentUser);  // The roles are assigned
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cast;
     }
 
     /**
@@ -433,7 +456,37 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
     @Override
     public Production getProduction(int id) {
-        return null;
+        Production production = null;
+
+        try {
+            PreparedStatement getProductionFromIDstmt = connection.prepareStatement(
+                    "SELECT * FROM productions WHERE id = ?");
+
+            getProductionFromIDstmt.setInt(1,id);
+
+            ResultSet productionRs = getProductionFromIDstmt.executeQuery();
+            productionRs.next();
+
+            production = new Production(
+                    productionRs.getInt("id"),
+                    productionRs.getString("name"),
+                    productionRs.getDate("release_date"),
+                    State.valueOf(productionRs.getString("state")),
+                    productionRs.getString("tv_code"),
+                    productionRs.getString("associated_producer"));
+
+            // Gets the cast members from the given production
+            List<Cast> castList = getCastMembers(production);
+
+            // Assigns the cast to the new production instance.
+            for (Cast cast : castList) {
+                production.addCastMember(cast);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return production;
     }
 
     /**

@@ -42,6 +42,11 @@ public class SystemAdministrator extends User implements IProducer, IEditor, IRD
 	}
 
 	@Override
+	public void getAssociatedProductions() {
+		producerRole.getAssociatedProductions();
+	}
+
+	@Override
 	public void addCastMember(String name) {
 		producerRole.addCastMember(name);
 	}

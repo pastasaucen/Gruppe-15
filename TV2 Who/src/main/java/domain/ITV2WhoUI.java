@@ -15,5 +15,9 @@ public interface ITV2WhoUI {
         return TV2Who.getInstance();
     }
 
+    Cast getCastMember(int id);
+
+    Production getProduction(int id);
+
     public User getCurrentUser();
 }

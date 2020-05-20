@@ -50,4 +50,8 @@ public class CastCatalog {
     public void saveCastMembers(List<Cast> castList) {
         persistenceCast.saveCastMembers(castList);
     }
+
+    public Cast getCastMember(int id, User currentUser) {
+        return persistenceCast.getCastMember(id,currentUser);
+    }
 }

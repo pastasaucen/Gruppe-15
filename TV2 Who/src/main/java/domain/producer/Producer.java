@@ -5,12 +5,11 @@ import domain.*;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class Producer extends User implements IProducer {
 
 	// The temporary production this producer creates before sending it to the ProductionCatalogue
-	private Production production;
+	private Production tempProduction;
 
 	private CastCatalog castCatalog; // Stores the instance reference that is retrieved in the constructor.
 
@@ -30,7 +29,7 @@ public class Producer extends User implements IProducer {
 	 */
 	@Override
 	public void createProduction(String name, Date date) {
-		production = new Production(-1, name, date);
+		tempProduction = new Production(-1, name, date);
 	}
 
 	@Override
@@ -40,46 +39,13 @@ public class Producer extends User implements IProducer {
 
 	/**
 	 * This method is used during the creation of a new production.
-	 * @param name
+	 * @param castMember
 	 */
-	public void addCastMember(String name) {
-		// We assume that the user will search in one string. I.e. want to separate this string into to names.
-		// TODO: What about names like "Marie Louise Pedersen"? Or "Robert De Niro"?
+	public void addCastMember(Cast castMember) {
 
-		String[] names = name.split(" ");	// Divides the given name into separate names as an array
-		String firstName = "";
-
-		// Minus one to leave the last name as the last name.
-		for (int nameNum = 0; nameNum < names.length - 1; nameNum++) {
-			// Adds all the first names (also the middle names)
-			if (nameNum == 0) {		// If it is the first name, then don't add a space in between.
-				firstName += names[nameNum];
-			} else {
-				firstName += " " + names[nameNum];
-			}
-		}
-
-		// Adds the last string in the names array as the last name.
-		String lastName = names[names.length-1];
-
-		// Retrieves the relevant castMembers with the given names
-		List<Cast> relevantCastMembers = CastCatalog.getInstance().searchForCast(name, this);
-
-		if (relevantCastMembers.size() > 1) {
-			// TODO We have not decided what to do here!!!
-			//  There are more cast members than one.
-			return;
-		} else if (relevantCastMembers.size() == 0) {
-			// If no one was found with the given name
-			System.out.println("No cast member was found with the name \"" + name + "\"...");
-			return;
-		}
-
-		Cast castMember = relevantCastMembers.get(0);
-
-		production.addCastMember(castMember);	// Adds the only cast member to the new production.
+		tempProduction.addCastMember(castMember);	// Adds the only cast member to the new production.
 		System.out.println("The cast member named \""+castMember.getFirstName() +" "+ castMember.getLastName()+"\"" +
-				" is added to the production \""+production.getName()+"\"");
+				" is added to the production \""+ tempProduction.getName()+"\"");
 	}
 
 	/**
@@ -95,7 +61,7 @@ public class Producer extends User implements IProducer {
 
 	// Adds role to castMember on TEMPORARY production
 	public void addRole(String roleName, Cast castMember) {
-		production.addRole(roleName, castMember);
+		tempProduction.addRole(roleName, castMember);
 	}
 
 	// Adds role to castMember on SPECIFIC production
@@ -108,9 +74,15 @@ public class Producer extends User implements IProducer {
 	 * This method is only used when creating a production from scratch.
 	 */
 	public void submitProduction() {
-		production.setAssociatedProducerEmail(email);
-		ProductionCatalog.getInstance().addProduction(production);
-		production = null;
+		tempProduction.setAssociatedProducerEmail(email);
+		ProductionCatalog.getInstance().addProduction(tempProduction);
+
+		List<Cast> castList = tempProduction.getCastList();
+		for (int i = 0; i < castList.size(); i++) {
+			ProductionCatalog.getInstance().assignCastMemberToProduction(castList.get(i), tempProduction);
+		}
+
+		tempProduction = null;
 	}
 
 	/**
@@ -140,8 +112,8 @@ public class Producer extends User implements IProducer {
 		castCatalog.createCastMember(firstName, lastName, email, bio);
 	}
 
-	public Production getProduction() {
-		return production;
+	public Production getTempProduction() {
+		return tempProduction;
 	}
 
 	public String getEmail(){

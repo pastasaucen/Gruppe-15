@@ -12,7 +12,7 @@ public interface IProducer {
 
 	List<Production> getAssociatedProductions();
 
-	void addCastMember(String name);
+	void addCastMember(Cast castMember);
 
 	void addCastMember(Cast cast, Production production);
 
@@ -24,6 +24,6 @@ public interface IProducer {
 
 	void createCastMember(String firstName, String lastName, String email, String bio);
 
-	public Production getProduction();
+	public Production getTempProduction();
 
 }

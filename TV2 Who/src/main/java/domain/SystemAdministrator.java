@@ -1,11 +1,6 @@
 package domain;
 
-import domain.Cast;
-import domain.User;
-import domain.UserCatalog;
-import domain.UserType;
 import domain.editor.IEditor;
-import domain.persistenceInterfaces.IPersistenceUser;
 import domain.producer.IProducer;
 import domain.producer.Producer;
 import domain.rDUser.IRDUser;
@@ -48,8 +43,8 @@ public class SystemAdministrator extends User implements IProducer, IEditor, IRD
 	}
 
 	@Override
-	public void addCastMember(String name) {
-		producerRole.addCastMember(name);
+	public void addCastMember(Cast castMember) {
+		producerRole.addCastMember(castMember);
 	}
 
 	@Override
@@ -78,7 +73,7 @@ public class SystemAdministrator extends User implements IProducer, IEditor, IRD
 	}
 
 	@Override
-	public Production getProduction() {
-		return null;
+	public Production getTempProduction() {
+		return producerRole.getTempProduction();
 	}
 }

@@ -2,7 +2,6 @@ package presentation;
 
 import domain.*;
 import domain.producer.IProducer;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -460,7 +459,7 @@ public class ProductionController extends BorderPane {
         IProducer producer = (IProducer) tv2Who.getCurrentUser();
 
         producer.createProduction(pName, pReleaseDate);
-        Production production = producer.getProduction();
+        Production production = producer.getTempProduction();
 
         roleString = new ArrayList<>();
 
@@ -564,6 +563,7 @@ public class ProductionController extends BorderPane {
                         public void handle(ActionEvent actionEvent) {
                             stage.close();
                             Cast castUsing = castList.get(searchedCastList.getSelectionModel().getSelectedIndex());
+                            producer.addRole(roleName.getText(), castUsing);
                             producer.addCastMember(castUsing, production);
                             updateRoleList(grid, production, roleName.getText(), castChoosenText.getText());
                         }
@@ -576,7 +576,8 @@ public class ProductionController extends BorderPane {
                     });
                 } else {
                     Cast castUsing = castList.get(searchedCastList.getSelectionModel().getSelectedIndex());
-                    producer.addCastMember(castUsing, production);
+                    producer.addRole(roleName.getText(), castUsing);
+                    producer.addCastMember(castUsing);
                     updateRoleList(grid, production, roleName.getText(), castChoosenText.getText());
                 }
             }

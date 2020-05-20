@@ -208,20 +208,24 @@ public class ProductionController extends BorderPane {
 
             setHeader(production.getName());
             //Sets the left part for information about release date
-            Label label = new Label("RELEASE DATE :");
+            Label label = new Label("RELEASE DATE:");
             label.setFont(Font.font(15));
             Label label2 = new Label( production.getReleaseDate().toString());
             label2.setFont(Font.font(12));
-            Label tvCodeTitel = new Label("TV KODE");
+            Label tvCodeTitel = new Label("TV KODE:");
             tvCodeTitel.setFont(Font.font(15));
             Label tvCodeInfo = new Label ( production.getTvCode());
             tvCodeInfo.setFont(Font.font(12));
+            Label titel = new Label("TITEL:");
+            titel.setFont(Font.font(15));
+            Label titelNavn = new Label ( production.getName());
+            titelNavn.setFont(Font.font(12));
 
 
             VBox vbox = new VBox(10);
             vbox.setPrefWidth(120);
             vbox.setAlignment(Pos.TOP_LEFT);
-            vbox.getChildren().addAll(label, label2, tvCodeTitel, tvCodeInfo);
+            vbox.getChildren().addAll(titel, titelNavn, label, label2, tvCodeTitel, tvCodeInfo);
 
 
             //Makes listview with all the roles in the production

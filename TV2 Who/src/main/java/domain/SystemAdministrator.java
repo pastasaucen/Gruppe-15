@@ -76,4 +76,8 @@ public class SystemAdministrator extends User implements IProducer, IEditor, IRD
 		producerRole.createCastMember(firstName, lastName, email, bio);
 	}
 
+	@Override
+	public Production getProduction() {
+		return null;
+	}
 }

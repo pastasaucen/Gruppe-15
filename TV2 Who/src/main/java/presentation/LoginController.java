@@ -2,11 +2,9 @@ package presentation;
 
 import domain.TV2Who;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
@@ -42,14 +40,10 @@ public class LoginController extends BorderPane {
         frameController = FrameController.getInstance();
     }
 
-
-
-    public void setUp(){
-
-    }
-
-
-
+    /**
+     * Action to login
+     * @param e
+     */
     public void login(ActionEvent e){
         boolean exists = tv2Who.createUserSession(emailField.getText(), codewordField.getText());
 
@@ -57,16 +51,13 @@ public class LoginController extends BorderPane {
             warningText.setText("Email eller kodeord forkert \nprøv igen");
         } else{
             warningText.setText("");
-            clearBorderPane();
+            emailField.clear();
+            codewordField.clear();
             frameController.loggedInFrame();
         }
 
     }
 
-    private void clearBorderPane(){
-        headerText.setText("");
-        borderPane.setCenter(null);
-    }
 
 
 

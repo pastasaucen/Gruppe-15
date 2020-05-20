@@ -36,6 +36,8 @@ public class CastController extends BorderPane {
 
     ITV2WhoUI tv2Who = TV2Who.getInstance();
     IProducer producer;
+    FrameController frameController = null;
+    ProductionController productionController = null;
 
     public CastController() {
         FXMLLoader castFxmlLoader = new FXMLLoader(getClass().getResource("cast.fxml"));
@@ -48,6 +50,13 @@ public class CastController extends BorderPane {
             System.out.println("Failed to load cast.fxml");
         }
         setCastHeader("MEDVIRKENDE");
+
+
+    }
+
+    public void setUp(){
+        frameController = FrameController.getInstance();
+        productionController = frameController.getProductionController();
     }
 
     /**
@@ -70,7 +79,7 @@ public class CastController extends BorderPane {
         header = new Text();
         header.setText(text);
         header.setTextAlignment(TextAlignment.CENTER);
-        header.setFont(Font.font(30));
+        header.setFont(Font.font(25));
         castBorderPane.setTop(header);
         castBorderPane.setAlignment(header, Pos.CENTER);
     }
@@ -103,7 +112,10 @@ public class CastController extends BorderPane {
         setCastHeader(
                 "Der er " + castList.size() + " produktionsmedvirkende der matcher din søgning " + "'" + searchWord + "'");
 
-        castBorderPane.setCenter(searchView);
+        VBox vBox = new VBox();
+        vBox.getChildren().add(searchView);
+        vBox.setPadding(new Insets(0,0,0,100));
+        castBorderPane.setCenter(vBox);
     }
 
     /**
@@ -126,8 +138,12 @@ public class CastController extends BorderPane {
      */
     public void clickOnCastList(List<Cast> castList) {
         searchView.setOnMouseClicked(MouseEvent -> {
-            int index = searchView.getSelectionModel().getSelectedIndex();
-            createProfile(castList.get(index));
+            try {
+                int index = searchView.getSelectionModel().getSelectedIndex();
+                createProfile(castList.get(index));
+            } catch (IndexOutOfBoundsException e){
+
+            }
         });
     }
 
@@ -154,8 +170,8 @@ public class CastController extends BorderPane {
         VBox vertical2 = new VBox();
         HBox horizontal = new HBox();
         horizontal.getChildren().addAll(vertical1, vertical2);
-        horizontal.setPadding(new Insets(5, 5, 5, 5));
-        vertical1.setPadding(new Insets(10, 20, 20, 20));
+        horizontal.setPadding(new Insets(5, 100, 5, 100));
+        vertical1.setPadding(new Insets(20, 20, 20, 20));
         vertical2.setPadding(new Insets(20, 20, 20, 20));
 
         //Profile left side setup
@@ -165,6 +181,7 @@ public class CastController extends BorderPane {
         //castNameLabel.setPrefHeight(400);
         TextArea profileText = new TextArea(cast.getBio());
         profileText.setPrefHeight(400);
+        profileText.setPrefWidth(300);
         profileText.setWrapText(true);
         profileText.setEditable(false);
         vertical1.getChildren().addAll(castNameLabel, profileText);
@@ -185,13 +202,14 @@ public class CastController extends BorderPane {
         roleView.getSelectionModel().getSelectedItem();
         clickOnRoleList(cast.getRoles());
 
+
         castBorderPane.setCenter(horizontal);
     }
 
     //TODO: Denne metode er ikke endelig. Der skal i virkeligheden skiftes scene
     public void createProductionProfile(Production prodUsing) {
-        clearCastPane();
-        setCastHeader(prodUsing.getName());
+        frameController.centerProduction();
+        productionController.productionProfile(prodUsing);
 
     }
 
@@ -209,7 +227,7 @@ public class CastController extends BorderPane {
         VBox vertical2 = new VBox();
         HBox horizontal = new HBox();
         horizontal.getChildren().addAll(vertical1, vertical2);
-        horizontal.setPadding(new Insets(5, 5, 5, 5));
+        horizontal.setPadding(new Insets(5, 5, 5, 100));
         vertical1.setPadding(new Insets(20, 20, 20, 20));
         vertical1.setSpacing(10);
         vertical2.setPadding(new Insets(20, 20, 20, 20));
@@ -220,7 +238,7 @@ public class CastController extends BorderPane {
         addToListButton.setText("Tilføj til liste");
 
         //Left VBox setup: Elements for creating cast
-        Double labelWidth = 70.0;
+        Double labelWidth = 80.0;
         Double fieldWidth = 290.0;
         //First Name box
         HBox firstNameBox = new HBox();
@@ -268,11 +286,11 @@ public class CastController extends BorderPane {
         //Right vbox setup
         ObservableList<Cast> observCastList = FXCollections.observableArrayList();
         ListView tempCastView = new ListView(observCastList);
-        tempCastView.setPrefWidth(450);
+        tempCastView.setPrefWidth(250);
         Label tempCastLabel = new Label("Nye medvirkende: ");
         Button commitButton = new Button();
         commitButton.setStyle("-fx-cursor: hand");
-        commitButton.setPrefWidth(450);
+        commitButton.setPrefWidth(250);
         commitButton.setText("Tilføj nye medvirkende til database");
         vertical2.getChildren().addAll(tempCastLabel, tempCastView, commitButton);
 

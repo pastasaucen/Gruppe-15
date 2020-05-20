@@ -15,7 +15,7 @@ public class Production {
 	private State state = State.PENDING;
 	private String associatedProducerEmail;
 	private List<Cast> castList = new ArrayList<>();
-	private String tvCode;
+	private String tvCode = "";
 
 	/**
 	 * Creates a production instance.

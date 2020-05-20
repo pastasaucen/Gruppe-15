@@ -143,6 +143,10 @@ public class Producer extends User implements IProducer {
 		return production;
 	}
 
+	public String getEmail(){
+		return this.email;
+	}
+
 }
 
 

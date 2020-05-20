@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.SplitPane?>
@@ -23,16 +24,23 @@
                   <ImageView fx:id="frameImage" fitHeight="58.0" fitWidth="160.0" onMouseClicked="#centerWelcome" pickOnBounds="true" style="-fx-cursor: hand;">
                      <image>
                         <Image url="@Pictures/TV2%20Frame%20Logo.png" />
-                     </image></ImageView>
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></ImageView>
                </items></SplitPane>
             <SplitPane prefHeight="64.0" prefWidth="532.0" style="-fx-background-color: #303030;">
                <items>
                   <HBox fx:id="frameHBox" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #303030; -fx-border-color: #303030;">
                      <children>
                         <Label fx:id="productionLabel" alignment="CENTER" onMouseClicked="#productionScene" prefHeight="65.0" prefWidth="231.0" style="-fx-text-fill: #f0f0f0; -fx-border-color: transparent;" text="PRODUKTIONER">
-                        </Label>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></Label>
                         <Label fx:id="castLabel" alignment="CENTER" ellipsisString="" onMouseClicked="#centerCast" prefHeight="74.0" prefWidth="264.0" style="-fx-text-fill: #f0f0f0;" text="MEDVIRKENDE">
-                        </Label>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></Label>
                      </children>
                   </HBox>
                </items>
@@ -43,17 +51,26 @@
                   <RadioButton fx:id="productionRadioButton" layoutX="43.0" layoutY="41.0" mnemonicParsing="false" prefHeight="4.0" prefWidth="105.0" text="PRODUKTIONER" textFill="WHITE">
                      <font>
                         <Font size="10.0" />
-                     </font></RadioButton>
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></RadioButton>
                   <Text fill="WHITE" layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SØG" />
                   <RadioButton fx:id="castRadioButton" layoutX="146.0" layoutY="41.0" mnemonicParsing="false" text="MEDVIRKENDE" textFill="WHITE">
                      <font>
                         <Font size="10.0" />
-                     </font></RadioButton>
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></RadioButton>
                   <Text fill="#f8f3f3" layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SØG" />
                   <ImageView fx:id="searchImage" fitHeight="24.0" fitWidth="25.0" layoutX="226.0" layoutY="12.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Pictures/searchPurple.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
             </Pane>
@@ -71,7 +88,10 @@
             <ImageView fitHeight="18.0" fitWidth="36.0" layoutX="870.0" layoutY="47.0" onMouseClicked="#centerLoginMouse" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Pictures/settingsPurple.png" />
-               </image></ImageView>
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></ImageView>
          </children>
       </AnchorPane>
    </bottom>

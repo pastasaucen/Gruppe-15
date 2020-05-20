@@ -153,6 +153,7 @@ public class FrameController extends BorderPane {
     }
 
     public void centerCast(){
+        castRadioButton.setSelected(true);
         castController.setPrefHeight(450);
         mainBorderPane.setCenter(castController);
         castController.noCastFoundMessage();
@@ -163,6 +164,7 @@ public class FrameController extends BorderPane {
      * @param mouseEvent
      */
     public void productionScene(javafx.scene.input.MouseEvent mouseEvent){
+        productionRadioButton.setSelected(true);
         productionController.productionNotFound();
         centerProduction();
     }
@@ -170,7 +172,9 @@ public class FrameController extends BorderPane {
     /**
      * Sets center no productions found
      */
+    //TODO: Hvad gør denne metode?
     private void productionScene(){
+        productionRadioButton.setSelected(true);
         productionController.productionNotFound();
         centerProduction();
     }

@@ -146,7 +146,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 case EDITOR:
                     //System Admin and Editor query
                     getRolesStmt = connection.prepareStatement(
-                            "SELECT roles.id AS id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
+                            "SELECT roles.id AS role_id, productions.id AS p_id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
                                     "WHERE roles.id = role_id " +
                                     "AND productions.id = production_id " +
                                     "AND cast_id = ?");
@@ -154,7 +154,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 case PRODUCER:
                     //Producer query
                     getRolesStmt = connection.prepareStatement(
-                            "SELECT roles.id AS id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
+                            "SELECT roles.id AS role_id, productions.id AS p_id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
                                     "WHERE roles.id = role_id " +
                                     "AND productions.id = production_id " +
                                     "AND cast_id = ? AND (state = 'ACCEPTED' OR associated_producer = ?)");
@@ -163,7 +163,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
                 default:
                     // Not logged in or as an RDuser
                     getRolesStmt = connection.prepareStatement(
-                            "SELECT roles.id AS role_id, productions.id AS production_id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
+                            "SELECT roles.id AS role_id, productions.id AS p_id, role_name, name, release_date FROM roles, cast_to_roles, productions " +
                                     "WHERE roles.id = role_id " +
                                     "AND productions.id = production_id " +
                                     "AND cast_id = ? AND state = 'ACCEPTED'");
@@ -176,7 +176,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
             // Iterates through every production
             while (rolesRs.next()) {
                 // Make a production for the role to reference to. This production is a light weight version to help performance
-                Production production = new Production(rolesRs.getInt("production_id"),
+                Production production = new Production(rolesRs.getInt("p_id"),
                         rolesRs.getString("name"),
                         rolesRs.getDate("release_date"));
 

@@ -5,6 +5,7 @@ import domain.*;
 import domain.producer.IProducer;
 import domain.producer.Producer;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -121,7 +122,7 @@ public class FrameController extends BorderPane {
      * TODO Funktionalitet for søg efter medvirkedne her
      * @param actionEvent
      */
-    public void search(ActionEvent actionEvent) {
+    public void search(Event actionEvent) {
         String searchWord = searchTextField.getText();
         if(productionRadioButton.isSelected() && !searchWord.equals("")){
 //Todo næste linje fjerne kommentar

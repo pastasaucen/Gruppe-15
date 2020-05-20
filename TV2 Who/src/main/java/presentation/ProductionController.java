@@ -359,7 +359,8 @@ public class ProductionController extends BorderPane {
                 try {
                     day = Integer.valueOf(productionDayField.getText());
                     month = Integer.parseInt(productionMonthField.getText());
-                    year = Integer.parseInt(productionYearField.getText());
+                    // You need to subtract 1900 to make the year usable
+                    year = Integer.parseInt(productionYearField.getText())-1900;
                     date = new Date(year, month, day);
                 }catch(NumberFormatException e){
                     dateUsable = false;
@@ -514,7 +515,7 @@ public class ProductionController extends BorderPane {
                 try {
                     day = Integer.valueOf(productionDayField.getText());
                     month = Integer.parseInt(productionMonthField.getText());
-                    year = Integer.parseInt(productionYearField.getText());
+                    year = Integer.parseInt(productionYearField.getText())-1900; // -1900 makes the year usable
                     date = new Date(year, month, day);
                 } catch (NumberFormatException e) {
                     dateUsable = false;

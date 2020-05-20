@@ -170,7 +170,6 @@ public class PersistenceHandlerTest {
     }
 
 
-
     @Test
     public void createUser() {
         User user = new SystemAdministrator("Jeppe Stenstrup", "jelau19@student.sdu.dk");

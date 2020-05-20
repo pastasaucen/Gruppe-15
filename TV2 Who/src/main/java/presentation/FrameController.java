@@ -4,6 +4,7 @@ package presentation;
 import domain.*;
 import domain.producer.IProducer;
 import domain.producer.Producer;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -118,9 +119,9 @@ public class FrameController extends BorderPane {
      * CHanges the scene depending on what gets searched
      * TODO skal kunne reagere på om der søges på skuespillere
      * TODO Funktionalitet for søg efter medvirkedne her
-     * @param mouseEvent
+     * @param actionEvent
      */
-    public void search(javafx.scene.input.MouseEvent mouseEvent) {
+    public void search(ActionEvent actionEvent) {
         String searchWord = searchTextField.getText();
         if(productionRadioButton.isSelected() && !searchWord.equals("")){
 //Todo næste linje fjerne kommentar

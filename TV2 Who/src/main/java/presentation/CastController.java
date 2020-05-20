@@ -154,7 +154,7 @@ public class CastController extends BorderPane {
         VBox vertical2 = new VBox();
         HBox horizontal = new HBox();
         horizontal.getChildren().addAll(vertical1, vertical2);
-        horizontal.setPadding(new Insets(5, 5, 5, 5));
+        horizontal.setPadding(new Insets(5, 5, 5, 100));
         vertical1.setPadding(new Insets(10, 20, 20, 20));
         vertical2.setPadding(new Insets(20, 20, 20, 20));
 
@@ -209,7 +209,7 @@ public class CastController extends BorderPane {
         VBox vertical2 = new VBox();
         HBox horizontal = new HBox();
         horizontal.getChildren().addAll(vertical1, vertical2);
-        horizontal.setPadding(new Insets(5, 5, 5, 5));
+        horizontal.setPadding(new Insets(5, 5, 5, 100));
         vertical1.setPadding(new Insets(20, 20, 20, 20));
         vertical1.setSpacing(10);
         vertical2.setPadding(new Insets(20, 20, 20, 20));
@@ -220,7 +220,7 @@ public class CastController extends BorderPane {
         addToListButton.setText("Tilføj til liste");
 
         //Left VBox setup: Elements for creating cast
-        Double labelWidth = 70.0;
+        Double labelWidth = 80.0;
         Double fieldWidth = 290.0;
         //First Name box
         HBox firstNameBox = new HBox();
@@ -268,11 +268,11 @@ public class CastController extends BorderPane {
         //Right vbox setup
         ObservableList<Cast> observCastList = FXCollections.observableArrayList();
         ListView tempCastView = new ListView(observCastList);
-        tempCastView.setPrefWidth(450);
+        tempCastView.setPrefWidth(250);
         Label tempCastLabel = new Label("Nye medvirkende: ");
         Button commitButton = new Button();
         commitButton.setStyle("-fx-cursor: hand");
-        commitButton.setPrefWidth(450);
+        commitButton.setPrefWidth(250);
         commitButton.setText("Tilføj nye medvirkende til database");
         vertical2.getChildren().addAll(tempCastLabel, tempCastView, commitButton);
 

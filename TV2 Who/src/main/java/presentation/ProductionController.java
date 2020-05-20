@@ -4,6 +4,7 @@ import domain.*;
 import domain.persistenceInterfaces.IPersistenceCast;
 import domain.persistenceInterfaces.IPersistenceProduction;
 import domain.producer.IProducer;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,7 +43,7 @@ public class ProductionController extends BorderPane {
     Text header, center; //used for centerBorderPane
 
     @FXML
-    Button assignCastButton;
+    Button assignCastButton, assignRoleButton;
 
     String headerText, centerText; //used for Text header and center
     List<Cast> castList; //Used for searchedCastList
@@ -199,6 +200,13 @@ public class ProductionController extends BorderPane {
                         System.out.println("Add to list clicked");
                         assignCastScene();
                     });
+                    //TODO: Også en test knap...
+                    assignRoleButton = new Button();
+                    assignRoleButton.setText("Tilknyt roller");
+                    vbox.getChildren().add(assignRoleButton);
+                    assignRoleButton.setOnAction((event) -> {
+                        assignRoleScene();
+                    });
 
                     BorderPane left = new BorderPane();
                     Label space = new Label("");
@@ -300,7 +308,7 @@ public class ProductionController extends BorderPane {
         productionBorderPane.setCenter(horizontal);
     }
 
-    public void testing(){
+    public void testing() {
         clearProductionBorderPane();
         setHeader("Opret produktion");
 
@@ -327,12 +335,12 @@ public class ProductionController extends BorderPane {
         GridPane releaseDate = new GridPane();
         releaseDate.setVgap(10);
         releaseDate.setHgap(50);
-        releaseDate.add(productionDayText,0,0);
-        releaseDate.add(productionMonthText,1,0);
-        releaseDate.add(productionYearText,2,0);
-        releaseDate.add(productionDayField,0,1);
-        releaseDate.add(productionMonthField,1,1);
-        releaseDate.add(productionYearField,2,1);
+        releaseDate.add(productionDayText, 0, 0);
+        releaseDate.add(productionMonthText, 1, 0);
+        releaseDate.add(productionYearText, 2, 0);
+        releaseDate.add(productionDayField, 0, 1);
+        releaseDate.add(productionMonthField, 1, 1);
+        releaseDate.add(productionYearField, 2, 1);
 
 
         GridPane grid = new GridPane();
@@ -341,11 +349,11 @@ public class ProductionController extends BorderPane {
         grid.setPadding(new Insets(0, 0, 0, 0));
         grid.add(productionNameText, 2, 2);
         grid.add(productionNameField, 2, 3);
-        grid.add(releaseDate,2,6);
+        grid.add(releaseDate, 2, 6);
 
         Button createProductionButton = new Button("Opret Produktion");
         grid.add(createProductionButton, 2, 11);
-        grid.add(warningText,2,12);
+        grid.add(warningText, 2, 12);
         productionBorderPane.setCenter(grid);
 
         //Action for createProductionButton
@@ -354,45 +362,45 @@ public class ProductionController extends BorderPane {
             public void handle(ActionEvent actionEvent) {
                 Boolean dateUsable = true, nameUsable = true;
                 Date date = null;
-                Integer day,month,year;
+                Integer day, month, year;
 
                 try {
                     day = Integer.valueOf(productionDayField.getText());
                     month = Integer.parseInt(productionMonthField.getText());
                     year = Integer.parseInt(productionYearField.getText());
                     date = new Date(year, month, day);
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     dateUsable = false;
                 }
 
-                if(productionNameField.getText().isEmpty()){
+                if (productionNameField.getText().isEmpty()) {
                     nameUsable = false;
                 }
 
-                if(productionDayField.getText().length() > 2 || productionMonthField.getText().length() > 2
-                        || productionYearField.getText().length() > 4){
+                if (productionDayField.getText().length() > 2 || productionMonthField.getText().length() > 2
+                        || productionYearField.getText().length() > 4) {
                     dateUsable = false;
                 }
 
-                if(nameUsable.equals(false)){
+                if (nameUsable.equals(false)) {
                     warningText.setText("UDFYLD PRODUKTIONS NAVN");
                     return;
-                } else{
+                } else {
                     warningText.setText("");
                 }
 
-                if(dateUsable.equals(false)){
+                if (dateUsable.equals(false)) {
                     warningText.setText("UDFYLD OPRETTELSES DATO KORREKT");
                     return;
-                } else{
+                } else {
                     warningText.setText("");
                 }
 
                 List<Production> list = tv2Who.prepareProductionSearchList(productionNameField.getText());
 
                 ArrayList<Production> exists = new ArrayList<>();
-                for(Production production: list){
-                    if (productionNameField.getText().equalsIgnoreCase(production.getName()) && date.equals(production.getReleaseDate())){
+                for (Production production : list) {
+                    if (productionNameField.getText().equalsIgnoreCase(production.getName()) && date.equals(production.getReleaseDate())) {
                         exists.add(production);
                     }
                 }
@@ -401,7 +409,7 @@ public class ProductionController extends BorderPane {
                     Stage stage = new Stage();
                     stage.setResizable(false);
                     BorderPane borderPane = new BorderPane();
-                    borderPane.setPrefSize(500,500);
+                    borderPane.setPrefSize(500, 500);
                     Scene scene = new Scene(borderPane);
 
                     Text text = new Text("Der findes allerede en eller flere produktioner med dette navn og udgivelsesdato\n" +
@@ -412,7 +420,7 @@ public class ProductionController extends BorderPane {
                     HBox hbox = new HBox();
                     Button yes = new Button("Ja");
                     Button no = new Button("Nej");
-                    hbox.getChildren().addAll(yes,no);
+                    hbox.getChildren().addAll(yes, no);
                     hbox.setAlignment(Pos.TOP_CENTER);
                     hbox.setPrefHeight(150);
                     hbox.setSpacing(100);
@@ -500,7 +508,7 @@ public class ProductionController extends BorderPane {
 
         Button createProductionButton = new Button("Opret Produktion");
         grid.add(createProductionButton, 2, 11);
-        grid.add(warningText,2,12);
+        grid.add(warningText, 2, 12);
         productionBorderPane.setCenter(grid);
 
         //Action for createProductionButton
@@ -826,11 +834,26 @@ public class ProductionController extends BorderPane {
         });
     }
 
+    //TODO: virker ikke! Afhænger af metode som skal laves i persistence handleren..
+    public void chooseProductionScene() {
+        clearProductionBorderPane();
+
+        //Scene elements setup
+        VBox vertical1 = new VBox();
+        vertical1.setPadding(new Insets(5, 5, 5, 100));
+        ListView<Production> productionListView = new ListView<>();
+
+        IProducer producer = (IProducer) tv2Who.getCurrentUser();
+        ObservableList<Production> observProductionList = FXCollections.observableArrayList();
+        tv2Who.prepareProductionSearchList(producer.getEmail());
+
+    }
+
     /**
      * This method changes the ProductionPane to the administrative GUI scene in which admins can assign roles to
      * cast members for the production from which the scene is accessed.
      */
-    private void assignCastScene() {
+    public void assignCastScene() {
         clearProductionBorderPane();
 
         //Setup elements of the scene
@@ -838,7 +861,7 @@ public class ProductionController extends BorderPane {
         VBox vertical2 = new VBox();
         HBox horizontal = new HBox();
         horizontal.getChildren().addAll(vertical1, vertical2);
-        horizontal.setPadding(new Insets(5, 5, 5, 5));
+        horizontal.setPadding(new Insets(5, 5, 5, 100));
         vertical1.setPadding(new Insets(20, 20, 20, 20));
         vertical1.setSpacing(10);
         vertical2.setPadding(new Insets(20, 20, 20, 20));
@@ -851,9 +874,9 @@ public class ProductionController extends BorderPane {
         Label overheadSearchLabel = new Label("");
         ObservableList<Cast> observSearchCastList = FXCollections.observableArrayList();
         ListView searchListView = new ListView(observSearchCastList);
-        searchListView.setPrefWidth(450);
+        searchListView.setPrefWidth(300);
         TextField castSearchField = new TextField();
-        castSearchField.setPrefWidth(300);
+        castSearchField.setPrefWidth(280);
         castSearchField.setPromptText("Indtast navn på medvirkende her");
         Button searchButton = new Button();
         searchButton.setText("Søg");
@@ -873,7 +896,7 @@ public class ProductionController extends BorderPane {
         //Right side setup
         ObservableList<Cast> observAddedCastList = FXCollections.observableArrayList();
         ListView addedCastView = new ListView(observAddedCastList);
-        addedCastView.setPrefWidth(360);
+        addedCastView.setPrefWidth(250);
         Button commitButton = new Button();
         commitButton.setText("Tilføj valgte til produktion");
         vertical2.getChildren().addAll(addedCastView, commitButton);
@@ -900,8 +923,8 @@ public class ProductionController extends BorderPane {
         addToListButton.setOnAction((event) -> {
             if (roleNameField.getText().equals("")) {
                 observAddedCastList.add(observChoosenCast.get(0));
-            }else {
-                observChoosenCast.get(0).addRole(-1,roleNameField.getText(),currentProduction);
+            } else {
+                observChoosenCast.get(0).addRole(-1, roleNameField.getText(), currentProduction);
                 observAddedCastList.add(observChoosenCast.get(0));
                 observChoosenCast.clear();
                 roleNameField.clear();
@@ -920,14 +943,64 @@ public class ProductionController extends BorderPane {
 
         //Commit button sends elements of "observAddedCastList" to database
         commitButton.setOnAction((event) -> {
-            IProducer producer = (IProducer)tv2Who.getCurrentUser();
-            for(Cast currCast : observAddedCastList){
+            IProducer producer = (IProducer) tv2Who.getCurrentUser();
+            for (Cast currCast : observAddedCastList) {
                 System.out.println(currCast.getFirstName() + " added to production " + currentProduction.getName());
-                producer.addCastMember(currCast,currentProduction);
+                producer.addCastMember(currCast, currentProduction);
             }
             observAddedCastList.clear();
         });
     }
 
+    public void assignRoleScene() {
+        clearProductionBorderPane();
+
+        //Scene elements setup
+        setHeader("Tildel roller for produktionen " + currentProduction.getName());
+        VBox vertical1 = new VBox();
+        vertical1.setPadding(new Insets(5, 80, 5, 100));
+        productionBorderPane.setCenter(vertical1);
+
+        //List of cast members currently associated with the current production
+        ObservableList<Cast> observCastList = FXCollections.observableArrayList(currentProduction.getCastList());
+        ListView<Cast> castListView = new ListView<>(observCastList);
+
+        //When a cast member has been chosen from the cast list, the object will appear here
+        ObservableList<Cast> choosenCastMember = FXCollections.observableArrayList();
+        ListView<Cast> choosenCastView = new ListView<>(choosenCastMember);
+        choosenCastView.setPrefHeight(180);
+
+        TextField roleNameField = new TextField();
+        roleNameField.setPromptText("Indtast rollenavn her");
+
+        Button commitButton = new Button();
+        commitButton.setText("Tildel rolle til medvirkende");
+
+        //Add to Vbox
+        vertical1.getChildren().addAll(castListView,choosenCastView,roleNameField,commitButton);
+
+        castListView.setOnMouseClicked((MouseEvent) -> {
+            int index = castListView.getSelectionModel().getSelectedIndex();
+            choosenCastMember.clear();
+            choosenCastMember.add(castListView.getSelectionModel().getSelectedItem());
+        });
+
+        choosenCastView.setOnMouseClicked((MouseEvent) -> {
+            choosenCastMember.clear();
+        });
+
+        commitButton.setOnAction((event) -> {
+            if (choosenCastMember.size() == 0 || roleNameField.getText().equals("")){
+                System.out.println("No elements in list or role field empty");
+            }else{
+                IProducer producer = (IProducer)tv2Who.getCurrentUser();
+                producer.addRole(roleNameField.getText(),choosenCastMember.get(0),currentProduction);
+                System.out.println(choosenCastMember);
+                System.out.println(currentProduction);
+                choosenCastMember.clear();
+                roleNameField.clear();
+            }
+        });
+    }
 
 }

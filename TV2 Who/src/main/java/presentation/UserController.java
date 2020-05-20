@@ -184,4 +184,9 @@ public class UserController extends BorderPane {
         borderPane.setTop(header);
         borderPane.setAlignment(header, Pos.CENTER);
     }
+
+    public void userStart(){
+        borderPane.setCenter(null);
+        setHeader("BRUGER HÅNDTERING");
+    }
 }

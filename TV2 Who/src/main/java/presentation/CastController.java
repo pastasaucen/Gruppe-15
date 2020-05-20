@@ -170,8 +170,8 @@ public class CastController extends BorderPane {
         VBox vertical2 = new VBox();
         HBox horizontal = new HBox();
         horizontal.getChildren().addAll(vertical1, vertical2);
-        horizontal.setPadding(new Insets(5, 5, 5, 100));
-        vertical1.setPadding(new Insets(10, 20, 20, 20));
+        horizontal.setPadding(new Insets(5, 100, 5, 100));
+        vertical1.setPadding(new Insets(20, 20, 20, 20));
         vertical2.setPadding(new Insets(20, 20, 20, 20));
 
         //Profile left side setup
@@ -181,6 +181,7 @@ public class CastController extends BorderPane {
         //castNameLabel.setPrefHeight(400);
         TextArea profileText = new TextArea(cast.getBio());
         profileText.setPrefHeight(400);
+        profileText.setPrefWidth(300);
         profileText.setWrapText(true);
         profileText.setEditable(false);
         vertical1.getChildren().addAll(castNameLabel, profileText);

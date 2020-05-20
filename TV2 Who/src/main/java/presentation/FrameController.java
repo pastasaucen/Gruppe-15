@@ -365,13 +365,16 @@ public class FrameController extends BorderPane{
                     public void handle(MouseEvent mouseEvent) {
                         centerProduction();
                         productionController.createProduction();
+
                     }
                 });
 
                 myProductions.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        //TODO SKOV FUNKTIONALITET --> inden i den skal kaldes på metode myProductionsChosen
+                       productionController.chooseProductionScene();
+                       optionsVBox.getChildren().clear();
+                       optionsVBox.getChildren().addAll(createProduction, myProductions);
 
                     }
                 });
@@ -412,6 +415,7 @@ public class FrameController extends BorderPane{
         userLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                userController.userStart();
                 centerUser();
                 createUser = new Label("CREATE USER");
                 optionsVBox.getChildren().clear();
@@ -438,20 +442,21 @@ public class FrameController extends BorderPane{
         createOptionLabelUnder(assignRole);
 
         VBox myProductionsVBox = new VBox();
-        myProductionsVBox.getChildren().addAll(assignCast,assignRole);
-        optionsVBox.getChildren().add(myProductionsVBox);
+        myProductionsVBox.getChildren().addAll(myProductions, assignCast,assignRole);
+        optionsVBox.getChildren().clear();
+        optionsVBox.getChildren().addAll(createProduction, myProductionsVBox);
 
         assignCast.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                //TODO SKOV FUNKTIONALITET
+                productionController.assignCastScene();
             }
         });
 
         assignRole.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                //TODO SKOV FUNKTIONALITET
+                productionController.assignRoleScene();
             }
         });
 
@@ -462,7 +467,7 @@ public class FrameController extends BorderPane{
      * @param label
      */
     private void createOptionLabel(Label label){
-        label.setPrefHeight(100);
+        label.setPadding(new Insets(20,0,0,0));
         label.setAlignment(Pos.CENTER);
         label.setTextFill(Color.WHITE);
         label.setStyle("-fx-font-size: 15");
@@ -471,9 +476,7 @@ public class FrameController extends BorderPane{
 
     private void createOptionLabelUnder(Label label){
         createOptionLabel(label);
-        label.setStyle("-fx-font-size: 10");
-        label.setTextFill(Color.PURPLE);
-        label.setAlignment(Pos.CENTER_RIGHT);
+        label.setStyle("-fx-font-size: 10; -fx-text-fill: #5b0b59");
     }
 
     public void centerUser(){

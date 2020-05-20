@@ -212,40 +212,13 @@ public class ProductionController extends BorderPane {
             tvCodeTitel.setFont(Font.font(15));
             Label tvCodeInfo = new Label ( prodUsing.getTvCode());
             tvCodeInfo.setFont(Font.font(12));
-            
-            //Testknapper
-                    //Assign cast button setup
-                    //TODO: Følgende knap skal rykkes - DEBUG brugsmønster "Tilknyt medvirkende"
-                    assignCastButton = new Button();
-                    assignCastButton.setText("Tilknyt medvirkende");
-                    vbox.getChildren().add(assignCastButton);
-                    assignCastButton.setOnAction((event) -> {
-                        System.out.println("Add to list clicked");
-                        assignCastScene();
-                    });
-                    //TODO: Også en test knap...
-                    assignRoleButton = new Button();
-                    assignRoleButton.setText("Tilknyt roller");
-                    vbox.getChildren().add(assignRoleButton);
-                    assignRoleButton.setOnAction((event) -> {
-                        assignRoleScene();
-                    });
+
 
             VBox vbox = new VBox(10);
             vbox.setPrefWidth(120);
             vbox.setAlignment(Pos.TOP_LEFT);
             vbox.getChildren().addAll(label, label2, tvCodeTitel, tvCodeInfo);
 
-            //Assign cast button setup
-            //TODO: Følgende knap skal rykkes - DEBUG brugsmønster "Tilknyt medvirkende"
-            assignCastButton = new Button();
-            assignCastButton.setText("Tilknyt medvirkende");
-            assignCastButton.setMinWidth(150);
-            vbox.getChildren().add(assignCastButton);
-            assignCastButton.setOnAction((event) -> {
-                System.out.println("Add to list clicked");
-                assignCastScene();
-            });
 
             //Makes listview with all the roles in the production
             ArrayList<String> castList = new ArrayList<>();
@@ -704,7 +677,13 @@ public class ProductionController extends BorderPane {
         observProductionList.setAll(tv2Who.prepareProductionSearchList("b"));
         productionListView.setItems(observProductionList);
 
+        productionListView.setOnMouseClicked((MouseEvent) -> {
+            productionProfile(productionListView.getSelectionModel().getSelectedItem());
+            frameController.setMyProductionsChosen();
+        });
+
         vertical1.getChildren().add(productionListView);
+        productionBorderPane.setCenter(vertical1);
     }
 
     /**
@@ -817,6 +796,7 @@ public class ProductionController extends BorderPane {
         setHeader("Tildel roller for produktionen " + currentProduction.getName());
         VBox vertical1 = new VBox();
         vertical1.setPadding(new Insets(5, 80, 5, 100));
+        vertical1.setMaxWidth(750);
         productionBorderPane.setCenter(vertical1);
 
         //List of cast members currently associated with the current production

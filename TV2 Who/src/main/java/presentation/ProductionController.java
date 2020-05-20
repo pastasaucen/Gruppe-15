@@ -340,6 +340,7 @@ public class ProductionController extends BorderPane {
         grid.add(releaseDate, 2, 6);
 
         Button createProductionButton = new Button("Opret Produktion");
+        createProductionButton.setStyle("-fx-cursor: hand");
         grid.add(createProductionButton, 2, 11);
         grid.add(warningText, 2, 12);
         productionBorderPane.setCenter(grid);
@@ -406,7 +407,9 @@ public class ProductionController extends BorderPane {
 
                     HBox hbox = new HBox();
                     Button yes = new Button("Ja");
+                    yes.setStyle("-fx-cursor: hand");
                     Button no = new Button("Nej");
+                    no.setStyle("-fx-cursor: hand");
                     hbox.getChildren().addAll(yes, no);
                     hbox.setAlignment(Pos.TOP_CENTER);
                     hbox.setPrefHeight(150);
@@ -475,6 +478,7 @@ public class ProductionController extends BorderPane {
         searchCast.setPromptText("Søg efter medvirkende");
         searchCast.setPrefWidth(250);
         Button search = new Button("Søg");
+        search.setStyle("-fx-cursor: hand");
         hBox.getChildren().addAll(searchCast, search);
 
         grid.add(hBox, 2, 2);
@@ -515,6 +519,7 @@ public class ProductionController extends BorderPane {
         roleName.setPromptText("Ny rolle navn");
         roleName.setPrefWidth(300);
         Button addRole = new Button("Tilføj rolle");
+        addRole.setStyle("-fx-cursor: hand");
         HBox hBoxRolle = new HBox();
         hBoxRolle.getChildren().addAll(roleName, addRole);
         grid.add(hBoxRolle, 3, 2);
@@ -544,7 +549,9 @@ public class ProductionController extends BorderPane {
 
                     HBox hbox = new HBox();
                     Button yes = new Button("Ja");
+                    yes.setStyle("-fx-cursor: hand");
                     Button no = new Button("Nej");
+                    no.setStyle("-fx-cursor: hand");
                     hbox.getChildren().addAll(yes, no);
                     hbox.setAlignment(Pos.TOP_CENTER);
                     hbox.setPrefHeight(150);
@@ -599,6 +606,7 @@ public class ProductionController extends BorderPane {
 
                 HBox hbox = new HBox();
                 Button ok = new Button("OK");
+                ok.setStyle("-fx-cursor: hand");
                 hbox.getChildren().addAll(ok);
                 hbox.setAlignment(Pos.TOP_CENTER);
                 hbox.setPrefHeight(150);
@@ -731,6 +739,7 @@ public class ProductionController extends BorderPane {
         castSearchField.setPrefWidth(280);
         castSearchField.setPromptText("Indtast navn på medvirkende her");
         Button searchButton = new Button();
+        searchButton.setStyle("-fx-cursor: hand");
         searchButton.setText("Søg");
         HBox searchFieldBox = new HBox();
         searchFieldBox.getChildren().addAll(castSearchField, searchButton);
@@ -742,6 +751,7 @@ public class ProductionController extends BorderPane {
         TextField roleNameField = new TextField();
         roleNameField.setPromptText("Indtast rollenavn her");
         Button addToListButton = new Button();
+        addToListButton.setStyle("-fx-cursor: hand");
         addToListButton.setText("Tilføj til liste");
         vertical1.getChildren().addAll(searchFieldBox, searchListView, choosenCastView, roleNameField, addToListButton);
 
@@ -750,6 +760,7 @@ public class ProductionController extends BorderPane {
         ListView addedCastView = new ListView(observAddedCastList);
         addedCastView.setPrefWidth(250);
         Button commitButton = new Button();
+        commitButton.setStyle("-fx-cursor: hand");
         commitButton.setText("Tilføj valgte til produktion");
         vertical2.getChildren().addAll(addedCastView, commitButton);
 
@@ -827,6 +838,7 @@ public class ProductionController extends BorderPane {
         roleNameField.setPromptText("Indtast rollenavn her");
 
         Button commitButton = new Button();
+        commitButton.setStyle("-fx-cursor: hand");
         commitButton.setText("Tildel rolle til medvirkende");
 
         //Add to Vbox

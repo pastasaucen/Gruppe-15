@@ -508,7 +508,7 @@ public class ProductionController extends BorderPane {
 
                 ArrayList<String> string = new ArrayList<>();
                 for (Cast cast : castList) {
-                    string.add(cast.getFirstName() + cast.getLastName() + "\n" + cast.getEmail());
+                    string.add(cast.getFirstName() + ' ' + cast.getLastName() + "\n" + cast.getEmail());
                 }
 
                 ObservableList<String> list = FXCollections.observableArrayList(string);

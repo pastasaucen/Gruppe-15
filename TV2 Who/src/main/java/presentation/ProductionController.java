@@ -45,6 +45,7 @@ public class ProductionController extends BorderPane {
 
     String headerText, centerText; //used for Text header and center
     List<Cast> castList; //Used for searchedCastList
+    ListView<String> roleList;
     ArrayList<String> roleString; //List for update rollList
 
     ITV2WhoUI tv2Who = TV2Who.getInstance();
@@ -485,6 +486,10 @@ public class ProductionController extends BorderPane {
         Text castChoosenText = new Text(stringCastNotChoosen);
         grid.add(castChoosenText, 2, 5);
 
+        searchedCastList = new ListView<>();
+        grid.add(searchedCastList, 2, 3);
+        showUpdateRoleList("", grid);
+
         search.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -629,14 +634,24 @@ public class ProductionController extends BorderPane {
         }
         roleString.add(castText + "\n" + roleCounts);
 
-
-        ObservableList<String> list = FXCollections.observableArrayList(roleString);
-        ListView<String> roleList = new ListView<>(list);
+        String productionsRoleText = (production.getName() + " roles");
+        showUpdateRoleList(productionsRoleText, grid);
+        /*ObservableList<String> list = FXCollections.observableArrayList(roleString);
+        roleList = new ListView<>(list);
         Text productionsRoleText = new Text(production.getName() + " roles");
         VBox roleVBox = new VBox();
         roleVBox.getChildren().addAll(productionsRoleText, roleList);
-        grid.add(roleVBox, 3, 3);
+        grid.add(roleVBox, 3, 3);*/
 
+    }
+
+    private void showUpdateRoleList(String productionName, GridPane grid){
+        ObservableList<String> list = FXCollections.observableArrayList(roleString);
+        roleList = new ListView<>(list);
+        Text productionsRoleText = new Text("");
+        VBox roleVBox = new VBox();
+        roleVBox.getChildren().addAll(productionsRoleText, roleList);
+        grid.add(roleVBox, 3, 3);
     }
 
     /**

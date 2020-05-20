@@ -4,12 +4,13 @@ import domain.Cast;
 import domain.Production;
 
 import java.sql.Date;
+import java.util.List;
 
 public interface IProducer {
 
 	void createProduction(String name, Date date);
 
-	void getAssociatedProductions();
+	List<Production> getAssociatedProductions();
 
 	void addCastMember(String name);
 

@@ -233,6 +233,8 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
 
                 updateCastMemberStmt.execute();
 
+                // Make reference from the production to the cast member
+
                 insertRoles(insertRoleStmt, insertCtoRStmt, curCast);   // The roles are inserted as well
             }
 
@@ -489,6 +491,23 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         return production;
     }
 
+    @Override
+    public void assignCastMemberToProduction(Cast castMember, Production production) {
+        // Inserts a reference from the production to the cast member
+        try {
+            PreparedStatement assignCastToProductionStmt = connection.prepareStatement(
+                    "INSERT INTO production_to_cast (production_id, cast_id) VALUES (?, ?)");
+
+            assignCastToProductionStmt.setInt(1, production.getId());
+            assignCastToProductionStmt.setInt(2, castMember.getId());
+
+            assignCastToProductionStmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Returns a list of cast members from the given production.
      * Note that the cast members will only contain roles from this production.
@@ -571,6 +590,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
     public void saveProduction(Production production) {
 
         try {
+
             // A production with the an if -1 have not been inserted into a database before.
             if (production.getId() == -1) {
                 // Insert

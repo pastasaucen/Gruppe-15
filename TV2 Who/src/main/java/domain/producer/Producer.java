@@ -34,8 +34,8 @@ public class Producer extends User implements IProducer {
 	}
 
 	@Override
-	public void getAssociatedProductions() {
-		productionCatalog.getProductions(this);
+	public List<Production> getAssociatedProductions() {
+		return productionCatalog.getProductions(this);
 	}
 
 	/**
@@ -89,6 +89,7 @@ public class Producer extends User implements IProducer {
 	 */
 	public void addCastMember(Cast cast, Production production) {
 		production.addCastMember(cast);
+		ProductionCatalog.getInstance().assignCastMemberToProduction(cast, production);
 		ProductionCatalog.getInstance().addProduction(production);
 	}
 

@@ -184,7 +184,12 @@ public class ProductionController extends BorderPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 //Gets the clicked item
-                Production production = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
+                Production production = null;
+                try {
+                    production = productions.get(searchedProductionsList.getSelectionModel().getSelectedIndex());
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("No item was selected...");
+                }
                 productionProfile(production);
         }
         });
@@ -196,22 +201,21 @@ public class ProductionController extends BorderPane {
      */
     public void productionProfile(Production production){
         try {
-            Production prodUsing = production;
-            currentProduction = prodUsing;
+            currentProduction = production;
 
-            if(prodUsing.getAssociatedProducerEmail() == null){
-                prodUsing.setAssociatedProducerEmail("INGEN PRODUCER");
+            if(production.getAssociatedProducerEmail() == null){
+                production.setAssociatedProducerEmail("INGEN PRODUCER");
             }
 
-            setHeader(prodUsing.getName());
+            setHeader(production.getName());
             //Sets the left part for information about release date
             Label label = new Label("RELEASE DATE :");
             label.setFont(Font.font(15));
-            Label label2 = new Label( prodUsing.getReleaseDate().toString());
+            Label label2 = new Label( production.getReleaseDate().toString());
             label2.setFont(Font.font(12));
             Label tvCodeTitel = new Label("TV KODE");
             tvCodeTitel.setFont(Font.font(15));
-            Label tvCodeInfo = new Label ( prodUsing.getTvCode());
+            Label tvCodeInfo = new Label ( production.getTvCode());
             tvCodeInfo.setFont(Font.font(12));
 
 
@@ -223,12 +227,12 @@ public class ProductionController extends BorderPane {
 
             //Makes listview with all the roles in the production
             ArrayList<String> castList = new ArrayList<>();
-            for (Cast cast : prodUsing.getCastList()) {
+            for (Cast cast : production.getCastList()) {
                 String roles = "";
                 ArrayList<String> roleListString = new ArrayList<>();
 
                 for (Role r : cast.getRoles()) {
-                    if (r.getProduction().equals(prodUsing)) {
+                    if (r.getProduction().equals(production)) {
                         roleListString.add(r.getRoleName());
                     }
                 }
@@ -244,12 +248,12 @@ public class ProductionController extends BorderPane {
             ObservableList<String> list = FXCollections.observableArrayList(castList);
 
             castView = new ListView<>(list);
-            clickingOnCastList(prodUsing.getCastList());
+            clickingOnCastList(production.getCastList());
 
             castView.setMinWidth(500);
             HBox hbox = new HBox();
             hbox.getChildren().addAll(vbox,castView);
-            hbox.setPadding(new Insets(0,0,0,100));
+            hbox.setPadding(new Insets(0,0,0,130));
             hbox.setSpacing(20);
             clearProductionBorderPane();
             productionBorderPane.setCenter(hbox);
@@ -689,12 +693,16 @@ public class ProductionController extends BorderPane {
 
         IProducer producer = (IProducer) tv2Who.getCurrentUser();
         ObservableList<Production> observProductionList = FXCollections.observableArrayList();
-        observProductionList.setAll(tv2Who.prepareProductionSearchList("b"));
+        observProductionList.setAll(producer.getAssociatedProductions());
         productionListView.setItems(observProductionList);
 
         productionListView.setOnMouseClicked((MouseEvent) -> {
-            productionProfile(productionListView.getSelectionModel().getSelectedItem());
-            frameController.setMyProductionsChosen();
+            try {
+                productionProfile(productionListView.getSelectionModel().getSelectedItem());
+                frameController.setMyProductionsChosen();
+            } catch (NullPointerException e) {
+                System.out.println("No item was selected...");
+            }
         });
 
         vertical1.getChildren().add(productionListView);
@@ -776,7 +784,8 @@ public class ProductionController extends BorderPane {
             if (roleNameField.getText().equals("")) {
                 observAddedCastList.add(observChoosenCast.get(0));
             } else {
-                observChoosenCast.get(0).addRole(-1, roleNameField.getText(), currentProduction);
+                currentProduction.addRole(roleNameField.getText(), observChoosenCast.get(0));
+                //observChoosenCast.get(0).addRole(-1, roleNameField.getText(), currentProduction);
                 observAddedCastList.add(observChoosenCast.get(0));
                 observChoosenCast.clear();
                 roleNameField.clear();

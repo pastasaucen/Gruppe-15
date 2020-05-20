@@ -88,4 +88,9 @@ public class TV2Who implements ITV2WhoUI {
     public User getCurrentUser() {
         return currentUser;
     }
+
+    @Override
+    public void logOut() {
+        currentUser = null;
+    }
 }

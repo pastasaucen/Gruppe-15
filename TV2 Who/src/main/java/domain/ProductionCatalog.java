@@ -48,4 +48,8 @@ public class ProductionCatalog {
     public Production getProduction(int id) {
         return persistenceProduction.getProduction(id);
     }
+
+    public void assignCastMemberToProduction(Cast cast, Production production) {
+        persistenceProduction.assignCastMemberToProduction(cast, production);
+    }
 }

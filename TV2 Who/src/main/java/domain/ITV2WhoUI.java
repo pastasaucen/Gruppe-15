@@ -20,4 +20,6 @@ public interface ITV2WhoUI {
     Production getProduction(int id);
 
     public User getCurrentUser();
+
+    void logOut();
 }

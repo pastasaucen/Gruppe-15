@@ -306,6 +306,7 @@ public class FrameController extends BorderPane{
         logOut.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                tv2Who.logOut();
                 mainBorderPane.setLeft(null);
                 userLabel = null;
                 frameHBox.getChildren().remove(2);

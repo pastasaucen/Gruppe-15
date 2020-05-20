@@ -11,6 +11,7 @@ import domain.producer.Producer;
 import domain.rDUser.IRDUser;
 
 import java.sql.Date;
+import java.util.List;
 
 public class SystemAdministrator extends User implements IProducer, IEditor, IRDUser {
 
@@ -42,8 +43,8 @@ public class SystemAdministrator extends User implements IProducer, IEditor, IRD
 	}
 
 	@Override
-	public void getAssociatedProductions() {
-		producerRole.getAssociatedProductions();
+	public List<Production> getAssociatedProductions() {
+		return producerRole.getAssociatedProductions();
 	}
 
 	@Override

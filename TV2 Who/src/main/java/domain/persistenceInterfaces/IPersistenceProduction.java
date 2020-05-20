@@ -1,5 +1,6 @@
 package domain.persistenceInterfaces;
 
+import domain.Cast;
 import domain.Production;
 import domain.User;
 
@@ -19,6 +20,7 @@ public interface IPersistenceProduction {
 
     Production getProduction(int id);
 
+    void assignCastMemberToProduction(Cast castMember, Production production);
 
     /**
      * Saves the production in the persistence layer.

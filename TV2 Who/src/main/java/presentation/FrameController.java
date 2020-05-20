@@ -195,7 +195,7 @@ public class FrameController extends BorderPane {
     currentUser = tv2Who.getCurrentUser();
 
     VBox menuVBox = new VBox();
-    menuVBox.prefWidth(100);
+    menuVBox.setMinWidth(200);
     menuVBox.setAlignment(Pos.TOP_LEFT);
     menuVBox.setPadding(new Insets(10, 20,20,20));
     menuVBox.setStyle("-fx-background-color: #9b9b9b");

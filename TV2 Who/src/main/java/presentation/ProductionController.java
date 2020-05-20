@@ -272,7 +272,7 @@ public class ProductionController extends BorderPane {
             public void handle(MouseEvent mouseEvent) {
                 try {
                     Cast castUsing = casts.get(castView.getSelectionModel().getSelectedIndex());
-                    createProfile(castUsing);
+                    createProfile(tv2Who.getCastMember(castUsing.getId()));
                 } catch (IndexOutOfBoundsException e) {
 
                 }

@@ -53,22 +53,22 @@ public class UserController extends BorderPane {
         grid.setHgap(10);
         grid.setVgap(50);
 
-        Text nameText = new Text("NAVN");
+        Text nameText = new Text("Navn:");
         TextField nameField = new TextField();
         nameField.setPrefWidth(300);
-        nameField.setPromptText("navn");
+        nameField.setPromptText("Navn");
         VBox name = new VBox();
         name.getChildren().addAll(nameText, nameField);
-        Text emailText = new Text("EMAIL");
+        Text emailText = new Text("E-mail:");
         TextField emailField = new TextField();
         emailField.setPrefWidth(300);
-        emailField.setPromptText("email");
+        emailField.setPromptText("E-mail");
         VBox email = new VBox();
         email.getChildren().addAll(emailText,emailField);
-        Text codewordText = new Text("KODEORD");
+        Text codewordText = new Text("Kodeord");
         TextField codewordField = new TextField();
         codewordField.setPrefWidth(300);
-        codewordField.setPromptText("kodeord");
+        codewordField.setPromptText("Kodeord");
         VBox codeword = new VBox();
         codeword.getChildren().addAll(codewordText, codewordField);
         RadioButton systemAdministrator = new RadioButton();
@@ -119,7 +119,7 @@ public class UserController extends BorderPane {
                 String codeword = codewordField.getText();
                 UserType userType = null;
                 if(name.isBlank() || email.isBlank() ||codeword.isBlank()){
-                    warning.setText("udfyld alle felter");
+                    warning.setText("Udfyld alle felter");
                     return;
                 } else if(systemAdministrator.isSelected()){
                     userType = UserType.SYSTEMADMINISTRATOR;

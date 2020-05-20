@@ -641,7 +641,7 @@ public class ProductionController extends BorderPane {
         grid.add(hBox, 2, 2);
         productionBorderPane.setCenter(grid);
 
-        Text castText = new Text("Valgte medspiller");
+        Text castText = new Text("Valgte medvirkende");
         grid.add(castText, 2, 4);
         String stringCastNotChoosen = "ROLLENAVN IKKE DEFINERET";
         Text castChoosenText = new Text(stringCastNotChoosen);
@@ -687,7 +687,7 @@ public class ProductionController extends BorderPane {
                 warning.setText("");
 
                 if (castChoosenText.getText().equalsIgnoreCase(stringCastNotChoosen)) {
-                    warning.setText("vælg en medspiller");
+                    warning.setText("Vælg en medvirkende");
                 } else if (roleName.getText().isEmpty()) {
                     Stage stage = new Stage();
                     stage.setResizable(false);
@@ -695,8 +695,8 @@ public class ProductionController extends BorderPane {
                     borderPane.setPrefSize(500, 500);
                     Scene scene = new Scene(borderPane);
 
-                    Text text = new Text("Der er ikke tilføjet en rolle til medspilleren \n" +
-                            "Vil du stadig tilføje medspilleren?");
+                    Text text = new Text("Der er ikke tilføjet en rolle til den medvirkende \n" +
+                            "Vil du stadig tilføje den medvirkende?");
                     borderPane.setCenter(text);
 
                     HBox hbox = new HBox();
@@ -796,7 +796,7 @@ public class ProductionController extends BorderPane {
 
         ObservableList<String> list = FXCollections.observableArrayList(roleString);
         ListView<String> roleList = new ListView<>(list);
-        Text productionsRoleText = new Text(production.getName() + " roles");
+        Text productionsRoleText = new Text(production.getName() + " roller:");
         VBox roleVBox = new VBox();
         roleVBox.getChildren().addAll(productionsRoleText, roleList);
         grid.add(roleVBox, 3, 3);

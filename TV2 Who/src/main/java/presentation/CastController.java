@@ -151,11 +151,10 @@ public class CastController extends BorderPane {
 
         roleView.setOnMouseClicked(MouseEvent -> {
             int index = roleView.getSelectionModel().getSelectedIndex();
-            //createProductionProfile(roleList.get(index).getProduction());
             try {
-                createProductionProfile(tv2Who.getProduction(roleList.get(index).getProduction().getId()));
-            }catch (Exception e){
-                System.out.println("Exception i CastController: 'clickOnRoleList'. Ikke problematisk");
+                createProductionProfile(roleList.get(index).getProduction());
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("No item was selected...");
             }
         });
     }

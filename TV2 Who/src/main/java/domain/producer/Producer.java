@@ -33,6 +33,11 @@ public class Producer extends User implements IProducer {
 		production = new Production(-1, name, date);
 	}
 
+	@Override
+	public void getAssociatedProductions() {
+		productionCatalog.getProductions(this);
+	}
+
 	/**
 	 * This method is used during the creation of a new production.
 	 * @param name

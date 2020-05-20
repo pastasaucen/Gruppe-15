@@ -93,6 +93,11 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
         return castList;
     }
 
+    @Override
+    public Cast getCastMember(int id) {
+        return null;
+    }
+
     /**
      * Assigns relevant roles to the cast member. The user determines whether or not roles from DECLINED or PENDING
      * productions are assigned. For more see the getCastMembers-method above.
@@ -374,35 +379,61 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
             getProductionsStmt.setString(1, searchString);              // TV-code
             getProductionsStmt.setString(2, '%'+searchString+'%');   // Production name
 
-            ResultSet productionsRs = getProductionsStmt.executeQuery();
-
-            // For every found row, create a production from the cells.
-            while (productionsRs.next()) {
-                Production production = new Production(
-                        productionsRs.getInt("id"),
-                        productionsRs.getString("name"),
-                        productionsRs.getDate("release_date"),
-                        State.valueOf(productionsRs.getString("state")),
-                        productionsRs.getString("tv_code"),
-                        productionsRs.getString("associated_producer")
-                );
-
-                // Gets the cast members from the given production
-                List<Cast> castList = getCastMembers(production);
-
-                // Assigns the cast to the new production instance.
-                for (Cast cast : castList) {
-                    production.addCastMember(cast);
-                }
-
-                productions.add(production);
-            }
+            convertResultSetToProductions(productions, getProductionsStmt);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return productions;
+    }
+
+    @Override
+    public List<Production> getProductions(User currentUser) {
+        List<Production> productionList = new ArrayList<>();
+
+        try {
+            PreparedStatement getAssociatedProductionsStmt = connection.prepareStatement(
+                    "SELECT * FROM productions WHERE associated_producer = ?");
+
+            getAssociatedProductionsStmt.setString(1,currentUser.getEmail());
+
+            convertResultSetToProductions(productionList, getAssociatedProductionsStmt);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productionList;
+    }
+
+    private void convertResultSetToProductions(List<Production> productionList, PreparedStatement preparedStatement) throws SQLException {
+        ResultSet productionsRs = preparedStatement.executeQuery();
+
+        while (productionsRs.next()) {
+            Production production = new Production(
+                    productionsRs.getInt("id"),
+                    productionsRs.getString("name"),
+                    productionsRs.getDate("release_date"),
+                    State.valueOf(productionsRs.getString("state")),
+                    productionsRs.getString("tv_code"),
+                    productionsRs.getString("associated_producer")
+            );
+
+            // Gets the cast members from the given production
+            List<Cast> castList = getCastMembers(production);
+
+            // Assigns the cast to the new production instance.
+            for (Cast cast : castList) {
+                production.addCastMember(cast);
+            }
+
+            productionList.add(production);
+        }
+    }
+
+    @Override
+    public Production getProduction(int id) {
+        return null;
     }
 
     /**

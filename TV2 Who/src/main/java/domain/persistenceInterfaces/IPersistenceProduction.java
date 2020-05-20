@@ -3,6 +3,7 @@ package domain.persistenceInterfaces;
 import domain.Production;
 import domain.User;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 public interface IPersistenceProduction {
@@ -13,6 +14,11 @@ public interface IPersistenceProduction {
      * @return a list of relevant productions.
      */
     List<Production> getProductions(String searchString, User currentUser);
+
+    List<Production> getProductions(User currentUser);
+
+    Production getProduction(int id);
+
 
     /**
      * Saves the production in the persistence layer.

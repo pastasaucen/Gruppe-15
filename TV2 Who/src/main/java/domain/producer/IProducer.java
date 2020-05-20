@@ -9,6 +9,8 @@ public interface IProducer {
 
 	void createProduction(String name, Date date);
 
+	void getAssociatedProductions();
+
 	void addCastMember(String name);
 
 	void addCastMember(Cast cast, Production production);

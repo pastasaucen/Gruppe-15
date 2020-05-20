@@ -160,6 +160,14 @@ public class PersistenceHandlerTest {
     }
 
     @Test
+    public void getAssociatedProductions(){
+        System.out.println(persistenceHandler.getProductions(systemAdministrator));
+
+
+    }
+
+
+    @Test
     public void createUser() {
         User user = new SystemAdministrator("Jeppe Stenstrup", "jelau19@student.sdu.dk");
         String password = "admin";

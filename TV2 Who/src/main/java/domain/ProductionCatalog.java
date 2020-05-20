@@ -1,6 +1,7 @@
 package domain;
 
 import domain.persistenceInterfaces.IPersistenceProduction;
+import domain.producer.Producer;
 import persistence.PersistenceHandler;
 
 import java.util.List;
@@ -38,5 +39,9 @@ public class ProductionCatalog {
     public List<Production> getProduction(String searchString, User currentUser) {
         // Searches for the productions in the persistence layer
         return persistenceProduction.getProductions(searchString, currentUser);
+    }
+
+    public List<Production> getProductions(Producer producer) {
+        return persistenceProduction.getProductions(producer);
     }
 }

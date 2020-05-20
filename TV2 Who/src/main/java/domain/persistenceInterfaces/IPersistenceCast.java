@@ -17,6 +17,8 @@ public interface IPersistenceCast {
      */
     List<Cast> getCastMembers(String searchString, User currentUser);
 
+    Cast getCastMember(int id);
+
     /**
      * Saves the given cast members to the persistence layer.
      * @param castMembers the cast member to be saved.

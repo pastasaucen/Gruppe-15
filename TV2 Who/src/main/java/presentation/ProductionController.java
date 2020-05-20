@@ -229,21 +229,21 @@ public class ProductionController extends BorderPane {
             ArrayList<String> castList = new ArrayList<>();
             for (Cast cast : production.getCastList()) {
                 String roles = "";
-                ArrayList<String> roleListString = new ArrayList<>();
+                ArrayList<Role> roleList= new ArrayList<>();
 
-                for (Role r : cast.getRoles()) {
-                    if (r.getProduction().equals(production)) {
-                        roleListString.add(r.getRoleName());
-                    }
-                }
-                for (int i = 0; i < roleListString.size(); i++) {
-                    if (roleListString.size() == i - 1) {
-                        roles = roles + roleListString.get(i);
-                    } else {
-                        roles = roles + roleListString + ", ";
-                    }
-                }
-                castList.add(cast.getFirstName() + " " + cast.getLastName() + "\n" + roles);
+               for (Role r: cast.getRoles()){
+                   if (r.getProduction().equals(production)){
+                       roleList.add(r);
+                   }
+               }
+               for (int i = 0; i < roleList.size(); i++){
+                   String spacing = "\t\t\t\t\t";
+
+                       roles += "\n"+ spacing  + roleList.get(i).getRoleName().toUpperCase();
+
+               }
+
+                castList.add(cast.getFirstName() + " " + cast.getLastName() + roles);
             }
             ObservableList<String> list = FXCollections.observableArrayList(castList);
 

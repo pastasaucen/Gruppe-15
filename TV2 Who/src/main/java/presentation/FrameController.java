@@ -288,6 +288,7 @@ public class FrameController extends BorderPane{
             case PRODUCER:
                 loggedinProduction();
                 loggedinCast();
+                notLoggedInUser();
                 break;
             case EDITOR:
                 break;
@@ -381,6 +382,7 @@ public class FrameController extends BorderPane{
                 myProductions.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
+                        productionScene();
                        productionController.chooseProductionScene();
                        optionsVBox.getChildren().clear();
                        optionsVBox.getChildren().addAll(createProduction, myProductions);
@@ -444,6 +446,10 @@ public class FrameController extends BorderPane{
 
     }
 
+    public void notLoggedInUser(){
+        frameHBox.getChildren().remove(2);
+    }
+
     public void setMyProductionsChosen(){
         assignCast = new Label("TILDEL MEDVIRKENDE");
         createOptionLabelUnder(assignCast);
@@ -458,6 +464,7 @@ public class FrameController extends BorderPane{
         assignCast.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                productionScene();
                 productionController.assignCastScene();
             }
         });
@@ -465,6 +472,7 @@ public class FrameController extends BorderPane{
         assignRole.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                productionScene();
                 productionController.assignRoleScene();
             }
         });

@@ -119,7 +119,7 @@ public class ProductionController extends BorderPane {
     private void setHeader() {
         header = new Text(headerText);
         header.setTextAlignment(TextAlignment.CENTER);
-        header.setFont(Font.font(25));
+        header.setFont(Font.font(30));
         productionBorderPane.setTop(header);
         productionBorderPane.setAlignment(header, Pos.CENTER);
     }
@@ -140,7 +140,7 @@ public class ProductionController extends BorderPane {
     public void setCenter() {
         center = new Text(centerText);
         center.setTextAlignment(TextAlignment.CENTER);
-        center.setFont(Font.font(15));
+        center.setFont(Font.font(20));
         productionBorderPane.setCenter(center);
     }
 
@@ -300,154 +300,153 @@ public class ProductionController extends BorderPane {
         productionBorderPane.setCenter(horizontal);
     }
 
-    public void testing(){
-        clearProductionBorderPane();
-        setHeader("Opret produktion");
-
-        Text productionNameText = new Text("Produktions navn");
-        TextField productionNameField = new TextField();
-        productionNameField.setPromptText("Produktions navn");
-        productionNameField.setPrefWidth(300);
-        Text productionDayText = new Text("Dag");
-        TextField productionDayField = new TextField();
-        productionDayField.setPromptText("DD");
-        productionDayField.setPrefWidth(50);
-        Text productionMonthText = new Text("Måned");
-        TextField productionMonthField = new TextField();
-        productionMonthField.setPromptText("MM");
-        productionMonthField.setPrefWidth(50);
-        Text productionYearText = new Text("Year");
-        TextField productionYearField = new TextField();
-        productionYearField.setPromptText("YYYY");
-        productionYearField.setPrefWidth(50);
-
-        Text warningText = new Text();
-        warningText.setFill(Color.RED);
-
-        GridPane releaseDate = new GridPane();
-        releaseDate.setVgap(10);
-        releaseDate.setHgap(50);
-        releaseDate.add(productionDayText,0,0);
-        releaseDate.add(productionMonthText,1,0);
-        releaseDate.add(productionYearText,2,0);
-        releaseDate.add(productionDayField,0,1);
-        releaseDate.add(productionMonthField,1,1);
-        releaseDate.add(productionYearField,2,1);
-
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(0, 0, 0, 0));
-        grid.add(productionNameText, 2, 2);
-        grid.add(productionNameField, 2, 3);
-        grid.add(releaseDate,2,6);
-
-        Button createProductionButton = new Button("Opret Produktion");
-        grid.add(createProductionButton, 2, 11);
-        grid.add(warningText,2,12);
-        productionBorderPane.setCenter(grid);
-
-        //Action for createProductionButton
-        createProductionButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Boolean dateUsable = true, nameUsable = true;
-                Date date = null;
-                Integer day,month,year;
-
-                try {
-                    day = Integer.valueOf(productionDayField.getText());
-                    month = Integer.parseInt(productionMonthField.getText());
-                    // You need to subtract 1900 to make the year usable
-                    year = Integer.parseInt(productionYearField.getText())-1900;
-                    date = new Date(year, month, day);
-                }catch(NumberFormatException e){
-                    dateUsable = false;
-                }
-
-                if(productionNameField.getText().isEmpty()){
-                    nameUsable = false;
-                }
-
-                if(productionDayField.getText().length() > 2 || productionMonthField.getText().length() > 2
-                        || productionYearField.getText().length() > 4){
-                    dateUsable = false;
-                }
-
-                if(nameUsable.equals(false)){
-                    warningText.setText("UDFYLD PRODUKTIONS NAVN");
-                    return;
-                } else{
-                    warningText.setText("");
-                }
-
-                if(dateUsable.equals(false)){
-                    warningText.setText("UDFYLD OPRETTELSES DATO KORREKT");
-                    return;
-                } else{
-                    warningText.setText("");
-                }
-
-                List<Production> list = tv2Who.prepareProductionSearchList(productionNameField.getText());
-
-                ArrayList<Production> exists = new ArrayList<>();
-                for(Production production: list){
-                    if (productionNameField.getText().equalsIgnoreCase(production.getName()) && date.equals(production.getReleaseDate())){
-                        exists.add(production);
-                    }
-                }
-
-                if (!exists.isEmpty()) {
-                    Stage stage = new Stage();
-                    stage.setResizable(false);
-                    BorderPane borderPane = new BorderPane();
-                    borderPane.setPrefSize(500,500);
-                    Scene scene = new Scene(borderPane);
-
-                    Text text = new Text("Der findes allerede en eller flere produktioner med dette navn og udgivelsesdato\n" +
-                            "ønsker du stadig at oprette en produktion?");
-                    borderPane.setCenter(text);
-
-
-                    HBox hbox = new HBox();
-                    Button yes = new Button("Ja");
-                    Button no = new Button("Nej");
-                    hbox.getChildren().addAll(yes,no);
-                    hbox.setAlignment(Pos.TOP_CENTER);
-                    hbox.setPrefHeight(150);
-                    hbox.setSpacing(100);
-                    borderPane.setBottom(hbox);
-
-                    Date finalDate = date;
-                    yes.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            stage.close();
-                            addCastScene(productionNameField.getText(), finalDate);
-                        }
-                    });
-
-                    no.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            stage.close();
-                        }
-                    });
-
-                    stage.setAlwaysOnTop(true);
-                    stage.initModality(Modality.APPLICATION_MODAL);
-
-                    stage.setScene(scene);
-                    stage.show();
-
-                } else {
-                    addCastScene(productionNameField.getText(), date);
-                }
-            }
-
-        });
-    }
+//    public void testing(){
+//        clearProductionBorderPane();
+//        setHeader("Opret produktion");
+//
+//        Text productionNameText = new Text("Produktions navn");
+//        TextField productionNameField = new TextField();
+//        productionNameField.setPromptText("Produktions navn");
+//        productionNameField.setPrefWidth(300);
+//        Text productionDayText = new Text("Dag");
+//        TextField productionDayField = new TextField();
+//        productionDayField.setPromptText("DD");
+//        productionDayField.setPrefWidth(50);
+//        Text productionMonthText = new Text("Måned");
+//        TextField productionMonthField = new TextField();
+//        productionMonthField.setPromptText("MM");
+//        productionMonthField.setPrefWidth(50);
+//        Text productionYearText = new Text("Year");
+//        TextField productionYearField = new TextField();
+//        productionYearField.setPromptText("YYYY");
+//        productionYearField.setPrefWidth(50);
+//
+//        Text warningText = new Text();
+//        warningText.setFill(Color.RED);
+//
+//        GridPane releaseDate = new GridPane();
+//        releaseDate.setVgap(10);
+//        releaseDate.setHgap(50);
+//        releaseDate.add(productionDayText,0,0);
+//        releaseDate.add(productionMonthText,1,0);
+//        releaseDate.add(productionYearText,2,0);
+//        releaseDate.add(productionDayField,0,1);
+//        releaseDate.add(productionMonthField,1,1);
+//        releaseDate.add(productionYearField,2,1);
+//
+//
+//        GridPane grid = new GridPane();
+//        grid.setHgap(10);
+//        grid.setVgap(10);
+//        grid.setPadding(new Insets(0, 0, 0, 0));
+//        grid.add(productionNameText, 2, 2);
+//        grid.add(productionNameField, 2, 3);
+//        grid.add(releaseDate,2,6);
+//
+//        Button createProductionButton = new Button("Opret Produktion");
+//        grid.add(createProductionButton, 2, 11);
+//        grid.add(warningText,2,12);
+//        productionBorderPane.setCenter(grid);
+//
+//        //Action for createProductionButton
+//        createProductionButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                Boolean dateUsable = true, nameUsable = true;
+//                Date date = null;
+//                Integer day,month,year;
+//
+//                try {
+//                    day = Integer.valueOf(productionDayField.getText());
+//                    month = Integer.parseInt(productionMonthField.getText());
+//                    year = Integer.parseInt(productionYearField.getText());
+//                    date = new Date(year, month, day);
+//                }catch(NumberFormatException e){
+//                    dateUsable = false;
+//                }
+//
+//                if(productionNameField.getText().isEmpty()){
+//                    nameUsable = false;
+//                }
+//
+//                if(productionDayField.getText().length() > 2 || productionMonthField.getText().length() > 2
+//                        || productionYearField.getText().length() > 4){
+//                    dateUsable = false;
+//                }
+//
+//                if(nameUsable.equals(false)){
+//                    warningText.setText("UDFYLD PRODUKTIONS NAVN");
+//                    return;
+//                } else{
+//                    warningText.setText("");
+//                }
+//
+//                if(dateUsable.equals(false)){
+//                    warningText.setText("UDFYLD OPRETTELSES DATO KORREKT");
+//                    return;
+//                } else{
+//                    warningText.setText("");
+//                }
+//
+//                List<Production> list = tv2Who.prepareProductionSearchList(productionNameField.getText());
+//
+//                ArrayList<Production> exists = new ArrayList<>();
+//                for(Production production: list){
+//                    if (productionNameField.getText().equalsIgnoreCase(production.getName()) && date.equals(production.getReleaseDate())){
+//                        exists.add(production);
+//                    }
+//                }
+//
+//                if (!exists.isEmpty()) {
+//                    Stage stage = new Stage();
+//                    stage.setResizable(false);
+//                    BorderPane borderPane = new BorderPane();
+//                    borderPane.setPrefSize(500,500);
+//                    Scene scene = new Scene(borderPane);
+//
+//                    Text text = new Text("Der findes allerede en eller flere produktioner med dette navn og udgivelsesdato\n" +
+//                            "ønsker du stadig at oprette en produktion?");
+//                    borderPane.setCenter(text);
+//
+//
+//                    HBox hbox = new HBox();
+//                    Button yes = new Button("Ja");
+//                    Button no = new Button("Nej");
+//                    hbox.getChildren().addAll(yes,no);
+//                    hbox.setAlignment(Pos.TOP_CENTER);
+//                    hbox.setPrefHeight(150);
+//                    hbox.setSpacing(100);
+//                    borderPane.setBottom(hbox);
+//
+//                    Date finalDate = date;
+//                    yes.setOnAction(new EventHandler<ActionEvent>() {
+//                        @Override
+//                        public void handle(ActionEvent actionEvent) {
+//                            stage.close();
+//                            addCastScene(productionNameField.getText(), finalDate);
+//                        }
+//                    });
+//
+//                    no.setOnAction(new EventHandler<ActionEvent>() {
+//                        @Override
+//                        public void handle(ActionEvent actionEvent) {
+//                            stage.close();
+//                        }
+//                    });
+//
+//                    stage.setAlwaysOnTop(true);
+//                    stage.initModality(Modality.APPLICATION_MODAL);
+//
+//                    stage.setScene(scene);
+//                    stage.show();
+//
+//                } else {
+//                    addCastScene(productionNameField.getText(), date);
+//                }
+//            }
+//
+//        });
+//    }
 
 
     /**

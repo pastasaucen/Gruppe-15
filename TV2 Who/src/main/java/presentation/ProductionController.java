@@ -289,7 +289,6 @@ public class ProductionController extends BorderPane {
 
     /**
      * Sets up cast profile
-     * //TODO SEE if can use CAST in Framecontroller
      * @param cast
      */
     public void createProfile(Cast cast) {
@@ -457,7 +456,6 @@ public class ProductionController extends BorderPane {
     /**
      * creates a production but doesn't save at first. changes scene to where can add cast and roles .
      * When finished saves production in database
-     * todo tilføje opretter email
      *
      * @param pName
      * @param pReleaseDate
@@ -694,7 +692,6 @@ public class ProductionController extends BorderPane {
         });
     }
 
-    //TODO: virker ikke! Afhænger af metode som skal laves i persistence handleren..
     public void chooseProductionScene() {
         clearProductionBorderPane();
 

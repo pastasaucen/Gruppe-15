@@ -13,7 +13,6 @@ public class Producer extends User implements IProducer {
 
 	private CastCatalog castCatalog; // Stores the instance reference that is retrieved in the constructor.
 
-	// This is not used, but can be used later to only get productions this producer has made
 	private ProductionCatalog productionCatalog; // Stores the instance reference that is retrieved in the constructor.
 
 	public Producer(String name, String email) {
@@ -24,6 +23,7 @@ public class Producer extends User implements IProducer {
 
 	/**
 	 * Creates a production instance with the id of -1.
+	 * Used in the create production use case.
 	 * @param name
 	 * @param date
 	 */
@@ -39,6 +39,7 @@ public class Producer extends User implements IProducer {
 
 	/**
 	 * This method is used during the creation of a new production.
+	 * Used in the create production use case.
 	 * @param castMember
 	 */
 	public void addCastMember(Cast castMember) {
@@ -52,6 +53,7 @@ public class Producer extends User implements IProducer {
 
 	/**
 	 * Used to add a cast member to an existing production.
+	 * Used in the assign cast member use case.
 	 * @param cast
 	 * @param production
 	 */
@@ -61,7 +63,12 @@ public class Producer extends User implements IProducer {
 		ProductionCatalog.getInstance().addProduction(production);
 	}
 
-	// Adds role to castMember on TEMPORARY production
+	/**
+	 * Adds role to castMember on TEMPORARY production.
+	 * Used in the create production use case.
+	 * @param roleName
+	 * @param castMember
+	 */
 	public void addRole(String roleName, Cast castMember) {
 		tempProduction.addRole(roleName, castMember);
 	}
@@ -89,29 +96,21 @@ public class Producer extends User implements IProducer {
 
 	/**
 	 * Creates cast if not exist. if exist asks if still wants to create.
+	 * Used in the create cast member use case.
 	 * @param firstName
 	 * @param lastName
 	 * @param email
 	 */
 	public void createCastMember(String firstName, String lastName, String email, String bio) {
-		// TODO does it need to search for the cast members email?
 		List<Cast> castList = castCatalog.searchForCast(email, this);
 
 		// Checks whether the retrieved cast list is null (empty). If so then no duplicates were found.
 		if (castList.size() == 0) {
-			createCastAndConfirms(firstName, lastName, email, bio);	// Creates the new cast member
+			System.out.println("The cast member:\"" + firstName + " " + lastName + " : " + email + "\" has been created");
+			castCatalog.createCastMember(firstName, lastName, email, bio);
+		} else {
+			System.out.println("The email " + email + " is already in use...");
 		}
-	}
-
-	/**
-	 * Creates cast member after the user has confirmed the creation of a duplicate.
-	 * @param firstName
-	 * @param lastName
-	 * @param email
-	 */
-	private void createCastAndConfirms(String firstName, String lastName, String email, String bio) {
-		System.out.println("The cast member:\"" + firstName + " " + lastName + " : " + email + "\" has been created");
-		castCatalog.createCastMember(firstName, lastName, email, bio);
 	}
 
 	public Production getTempProduction() {

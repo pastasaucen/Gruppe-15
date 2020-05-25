@@ -144,7 +144,7 @@ public class FrameController extends BorderPane{
     public void centerCastMouse(javafx.scene.input.MouseEvent mouseEvent){ centerCast();}
 
     /**
-     * CHanges the scene depending on what gets searched
+     * Changes the scene depending on what gets searched
      * @param actionEvent
      */
     public void search(Event actionEvent) {
@@ -192,15 +192,12 @@ public class FrameController extends BorderPane{
      * @param mouseEvent
      */
     public void productionScene(javafx.scene.input.MouseEvent mouseEvent){
-        productionRadioButton.setSelected(true);
-        productionController.productionNotFound();
-        centerProduction();
+        productionScene();
     }
 
     /**
-     * Sets center no productions found
+     * Sets center the scene to a "no productions found" scene.
      */
-    //TODO: Hvad gør denne metode?
     private void productionScene(){
         productionRadioButton.setSelected(true);
         productionController.productionNotFound();
@@ -316,7 +313,7 @@ public class FrameController extends BorderPane{
                 productionLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        productionScene(mouseEvent);
+                        productionScene();
                     }
                 });
 

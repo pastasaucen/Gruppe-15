@@ -210,7 +210,6 @@ public class CastController extends BorderPane {
         castBorderPane.setCenter(horizontal);
     }
 
-    //TODO: Denne metode er ikke endelig. Der skal i virkeligheden skiftes scene
     public void createProductionProfile(Production prodUsing) {
         frameController.centerProduction();
         productionController.productionProfile(prodUsing);

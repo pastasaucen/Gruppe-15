@@ -28,7 +28,7 @@ public class Production {
 		this.name = name;
 		this.releaseDate = releaseDate;
 	}
-
+//TODO Fjernes bruges ikke?
 	public Production(String name, Date releaseDate) {
 		this.name = name;
 		this.releaseDate = releaseDate;

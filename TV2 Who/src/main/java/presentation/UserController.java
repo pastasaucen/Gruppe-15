@@ -187,6 +187,6 @@ public class UserController extends BorderPane {
 
     public void userStart(){
         borderPane.setCenter(null);
-        setHeader("BRUGER HÅNDTERING");
+        setHeader("Bruger Håndtering");
     }
 }

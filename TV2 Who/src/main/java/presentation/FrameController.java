@@ -238,6 +238,7 @@ public class FrameController extends BorderPane{
     mainBorderPane.setLeft(menuVBox);
 
     userLabel = new Label("BRUGER");
+    userLabel.setStyle("-fx-cursor: hand");
     userLabel.setTextFill(Color.WHITE);
     userLabel.setAlignment(Pos.CENTER);
     userLabel.setPrefWidth(200);
@@ -360,9 +361,11 @@ public class FrameController extends BorderPane{
                 productionScene();
                 optionsVBox.getChildren().clear();
                 createProduction = new Label("OPRET PRODUKTION");
+                createProduction.setStyle("-fx-cursor: hand");
                 createOptionLabel(createProduction);
 
                 myProductions = new Label("MINE PRODUKTIONER");
+                myProductions.setStyle("-fx-cursor: hand");
                 createOptionLabel(myProductions);
 
                 optionsVBox.getChildren().addAll(createProduction, myProductions);
@@ -402,6 +405,7 @@ public class FrameController extends BorderPane{
                 centerCast();
                 optionsVBox.getChildren().clear();
                 createCast = new Label("OPRET MEDVIRKENDE");
+                createCast.setStyle("-fx-cursor: hand");
                 createOptionLabel(createCast);
                 optionsVBox.getChildren().add(createCast);
 
@@ -425,7 +429,8 @@ public class FrameController extends BorderPane{
             public void handle(MouseEvent mouseEvent) {
                 userController.userStart();
                 centerUser();
-                createUser = new Label("CREATE USER");
+                createUser = new Label("OPRET BRUGER");
+                createUser.setStyle("-fx-cursor: hand");
                 optionsVBox.getChildren().clear();
                 createOptionLabel(createUser);
                 optionsVBox.getChildren().add(createUser);
@@ -449,8 +454,10 @@ public class FrameController extends BorderPane{
 
     public void setMyProductionsChosen(){
         assignCast = new Label("TILDEL MEDVIRKENDE");
+        assignCast.setStyle("-fx-cursor: hand");
         createOptionLabelUnder(assignCast);
         assignRole = new Label("TILDEL ROLLE");
+        assignRole.setStyle("-fx-cursor: hand");
         createOptionLabelUnder(assignRole);
 
         VBox myProductionsVBox = new VBox();
@@ -484,13 +491,13 @@ public class FrameController extends BorderPane{
         label.setPadding(new Insets(20,0,0,0));
         label.setAlignment(Pos.CENTER);
         label.setTextFill(Color.WHITE);
-        label.setStyle("-fx-font-size: 15");
+        label.setStyle("-fx-font-size: 15; -fx-cursor: hand");
 
     }
 
     private void createOptionLabelUnder(Label label){
         createOptionLabel(label);
-        label.setStyle("-fx-font-size: 10; -fx-text-fill: #5b0b59");
+        label.setStyle("-fx-font-size: 10; -fx-text-fill: #5b0b59; -fx-cursor: hand");
     }
 
     public void centerUser(){

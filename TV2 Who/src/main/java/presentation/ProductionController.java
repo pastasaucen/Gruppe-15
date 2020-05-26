@@ -128,7 +128,7 @@ public class ProductionController extends BorderPane {
     private void setHeader() {
         header = new Text(headerText);
         header.setTextAlignment(TextAlignment.CENTER);
-        header.setFont(Font.font(30));
+        header.setFont(Font.font(25));
         productionBorderPane.setTop(header);
         setAlignment(header, Pos.CENTER);
     }
@@ -762,7 +762,7 @@ public class ProductionController extends BorderPane {
         roleNameField.setPromptText("Indtast rollenavn her");
         Button addToListButton = new Button();
         addToListButton.setStyle("-fx-cursor: hand");
-        addToListButton.setText("Tilføj til liste");
+        addToListButton.setText("Tilføj til bufferliste");
         vertical1.getChildren().addAll(searchFieldBox, searchListView, choosenCastView, roleNameField, addToListButton);
 
         //Right side setup
@@ -771,7 +771,7 @@ public class ProductionController extends BorderPane {
         addedCastView.setPrefWidth(250);
         Button commitButton = new Button();
         commitButton.setStyle("-fx-cursor: hand");
-        commitButton.setText("Tilføj valgte til produktion");
+        commitButton.setText("Tilføj ovenstående til produktion");
         vertical2.getChildren().addAll(addedCastView, commitButton);
 
         //Element functionality

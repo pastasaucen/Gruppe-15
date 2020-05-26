@@ -79,7 +79,7 @@ public class CastController extends BorderPane {
         header = new Text();
         header.setText(text);
         header.setTextAlignment(TextAlignment.CENTER);
-        header.setFont(Font.font(30));
+        header.setFont(Font.font(25));
         castBorderPane.setTop(header);
         setAlignment(header, Pos.CENTER);
     }

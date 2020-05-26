@@ -68,10 +68,10 @@ public class UserController extends BorderPane {
         emailField.setPromptText("E-mail");
         VBox email = new VBox();
         email.getChildren().addAll(emailText,emailField);
-        Text codewordText = new Text("Kodeord");
+        Text codewordText = new Text("Adgangskode");
         TextField codewordField = new TextField();
         codewordField.setPrefWidth(300);
-        codewordField.setPromptText("Kodeord");
+        codewordField.setPromptText("Adgangskode");
         VBox codeword = new VBox();
         codeword.getChildren().addAll(codewordText, codewordField);
         RadioButton systemAdministrator = new RadioButton();

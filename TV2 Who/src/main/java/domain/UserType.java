@@ -1,5 +1,5 @@
 package domain;
 
 public enum UserType {
-    SYSTEMADMINISTRATOR(), PRODUCER(), RDUSER(), EDITOR();
+    SYSTEMADMINISTRATOR(), PRODUCER(), RDUSER(), EDITOR()
 }

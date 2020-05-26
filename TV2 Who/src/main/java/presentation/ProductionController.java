@@ -130,7 +130,7 @@ public class ProductionController extends BorderPane {
         header.setTextAlignment(TextAlignment.CENTER);
         header.setFont(Font.font(30));
         productionBorderPane.setTop(header);
-        productionBorderPane.setAlignment(header, Pos.CENTER);
+        setAlignment(header, Pos.CENTER);
     }
 
     /**

@@ -1,7 +1,5 @@
 package domain;
 
-import domain.producer.Producer;
-
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +26,6 @@ public class Production {
 		this.name = name;
 		this.releaseDate = releaseDate;
 	}
-//TODO Fjernes bruges ikke?
-	public Production(String name, Date releaseDate) {
-		this.name = name;
-		this.releaseDate = releaseDate;
-	}
 
 	public Production(int id, String name, Date releaseDate, State state, String tvCode, String associatedProducerEmail) {
 		this.id = id;
@@ -47,15 +40,14 @@ public class Production {
 		castList.add(castMember);
 }
 
-	// Returns updated list, after adding a role to a cast.
+	/**
+	 * Adds a role to a given cast member.
+	 * @param roleName the new role name.
+	 * @param castMember the cast member to add a role to.
+	 */
 	public void addRole(String roleName, Cast castMember) {
 		castMember.addRole(-1, roleName, this);
 	}
-
-	// Parses values to be updated to Cast
-	/*public void updateRole(String roleName, int roleID, Cast castMember) {
-		castMember.updateRole(roleName, roleID);
-	}*/
 
 	public String getName() {
 		return name;

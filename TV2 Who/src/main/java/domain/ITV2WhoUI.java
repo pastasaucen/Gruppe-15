@@ -5,13 +5,13 @@ import java.util.List;
 
 public interface ITV2WhoUI {
 
-    public List<Cast> prepareCastSearchList(String name);
+    List<Cast> prepareCastSearchList(String name);
 
-    public List<Production> prepareProductionSearchList(String nameOrId);
+    List<Production> prepareProductionSearchList(String nameOrId);
 
-    public boolean createUserSession(String email, String password);
+    boolean createUserSession(String email, String password);
 
-    public static TV2Who getInstance(){
+    static TV2Who getInstance(){
         return TV2Who.getInstance();
     }
 
@@ -19,7 +19,7 @@ public interface ITV2WhoUI {
 
     Production getProduction(int id);
 
-    public User getCurrentUser();
+    User getCurrentUser();
 
     void logOut();
 }

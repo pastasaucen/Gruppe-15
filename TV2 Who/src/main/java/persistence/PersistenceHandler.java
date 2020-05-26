@@ -408,7 +408,7 @@ public class PersistenceHandler implements IPersistenceLogIn, IPersistenceUser, 
             PreparedStatement getAssociatedProductionsStmt = connection.prepareStatement(
                     "SELECT * FROM productions WHERE associated_producer = ?");
 
-            getAssociatedProductionsStmt.setString(1,currentUser.getEmail());
+            getAssociatedProductionsStmt.setString(1, currentUser.getEmail());
 
             convertResultSetToProductions(productionList, getAssociatedProductionsStmt);
 

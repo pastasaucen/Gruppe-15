@@ -182,7 +182,7 @@ public class UserController extends BorderPane {
         header.setTextAlignment(TextAlignment.CENTER);
         header.setFont(Font.font(25));
         borderPane.setTop(header);
-        borderPane.setAlignment(header, Pos.CENTER);
+        setAlignment(header, Pos.CENTER);
     }
 
     public void userStart(){

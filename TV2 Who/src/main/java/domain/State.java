@@ -2,5 +2,5 @@ package domain;
 
 public enum State {
 
-	PENDING(), DECLINED(), ACCEPTED();
+	PENDING(), DECLINED(), ACCEPTED()
 }

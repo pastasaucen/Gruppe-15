@@ -699,7 +699,7 @@ public class ProductionController extends BorderPane {
         VBox vertical1 = new VBox();
         vertical1.setPadding(new Insets(5, 5, 5, 100));
         ListView<Production> productionListView = new ListView<>();
-        setHeader("Vælg produktion");
+        setHeader("Mine produktioner");
 
         IProducer producer = (IProducer) tv2Who.getCurrentUser();
         ObservableList<Production> observProductionList = FXCollections.observableArrayList();

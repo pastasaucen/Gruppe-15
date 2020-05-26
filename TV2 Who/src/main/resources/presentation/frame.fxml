@@ -64,7 +64,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <image>
-                        <Image url="@Pictures/searchPurple.png" />
+                        <Image url="@Pictures/Looking%20glass.png" />
                      </image>
                   </ImageView>
                </children>

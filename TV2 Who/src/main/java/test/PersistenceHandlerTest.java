@@ -143,6 +143,7 @@ public class PersistenceHandlerTest {
         Assert.assertNotEquals(-1, newProduction.getId());
         System.out.println(newProduction);
 
+        // Updates the production
         String newEmail = "w.bolding@outlook.com";
         String newName = "I'VE CHANGED MY NAME! " + newProduction.getName();
         Production alteredProduction = new Production(newProduction.getId(),

@@ -82,6 +82,7 @@ public class Producer extends User implements IProducer {
 	/**
 	 * This method is only used when creating a production from scratch.
 	 */
+	@Override
 	public void submitProduction() {
 		tempProduction.setAssociatedProducerEmail(email);
 		ProductionCatalog.getInstance().addProduction(tempProduction);

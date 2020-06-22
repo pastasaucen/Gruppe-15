@@ -68,10 +68,10 @@ public class UserController extends BorderPane {
         emailField.setPromptText("E-mail");
         VBox email = new VBox();
         email.getChildren().addAll(emailText,emailField);
-        Text codewordText = new Text("Kodeord");
+        Text codewordText = new Text("Adgangskode");
         TextField codewordField = new TextField();
         codewordField.setPrefWidth(300);
-        codewordField.setPromptText("Kodeord");
+        codewordField.setPromptText("Adgangskode");
         VBox codeword = new VBox();
         codeword.getChildren().addAll(codewordText, codewordField);
         RadioButton systemAdministrator = new RadioButton();
@@ -182,11 +182,11 @@ public class UserController extends BorderPane {
         header.setTextAlignment(TextAlignment.CENTER);
         header.setFont(Font.font(25));
         borderPane.setTop(header);
-        borderPane.setAlignment(header, Pos.CENTER);
+        setAlignment(header, Pos.CENTER);
     }
 
     public void userStart(){
         borderPane.setCenter(null);
-        setHeader("BRUGER HÅNDTERING");
+        setHeader("Bruger Håndtering");
     }
 }

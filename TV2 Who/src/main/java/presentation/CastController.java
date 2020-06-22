@@ -79,9 +79,9 @@ public class CastController extends BorderPane {
         header = new Text();
         header.setText(text);
         header.setTextAlignment(TextAlignment.CENTER);
-        header.setFont(Font.font(30));
+        header.setFont(Font.font(25));
         castBorderPane.setTop(header);
-        castBorderPane.setAlignment(header, Pos.CENTER);
+        setAlignment(header, Pos.CENTER);
     }
 
     /**
@@ -127,7 +127,7 @@ public class CastController extends BorderPane {
         centerText = new Text("INGEN MEDVIRKENDE FUNDET");
         centerText.setFont(Font.font(20));
         castBorderPane.setCenter(centerText);
-        castBorderPane.setAlignment(centerText, Pos.CENTER);
+        setAlignment(centerText, Pos.CENTER);
     }
 
     /**

@@ -1,11 +1,9 @@
 package persistence;
 
-import java.util.Arrays;
-
 public class TVCodeGenerator {
 
     private static char[] chars = new char[]{
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
             'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
     /**
@@ -34,8 +32,6 @@ public class TVCodeGenerator {
                 indexes[i] = 0;
                 if (i-1 == -1) {
                     System.out.println("There are no more possible TV-codes to be generated!");
-                } else {
-                    //indexes[i-1]++;
                 }
             }
         }

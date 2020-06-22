@@ -128,9 +128,9 @@ public class ProductionController extends BorderPane {
     private void setHeader() {
         header = new Text(headerText);
         header.setTextAlignment(TextAlignment.CENTER);
-        header.setFont(Font.font(30));
+        header.setFont(Font.font(25));
         productionBorderPane.setTop(header);
-        productionBorderPane.setAlignment(header, Pos.CENTER);
+        setAlignment(header, Pos.CENTER);
     }
 
     /**
@@ -699,7 +699,7 @@ public class ProductionController extends BorderPane {
         VBox vertical1 = new VBox();
         vertical1.setPadding(new Insets(5, 5, 5, 100));
         ListView<Production> productionListView = new ListView<>();
-        setHeader("Vælg produktion");
+        setHeader("Mine produktioner");
 
         IProducer producer = (IProducer) tv2Who.getCurrentUser();
         ObservableList<Production> observProductionList = FXCollections.observableArrayList();
@@ -762,7 +762,7 @@ public class ProductionController extends BorderPane {
         roleNameField.setPromptText("Indtast rollenavn her");
         Button addToListButton = new Button();
         addToListButton.setStyle("-fx-cursor: hand");
-        addToListButton.setText("Tilføj til liste");
+        addToListButton.setText("Tilføj til bufferliste");
         vertical1.getChildren().addAll(searchFieldBox, searchListView, choosenCastView, roleNameField, addToListButton);
 
         //Right side setup
@@ -771,7 +771,7 @@ public class ProductionController extends BorderPane {
         addedCastView.setPrefWidth(250);
         Button commitButton = new Button();
         commitButton.setStyle("-fx-cursor: hand");
-        commitButton.setText("Tilføj valgte til produktion");
+        commitButton.setText("Tilføj ovenstående til produktion");
         vertical2.getChildren().addAll(addedCastView, commitButton);
 
         //Element functionality

@@ -24,6 +24,6 @@ public interface IProducer {
 
 	void createCastMember(String firstName, String lastName, String email, String bio);
 
-	public Production getTempProduction();
+	Production getTempProduction();
 
 }

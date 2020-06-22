@@ -42,6 +42,7 @@ public class Producer extends User implements IProducer {
 	 * Used in the create production use case.
 	 * @param castMember
 	 */
+	@Override
 	public void addCastMember(Cast castMember) {
 
 		if (!getTempProduction().getCastList().contains(castMember)) {
@@ -57,6 +58,7 @@ public class Producer extends User implements IProducer {
 	 * @param cast
 	 * @param production
 	 */
+	@Override
 	public void addCastMember(Cast cast, Production production) {
 		production.addCastMember(cast);
 		ProductionCatalog.getInstance().assignCastMemberToProduction(cast, production);
@@ -69,11 +71,13 @@ public class Producer extends User implements IProducer {
 	 * @param roleName
 	 * @param castMember
 	 */
+	@Override
 	public void addRole(String roleName, Cast castMember) {
 		tempProduction.addRole(roleName, castMember);
 	}
 
 	// Adds role to castMember on SPECIFIC production
+	@Override
 	public void addRole(String roleName, Cast castMember, Production production) {
 		production.addRole(roleName, castMember);
 		castCatalog.saveCastMembers(Arrays.asList(castMember));
@@ -82,6 +86,7 @@ public class Producer extends User implements IProducer {
 	/**
 	 * This method is only used when creating a production from scratch.
 	 */
+	@Override
 	public void submitProduction() {
 		tempProduction.setAssociatedProducerEmail(email);
 		ProductionCatalog.getInstance().addProduction(tempProduction);
@@ -101,6 +106,7 @@ public class Producer extends User implements IProducer {
 	 * @param lastName
 	 * @param email
 	 */
+	@Override
 	public void createCastMember(String firstName, String lastName, String email, String bio) {
 		List<Cast> castList = castCatalog.searchForCast(email, this);
 
@@ -113,6 +119,7 @@ public class Producer extends User implements IProducer {
 		}
 	}
 
+	@Override
 	public Production getTempProduction() {
 		return tempProduction;
 	}

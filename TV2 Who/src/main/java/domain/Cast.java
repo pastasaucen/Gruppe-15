@@ -69,21 +69,14 @@ public class Cast {
 	 * @return
 	 */
 	public boolean equals(Cast cast) {
-		if (id == -1 || cast.id == -1) {
+        // If both have a valid ID, we compare ID's.
+        if (id == -1 || cast.id == -1) {
 			// If any of them have -1 as ID, they haven't got an ID yet and therefore we check on name.
-			if (firstName.equals(cast.firstName) && lastName.equals(cast.lastName)) {
-				return true;
-			} else {
-				return false;
-			}
+            return firstName.equals(cast.firstName) && lastName.equals(cast.lastName);
 
-		} else if (id == cast.id) {
-			// If both have a valid ID, we compare ID's.
-			return true;
-		}
+		} else return id == cast.id;
 
-		return false;
-	}
+    }
 
 	@Override
 	public String toString() {
